@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureAuthenticated;
 use App\Http\Middleware\EnsureRole;
+use App\Http\Middleware\UpdateLastActivity;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth' => EnsureAuthenticated::class,
             'role' => EnsureRole::class,
+            'activity' => UpdateLastActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

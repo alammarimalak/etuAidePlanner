@@ -1,11 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Sign In</h1>
+    <h1>Sign Up</h1>
 
     <div class="card">
-        <form method="POST" action="{{ route('login') }}" class="form-grid">
+        <form method="POST" action="{{ route('register') }}" class="form-grid">
             @csrf
+            <div>
+                <label>Name</label>
+                <input type="text" name="name" value="{{ old('name') }}" required>
+                @error('name')
+                    <div class="muted">{{ $message }}</div>
+                @enderror
+            </div>
             <div>
                 <label>Email</label>
                 <input type="email" name="email" value="{{ old('email') }}" required>
@@ -20,13 +27,13 @@
                     <div class="muted">{{ $message }}</div>
                 @enderror
             </div>
-            <label>
-                <input type="checkbox" name="remember" value="1">
-                Remember me
-            </label>
+            <div>
+                <label>Confirm Password</label>
+                <input type="password" name="password_confirmation" required>
+            </div>
             <div class="actions">
-                <button type="submit">Login</button>
-                <a class="btn secondary" href="{{ route('register') }}">Need an account?</a>
+                <button type="submit">Create Account</button>
+                <a class="btn secondary" href="{{ route('login') }}">Already registered?</a>
             </div>
         </form>
     </div>

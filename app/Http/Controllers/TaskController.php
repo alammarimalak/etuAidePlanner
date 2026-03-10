@@ -158,6 +158,21 @@ class TaskController extends Controller
         return redirect()->route('tasks.show', $task)->with('status', 'Task updated.');
     }
 
+    public function move(Request $request, Task $task)
+    {
+        $this->authorize('update', $task);
+
+        $data = $request->validate([
+            'due_at' => ['required', 'date'],
+        ]);
+
+        $task->update([
+            'due_at' => $data['due_at'],
+        ]);
+
+        return response()->json(['status' => 'ok']);
+    }
+
     public function destroy(Task $task)
     {
         $this->authorize('delete', $task);

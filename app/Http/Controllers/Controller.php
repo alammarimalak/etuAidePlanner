@@ -13,10 +13,11 @@ abstract class Controller
     protected function currentUser(): User
     {
         $user = auth()->user();
-        if ($user instanceof User) {
-            return $user;
+
+        if (!$user instanceof User) {
+            abort(401);
         }
 
-        return User::query()->firstOrFail();
+        return $user;
     }
 }

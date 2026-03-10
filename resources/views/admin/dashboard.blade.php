@@ -28,9 +28,20 @@
             <p>{{ $pendingTasks }}</p>
         </div>
         <div class="card">
-            <h3>Alerts</h3>
-            <p>{{ $inactiveCount }} inactive students</p>
+            <h3>Open Alerts</h3>
+            <p>{{ $openAlerts->count() }}</p>
         </div>
+    </div>
+
+    <div class="card">
+        <h3>Alerts to Review</h3>
+        <ul>
+            @forelse ($openAlerts as $alert)
+                <li>{{ $alert->subjectUser?->name ?? 'Student' }} is inactive.</li>
+            @empty
+                <li class="muted">No open alerts.</li>
+            @endforelse
+        </ul>
     </div>
 
     <div class="card">

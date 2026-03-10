@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminAlert;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
@@ -40,6 +41,13 @@ class AdminDashboardController extends Controller
             ->where('status', Task::STATUS_PENDING)
             ->count();
 
+        $openAlerts = AdminAlert::query()
+            ->where('admin_id', $admin->id)
+            ->where('status', AdminAlert::STATUS_OPEN)
+            ->with('subjectUser')
+            ->orderByDesc('created_at')
+            ->get();
+
         return view('admin.dashboard', [
             'currentUser' => $admin,
             'totalStudents' => $totalStudents,
@@ -48,6 +56,7 @@ class AdminDashboardController extends Controller
             'inactiveStudents' => $inactiveStudents,
             'completedTasks' => $completedTasks,
             'pendingTasks' => $pendingTasks,
+            'openAlerts' => $openAlerts,
         ]);
     }
 }

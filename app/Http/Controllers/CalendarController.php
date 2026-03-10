@@ -21,12 +21,12 @@ class CalendarController extends Controller
             $start = $now->copy()->startOfDay();
             $end = $now->copy()->endOfDay();
         } elseif ($view === 'monthly') {
-            $start = $now->copy()->startOfMonth();
-            $end = $now->copy()->endOfMonth();
+            $start = $now->copy()->startOfMonth()->startOfWeek(Carbon::MONDAY);
+            $end = $now->copy()->endOfMonth()->endOfWeek(Carbon::SUNDAY);
         } else {
             $view = 'weekly';
-            $start = $now->copy()->startOfWeek();
-            $end = $now->copy()->endOfWeek();
+            $start = $now->copy()->startOfWeek(Carbon::MONDAY);
+            $end = $now->copy()->endOfWeek(Carbon::SUNDAY);
         }
 
         $occurrences = TaskOccurrence::query()
@@ -44,13 +44,39 @@ class CalendarController extends Controller
             ->orderBy('due_at')
             ->get();
 
+        $days = [];
+        $cursor = $start->copy();
+        while ($cursor->lte($end)) {
+            $days[] = $cursor->copy();
+            $cursor->addDay();
+        }
+
+        $weekdays = [];
+        $weekdayCursor = $start->copy()->startOfWeek(Carbon::MONDAY);
+        for ($i = 0; $i < 7; $i++) {
+            $weekdays[] = $weekdayCursor->copy();
+            $weekdayCursor->addDay();
+        }
+
+        $occurrencesByDate = $occurrences->groupBy(function (TaskOccurrence $occurrence) {
+            return $occurrence->scheduled_at->toDateString();
+        });
+
+        $tasksByDate = $dueTasks->groupBy(function (Task $task) {
+            return $task->due_at->toDateString();
+        });
+
         return view('calendar.index', [
             'currentUser' => $user,
             'view' => $view,
             'start' => $start,
             'end' => $end,
-            'occurrences' => $occurrences,
-            'dueTasks' => $dueTasks,
+            'days' => $days,
+            'weekdays' => $weekdays,
+            'occurrencesByDate' => $occurrencesByDate,
+            'tasksByDate' => $tasksByDate,
+            'today' => $now->copy()->startOfDay(),
+            'currentMonth' => $now->month,
         ]);
     }
 }
