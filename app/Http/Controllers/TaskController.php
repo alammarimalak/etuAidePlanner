@@ -91,6 +91,10 @@ class TaskController extends Controller
 
         $task = Task::create($data);
 
+        if ($request->boolean('from_calendar')) {
+            return redirect()->back()->with('status', 'Task added to your calendar.');
+        }
+
         return redirect()->route('tasks.show', $task)->with('status', 'Task created.');
     }
 

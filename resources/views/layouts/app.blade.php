@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EtuAide Planner</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @if (request()->routeIs('home', 'about', 'faq', 'contact'))
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     @endif
@@ -151,12 +152,21 @@
             width: 38px;
             height: 38px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #0b132d 0%, var(--violet-500) 58%, var(--violet-700) 100%);
-            display: grid;
-            place-items: center;
-            color: white;
-            font-weight: 700;
-            box-shadow: 0 14px 28px rgba(33, 86, 245, 0.22);
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(33, 86, 245, 0.12);
+            flex-shrink: 0;
+        }
+
+        .brand-bubble img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
         .nav-links {
@@ -813,7 +823,9 @@
     <div class="student-shell">
         <aside class="student-sidebar">
             <a href="{{ route('dashboard') }}" class="student-sidebar-brand">
-                <span class="brand-bubble">E</span>
+                <span class="brand-bubble">
+                    <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
+                </span>
                 <span class="student-sidebar-copy">
                     <strong>EtuAide Planner</strong>
                     <span>Student workspace</span>
@@ -868,7 +880,9 @@
         <header>
             <div class="nav">
                 <a href="{{ route('home') }}" class="brand">
-                    <span class="brand-bubble">E</span>
+                    <span class="brand-bubble">
+                        <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
+                    </span>
                     <span>EtuAide Planner</span>
                 </a>
                 <div class="nav-links">
@@ -915,10 +929,8 @@
                         <div class="row g-4 align-items-center">
                             <div class="col-lg-4">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="project-logo-wrap">
-                                        {{-- Example:
+                                    <div class="project-logo-wrap"> 
                                         <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo" class="project-logo">
-                                        --}}
                                     </div>
 
                                     <div>

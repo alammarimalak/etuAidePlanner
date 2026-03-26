@@ -520,10 +520,7 @@
                         <div class="col-lg-4">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="project-logo-wrap">
-                                    {{-- Paste your logo here --}}
-                                    {{-- Example:
                                     <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo" class="project-logo">
-                                    --}}
                                 </div>
 
                                 <div>

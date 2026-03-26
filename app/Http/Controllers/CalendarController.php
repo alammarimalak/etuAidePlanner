@@ -94,6 +94,7 @@ class CalendarController extends Controller
                             'datetime' => $occurrence->scheduled_at,
                             'time' => $occurrence->scheduled_at->format('H:i'),
                             'meta' => 'Scheduled task',
+                            'edit_url' => route('tasks.edit', $occurrence->task),
                         ];
                     });
 
@@ -110,6 +111,7 @@ class CalendarController extends Controller
                             'datetime' => $task->due_at,
                             'time' => $task->due_at->format('H:i'),
                             'meta' => 'Due task',
+                            'edit_url' => route('tasks.edit', $task),
                         ];
                     });
 
