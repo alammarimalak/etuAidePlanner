@@ -1,566 +1,570 @@
 @extends('layouts.app')
 
-@section('body_class', 'home-landing')
+@section('body_class', 'home-bootstrap jira-inspired')
 
 @push('styles')
     <style>
-        body.home-landing {
-            --landing-ink: #050816;
-            --landing-slate: #101935;
-            --landing-blue: #2156f5;
-            --landing-blue-soft: #d8e4ff;
-            --landing-violet: #6e4cff;
-            --landing-violet-soft: #ebe6ff;
-            --landing-line: rgba(16, 25, 53, 0.12);
-            --landing-shadow: rgba(5, 8, 22, 0.14);
-            font-family: "Segoe UI Variable", "Aptos", "Trebuchet MS", sans-serif;
-            background:
-                radial-gradient(circle at top left, rgba(33, 86, 245, 0.14), transparent 28%),
-                radial-gradient(circle at 85% 10%, rgba(110, 76, 255, 0.14), transparent 24%),
-                linear-gradient(180deg, #f7f9ff 0%, #eef2ff 46%, #ffffff 100%);
-            color: var(--landing-ink);
+        body.home-bootstrap.jira-inspired {
+            --jira-bg: #f7f8f9;
+            --jira-surface: #ffffff;
+            --jira-surface-muted: #fafbfc;
+            --jira-border: #dfe1e6;
+            --jira-border-strong: #c1c7d0;
+            --jira-text: #172b4d;
+            --jira-text-muted: #5e6c84;
+            --jira-blue: #0c66e4;
+            --jira-blue-hover: #0055cc;
+            --jira-blue-soft: #e9f2ff;
+            --jira-success: #1f845a;
+            --jira-shadow: 0 1px 2px rgba(9, 30, 66, 0.08), 0 0 0 1px rgba(9, 30, 66, 0.04);
+            --jira-radius: 16px;
         }
 
-        body.home-landing::before {
-            background: radial-gradient(circle, rgba(33, 86, 245, 0.18) 0%, transparent 68%);
-            top: -150px;
-            left: -90px;
+        html,
+        body {
+            min-height: 100%;
         }
 
-        body.home-landing::after {
-            background: radial-gradient(circle, rgba(110, 76, 255, 0.16) 0%, transparent 70%);
-            bottom: -180px;
-            right: -110px;
-        }
-
-        .home-landing header {
-            background: rgba(255, 255, 255, 0.82);
-            border-bottom: 1px solid rgba(16, 25, 53, 0.08);
-        }
-
-        .home-landing .nav {
-            max-width: 1180px;
-            padding-top: 18px;
-            padding-bottom: 18px;
-        }
-
-        .home-landing .brand {
-            font-weight: 800;
-            letter-spacing: 0.02em;
-        }
-
-        .home-landing .brand-bubble {
-            background: linear-gradient(135deg, #0b132d 0%, #2156f5 62%, #6e4cff 100%);
-            box-shadow: 0 16px 32px rgba(33, 86, 245, 0.2);
-        }
-
-        .home-landing .nav-links,
-        .home-landing .actions {
-            align-items: center;
-        }
-
-        .home-landing .nav-links a,
-        .home-landing .muted {
-            color: rgba(5, 8, 22, 0.74);
-        }
-
-        .home-landing .nav-links a:hover {
-            background: rgba(33, 86, 245, 0.08);
-            color: var(--landing-ink);
-        }
-
-        .home-landing .container {
-            max-width: 1180px;
-            padding-top: 40px;
-            padding-bottom: 96px;
-        }
-
-        .home-landing .btn,
-        .home-landing button {
-            background: linear-gradient(135deg, #0b132d 0%, #2156f5 58%, #6e4cff 100%);
-            box-shadow: 0 18px 32px rgba(33, 86, 245, 0.22);
-        }
-
-        .home-landing .btn.secondary,
-        .home-landing button.secondary {
-            background: rgba(255, 255, 255, 0.84);
-            color: var(--landing-slate);
-            border: 1px solid rgba(16, 25, 53, 0.12);
-        }
-
-        .landing-shell {
-            display: grid;
-            gap: 28px;
-        }
-
-        .landing-hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-            gap: 28px;
-            align-items: stretch;
-        }
-
-        .landing-panel,
-        .landing-card,
-        .landing-metric,
-        .landing-feature {
-            border: 1px solid var(--landing-line);
-            border-radius: 28px;
-            box-shadow: 0 22px 60px var(--landing-shadow);
-        }
-
-        .landing-panel {
-            position: relative;
-            overflow: hidden;
-            background:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(236, 242, 255, 0.94)),
-                linear-gradient(135deg, rgba(33, 86, 245, 0.08), rgba(110, 76, 255, 0.08));
-            padding: 44px;
-        }
-
-        .landing-panel::after {
-            content: "";
-            position: absolute;
-            inset: auto -40px -60px auto;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(110, 76, 255, 0.14) 0%, transparent 72%);
-        }
-
-        .landing-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            border-radius: 999px;
-            background: rgba(16, 25, 53, 0.06);
-            color: var(--landing-slate);
-            font-size: 0.92rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .landing-panel h1 {
-            margin: 22px 0 16px;
-            font-size: clamp(2.8rem, 5vw, 4.8rem);
-            line-height: 0.95;
-            letter-spacing: -0.05em;
-            max-width: 10ch;
-        }
-
-        .landing-panel p {
-            max-width: 62ch;
-            font-size: 1.08rem;
-            line-height: 1.75;
-            color: rgba(5, 8, 22, 0.72);
-        }
-
-        .landing-actions {
+        body.home-bootstrap.jira-inspired {
+            min-height: 100vh;
             display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin: 28px 0 34px;
+            flex-direction: column;
+            background: linear-gradient(180deg, #f7f8f9 0%, #f4f5f7 100%);
+            color: var(--jira-text);
         }
 
-        .landing-proof {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
+        .home-bootstrap.jira-inspired main,
+        .home-bootstrap.jira-inspired .container,
+        .home-bootstrap.jira-inspired .home-shell {
+            width: 100%;
         }
 
-        .landing-metric {
-            background: rgba(255, 255, 255, 0.88);
-            padding: 18px 20px;
-        }
-
-        .landing-metric strong {
-            display: block;
-            font-size: 1.7rem;
-            letter-spacing: -0.04em;
-            margin-bottom: 6px;
-            color: var(--landing-ink);
-        }
-
-        .landing-metric span {
-            color: rgba(5, 8, 22, 0.64);
-            font-size: 0.95rem;
-        }
-
-        .landing-card {
-            background: linear-gradient(180deg, #09122a 0%, #0e1834 54%, #142451 100%);
-            color: #ffffff;
-            padding: 28px;
-            display: grid;
-            gap: 18px;
+        .home-bootstrap.jira-inspired .home-shell {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
         }
 
-        .landing-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 38%),
-                radial-gradient(circle at 100% 0%, rgba(110, 76, 255, 0.42), transparent 30%),
-                radial-gradient(circle at 0% 100%, rgba(33, 86, 245, 0.34), transparent 32%);
-            pointer-events: none;
-        }
-
-        .landing-card > * {
+        .home-bootstrap.jira-inspired .home-content {
             position: relative;
             z-index: 1;
+            flex: 1 0 auto;
         }
 
-        .landing-card-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            align-items: flex-start;
+        .home-bootstrap.jira-inspired .hero-card,
+        .home-bootstrap.jira-inspired .metric-card,
+        .home-bootstrap.jira-inspired .feature-card,
+        .home-bootstrap.jira-inspired .cta-card,
+        .home-bootstrap.jira-inspired .insight-card,
+        .home-bootstrap.jira-inspired .footer-card {
+            background: var(--jira-surface);
+            border: 1px solid var(--jira-border);
+            border-radius: var(--jira-radius);
+            box-shadow: var(--jira-shadow);
         }
 
-        .landing-card-label {
-            font-size: 0.82rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.72);
-        }
-
-        .landing-card h2 {
-            margin: 8px 0 0;
-            font-size: 1.9rem;
-            letter-spacing: -0.04em;
-        }
-
-        .landing-chip {
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.92);
-        }
-
-        .landing-stat-grid {
-            display: grid;
-            gap: 12px;
-        }
-
-        .landing-stat {
-            display: flex;
-            justify-content: space-between;
-            gap: 18px;
-            padding: 16px 18px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .landing-stat strong {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 1rem;
-        }
-
-        .landing-stat span,
-        .landing-stat small,
-        .landing-card-footer {
-            color: rgba(255, 255, 255, 0.74);
-        }
-
-        .landing-stat-value {
-            font-weight: 800;
-            font-size: 1.2rem;
-            white-space: nowrap;
-        }
-
-        .landing-grid {
-            display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr));
-            gap: 20px;
-        }
-
-        .landing-feature {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 28px;
-        }
-
-        .landing-feature.primary {
-            grid-column: span 7;
+        .home-bootstrap.jira-inspired .hero-card {
             background:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(235, 230, 255, 0.92));
+                linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,251,252,1) 100%);
         }
 
-        .landing-feature.secondary {
-            grid-column: span 5;
+        .home-bootstrap.jira-inspired .insight-card {
+            background:
+                linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            color: var(--jira-text);
         }
 
-        .landing-kicker {
-            display: inline-block;
-            margin-bottom: 12px;
-            color: var(--landing-blue);
-            font-size: 0.85rem;
+        .home-bootstrap.jira-inspired .feature-card.primary {
+            background:
+                linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+            border-color: #c7dbff;
+        }
+
+        .home-bootstrap.jira-inspired .cta-card {
+            background:
+                linear-gradient(135deg, #0c66e4 0%, #1d7afc 100%);
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 12px 28px rgba(12, 102, 228, 0.22);
+        }
+
+        .home-bootstrap.jira-inspired .footer-card {
+            background: #ffffff;
+            border: 1px solid var(--jira-border);
+            border-radius: var(--jira-radius);
+            box-shadow: var(--jira-shadow);
+            margin-top: auto;
+        }
+
+        .home-bootstrap.jira-inspired .project-logo-wrap {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: #f4f5f7;
+            border: 1px dashed var(--jira-border-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .home-bootstrap.jira-inspired .project-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .home-bootstrap.jira-inspired .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
+            background: var(--jira-blue-soft);
+            color: var(--jira-blue);
+            font-size: 0.78rem;
             font-weight: 700;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
-        .landing-feature h3 {
-            margin: 0 0 12px;
-            font-size: 1.7rem;
-            letter-spacing: -0.03em;
-        }
-
-        .landing-feature p {
-            margin: 0;
-            color: rgba(5, 8, 22, 0.72);
-            line-height: 1.72;
-        }
-
-        .landing-list {
-            margin: 22px 0 0;
-            padding: 0;
-            list-style: none;
-            display: grid;
-            gap: 14px;
-        }
-
-        .landing-list li {
-            padding: 14px 16px;
-            border-radius: 18px;
-            background: rgba(16, 25, 53, 0.05);
-            color: var(--landing-slate);
-        }
-
-        .landing-list strong {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .landing-columns {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 20px;
-        }
-
-        .landing-cta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            padding: 32px;
-            border-radius: 28px;
-            background: linear-gradient(135deg, #071025 0%, #16328a 54%, #5d3ef0 100%);
-            color: #ffffff;
-            box-shadow: 0 26px 60px rgba(16, 25, 53, 0.25);
-        }
-
-        .landing-cta h3 {
-            margin: 0 0 10px;
-            font-size: 2rem;
+        .home-bootstrap.jira-inspired .display-title {
+            font-size: clamp(2.4rem, 5vw, 4.35rem);
+            line-height: 1.02;
             letter-spacing: -0.04em;
+            color: var(--jira-text);
+            max-width: 11ch;
         }
 
-        .landing-cta p {
-            margin: 0;
-            max-width: 60ch;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.7;
+        .home-bootstrap.jira-inspired .text-secondary {
+            color: var(--jira-text-muted) !important;
         }
 
-        .landing-cta .btn.secondary {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.18);
+        .home-bootstrap.jira-inspired .btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .home-bootstrap.jira-inspired .btn-primary {
+            background: var(--jira-blue);
+            border-color: var(--jira-blue);
+            box-shadow: none;
+        }
+
+        .home-bootstrap.jira-inspired .btn-primary:hover,
+        .home-bootstrap.jira-inspired .btn-primary:focus {
+            background: var(--jira-blue-hover);
+            border-color: var(--jira-blue-hover);
+        }
+
+        .home-bootstrap.jira-inspired .btn-outline-dark {
+            border-color: var(--jira-border-strong);
+            color: var(--jira-text);
+            background: #fff;
+        }
+
+        .home-bootstrap.jira-inspired .btn-outline-dark:hover {
+            background: #f4f5f7;
+            border-color: #a5adba;
+            color: var(--jira-text);
+        }
+
+        .home-bootstrap.jira-inspired .btn-light {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: var(--jira-blue);
+            font-weight: 700;
+        }
+
+        .home-bootstrap.jira-inspired .btn-light:hover {
+            background: #f7f8f9;
+            color: var(--jira-blue-hover);
+        }
+
+        .home-bootstrap.jira-inspired .btn-outline-light {
+            color: #ffffff;
+            border-color: rgba(255,255,255,0.55);
+        }
+
+        .home-bootstrap.jira-inspired .btn-outline-light:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.75);
             color: #ffffff;
         }
 
-        @media (max-width: 980px) {
-            .landing-hero,
-            .landing-columns {
-                grid-template-columns: 1fr;
+        .home-bootstrap.jira-inspired .metric-card {
+            background: var(--jira-surface-muted);
+        }
+
+        .home-bootstrap.jira-inspired .metric-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--jira-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .home-bootstrap.jira-inspired .metric-card .h3,
+        .home-bootstrap.jira-inspired .feature-card h2,
+        .home-bootstrap.jira-inspired .feature-card h3,
+        .home-bootstrap.jira-inspired .insight-card h2 {
+            color: var(--jira-text);
+        }
+
+        .home-bootstrap.jira-inspired .stat-pill {
+            background: var(--jira-blue-soft);
+            border: 1px solid #c7dbff;
+            color: var(--jira-blue);
+            font-weight: 700;
+        }
+
+        .home-bootstrap.jira-inspired .event-row {
+            background: #ffffff;
+            border: 1px solid var(--jira-border);
+            border-radius: 14px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .home-bootstrap.jira-inspired .event-row:hover {
+            border-color: #b3d4ff;
+            box-shadow: 0 4px 14px rgba(9, 30, 66, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .home-bootstrap.jira-inspired .event-kpi {
+            min-width: 72px;
+            text-align: right;
+            color: var(--jira-blue);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .home-bootstrap.jira-inspired .section-tag {
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--jira-blue);
+            margin-bottom: 0.85rem;
+        }
+
+        .home-bootstrap.jira-inspired .feature-list li + li {
+            margin-top: 1rem;
+        }
+
+        .home-bootstrap.jira-inspired .feature-list li {
+            padding: 1rem 1rem 1rem 1.1rem;
+            border: 1px solid var(--jira-border);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.72);
+        }
+
+        .home-bootstrap.jira-inspired .feature-list strong {
+            color: var(--jira-text);
+        }
+
+        .home-bootstrap.jira-inspired .mini-note {
+            border-left: 4px solid var(--jira-blue);
+            padding-left: 1rem;
+        }
+
+        .home-bootstrap.jira-inspired .footer-link {
+            text-decoration: none;
+            color: var(--jira-text-muted);
+            font-weight: 600;
+        }
+
+        .home-bootstrap.jira-inspired .footer-link:hover {
+            color: var(--jira-blue);
+        }
+
+        .home-bootstrap.jira-inspired .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border: 1px solid var(--jira-border);
+            border-radius: 10px;
+            background: #ffffff;
+            color: var(--jira-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .home-bootstrap.jira-inspired .social-link:hover {
+            border-color: #b3d4ff;
+            background: var(--jira-blue-soft);
+            color: var(--jira-blue);
+        }
+
+        @media (max-width: 991.98px) {
+            .home-bootstrap.jira-inspired .container {
+                padding-bottom: 56px;
             }
 
-            .landing-grid {
-                grid-template-columns: 1fr;
+            .home-bootstrap.jira-inspired .display-title {
+                max-width: none;
             }
 
-            .landing-feature.primary,
-            .landing-feature.secondary {
-                grid-column: auto;
-            }
-
-            .landing-cta {
-                align-items: flex-start;
-                flex-direction: column;
+            .home-bootstrap.jira-inspired .footer-card {
+                margin-top: 0;
             }
         }
 
-        @media (max-width: 720px) {
-            .landing-panel,
-            .landing-card,
-            .landing-feature,
-            .landing-cta {
-                padding: 24px;
-            }
-
-            .landing-proof {
-                grid-template-columns: 1fr;
-            }
-
-            .landing-panel h1 {
-                max-width: none;
-                font-size: clamp(2.4rem, 12vw, 3.6rem);
+        @media (max-width: 575.98px) {
+            .home-bootstrap.jira-inspired .event-kpi {
+                min-width: auto;
+                text-align: left;
             }
         }
     </style>
 @endpush
 
 @section('content')
-    <section class="landing-shell">
-        <div class="landing-hero">
-            <div class="landing-panel">
-                <span class="landing-eyebrow">Academic planning, sharpened</span>
-                <h1>Plan every semester with clarity and control.</h1>
-                <p>
-                    EtuAide brings tasks, calendars, reminders, and priorities into one focused workspace so students can
-                    operate with the same discipline as a professional team.
-                </p>
+    <section class="home-shell">
+        <div class="home-content">
+            <div class="container-xl px-4 px-lg-5 py-5">
+                <div class="row g-4 align-items-stretch mb-4">
+                    <div class="col-lg-7">
+                        <div class="hero-card h-100 p-4 p-lg-5">
+                            <span class="eyebrow mb-4">Academic planning, sharpened</span>
 
-                <div class="landing-actions">
-                    @auth
-                        <a class="btn" href="{{ route('dashboard') }}">Open dashboard</a>
-                        <a class="btn secondary" href="{{ route('tasks.index') }}">Review tasks</a>
-                    @else
-                        <a class="btn" href="{{ route('register') }}">Create your account</a>
-                        <a class="btn secondary" href="{{ route('login') }}">Sign in</a>
-                    @endauth
+                            <h1 class="display-title fw-bold mb-4">
+                                Plan every semester with clarity and control.
+                            </h1>
+
+                            <p class="lead text-secondary mb-4">
+                                EtuAide brings tasks, calendars, reminders, and priorities into one focused workspace so students can plan with structure, stay aligned on deadlines, and keep momentum week after week.
+                            </p>
+
+                            <div class="d-flex flex-wrap gap-3 mb-4">
+                                @auth
+                                    <a class="btn btn-primary btn-lg px-4" href="{{ route('dashboard') }}">Open dashboard</a>
+                                    <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('tasks.index') }}">Review tasks</a>
+                                @else
+                                    <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">Create your account</a>
+                                    <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('login') }}">Sign in</a>
+                                @endauth
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="metric-card h-100 p-3 p-lg-4">
+                                        <div class="metric-label">Daily planning</div>
+                                        <div class="h4 fw-bold mb-2">Stay focused</div>
+                                        <p class="mb-0 text-secondary">Keep the next tasks visible and reduce context switching.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="metric-card h-100 p-3 p-lg-4">
+                                        <div class="metric-label">Weekly reviews</div>
+                                        <div class="h4 fw-bold mb-2">See deadlines</div>
+                                        <p class="mb-0 text-secondary">Track upcoming work with a clearer calendar view.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="metric-card h-100 p-3 p-lg-4">
+                                        <div class="metric-label">Semester view</div>
+                                        <div class="h4 fw-bold mb-2">Plan ahead</div>
+                                        <p class="mb-0 text-secondary">Map exams, projects, and recurring commitments early.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="insight-card h-100 p-4 p-lg-5">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-4 flex-wrap">
+                                <div>
+                                    <div class="section-tag mb-2">Focused overview</div>
+                                    <h2 class="h1 mb-0">Today at a glance</h2>
+                                </div>
+                                <span class="badge rounded-pill stat-pill px-3 py-2">Live workflow</span>
+                            </div>
+
+                            <div class="d-grid gap-3">
+                                <div class="event-row p-3 p-lg-4">
+                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
+                                        <div>
+                                            <h3 class="h5 mb-1">Priority queue</h3>
+                                            <p class="mb-0 text-secondary">High-value tasks surfaced first for immediate attention.</p>
+                                        </div>
+                                        <div class="event-kpi">03 items</div>
+                                    </div>
+                                </div>
+
+                                <div class="event-row p-3 p-lg-4">
+                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
+                                        <div>
+                                            <h3 class="h5 mb-1">Calendar sync</h3>
+                                            <p class="mb-0 text-secondary">Daily, weekly, and monthly planning context in one place.</p>
+                                        </div>
+                                        <div class="event-kpi">24h view</div>
+                                    </div>
+                                </div>
+
+                                <div class="event-row p-3 p-lg-4">
+                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
+                                        <div>
+                                            <h3 class="h5 mb-1">Reminder coverage</h3>
+                                            <p class="mb-0 text-secondary">Email and in-app nudges aligned with due dates.</p>
+                                        </div>
+                                        <div class="event-kpi">100%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="text-secondary mt-4 mb-0 mini-note">
+                                Replace scattered notes, missed deadlines, and last-minute planning with a calmer academic workflow.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="landing-proof">
-                    <div class="landing-metric">
-                        <strong>Daily</strong>
-                        <span>Execution rhythms built around the work that matters now.</span>
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-7">
+                        <div class="feature-card primary h-100 p-4 p-lg-5">
+                            <div class="section-tag">Why EtuAide</div>
+                            <h2 class="display-6 fw-bold mb-3">Professional structure without the overhead.</h2>
+                            <p class="text-secondary mb-4">
+                                Inspired by modern product workspaces, this home page uses flatter surfaces, stronger hierarchy, and clearer segmentation to make the experience feel more focused and operational.
+                            </p>
+
+                            <ul class="feature-list list-unstyled mb-0">
+                                <li>
+                                    <strong class="d-block mb-1">Task execution</strong>
+                                    <span class="text-secondary">Break large objectives into manageable subtasks and track progress with clear completion states.</span>
+                                </li>
+                                <li>
+                                    <strong class="d-block mb-1">Calendar command</strong>
+                                    <span class="text-secondary">Move from daily planning to weekly reviews and monthly forecasting without changing mental models.</span>
+                                </li>
+                                <li>
+                                    <strong class="d-block mb-1">Reliable follow-through</strong>
+                                    <span class="text-secondary">Use reminders and notifications to maintain momentum across classes, deliverables, and exams.</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="landing-metric">
-                        <strong>Weekly</strong>
-                        <span>Calendar views that keep deadlines visible without adding noise.</span>
+
+                    <div class="col-lg-5">
+                        <div class="feature-card h-100 p-4 p-lg-5">
+                            <div class="section-tag">Built for momentum</div>
+                            <h2 class="h2 fw-bold mb-3">A calmer planning experience.</h2>
+                            <p class="text-secondary mb-0">
+                                Cleaner cards, clearer calls to action, quieter colors, and more structured spacing give the interface a product-first feel inspired by Jira and Atlassian design patterns.
+                            </p>
+                        </div>
                     </div>
-                    <div class="landing-metric">
-                        <strong>Long-term</strong>
-                        <span>Structured planning for exams, projects, and recurring commitments.</span>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="feature-card h-100 p-4">
+                            <div class="section-tag">Visibility</div>
+                            <h3 class="h3 fw-bold mb-3">See the whole workload.</h3>
+                            <p class="mb-0 text-secondary">Review tasks, deadlines, and categories in one place before they become urgent.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="feature-card h-100 p-4">
+                            <div class="section-tag">Discipline</div>
+                            <h3 class="h3 fw-bold mb-3">Keep priorities obvious.</h3>
+                            <p class="mb-0 text-secondary">Highlight what needs action now and reduce the friction of deciding where to start.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="feature-card h-100 p-4">
+                            <div class="section-tag">Consistency</div>
+                            <h3 class="h3 fw-bold mb-3">Stay on track each week.</h3>
+                            <p class="mb-0 text-secondary">Use reminders, recurring work, and calendar context to maintain reliable study habits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-card p-4 p-lg-5 mb-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-8">
+                            <h2 class="display-6 fw-bold mb-3">Move from intention to execution.</h2>
+                            <p class="mb-0" style="color: rgba(255,255,255,0.86);">
+                                Whether you are planning the week or mapping an entire semester, EtuAide gives you a cleaner, more dependable workspace to operate from.
+                            </p>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="d-flex flex-column flex-sm-row flex-lg-column gap-3 align-items-stretch">
+                                <a class="btn btn-light btn-lg" href="{{ auth()->check() ? route('dashboard') : route('register') }}">
+                                    {{ auth()->check() ? 'Go to dashboard' : 'Start free' }}
+                                </a>
+                                <a class="btn btn-outline-light btn-lg" href="{{ route('about') }}">Explore more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-card p-4 p-lg-4 mt-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="project-logo-wrap">
+                                    {{-- Paste your logo here --}}
+                                    {{-- Example:
+                                    <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo" class="project-logo">
+                                    --}}
+                                </div>
+
+                                <div>
+                                    <div class="fw-bold text-dark mb-1">EtuAide</div>
+                                    <p class="mb-0 text-secondary small">
+                                        Academic planning for students who want more structure, clarity, and consistency.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="text-lg-center">
+                                <div class="fw-semibold text-dark mb-2">Follow us</div>
+                                <div class="d-flex justify-content-lg-center flex-wrap gap-2 social-links">
+                                    <a href="#" class="social-link" aria-label="Facebook">Facebook</a>
+                                    <a href="#" class="social-link" aria-label="Instagram">Instagram</a>
+                                    <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
+                                    <a href="#" class="social-link" aria-label="X">X</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="text-lg-end">
+                                <div class="d-flex justify-content-lg-end flex-wrap gap-3">
+                                    <a class="footer-link" href="{{ route('about') }}">About</a>
+                                    @guest
+                                        <a class="footer-link" href="{{ route('login') }}">Sign in</a>
+                                        <a class="footer-link" href="{{ route('register') }}">Register</a>
+                                    @endguest
+                                </div>
+
+                                <p class="mb-0 text-secondary small mt-3">
+                                    &copy; {{ date('Y') }} EtuAide. All rights reserved.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <aside class="landing-card">
-                <div class="landing-card-top">
-                    <div>
-                        <div class="landing-card-label">Focused overview</div>
-                        <h2>Today at a glance</h2>
-                    </div>
-                    <span class="landing-chip">Live workflow</span>
-                </div>
-
-                <div class="landing-stat-grid">
-                    <div class="landing-stat">
-                        <div>
-                            <strong>Priority queue</strong>
-                            <span>High-value tasks surfaced first</span>
-                        </div>
-                        <div class="landing-stat-value">03</div>
-                    </div>
-                    <div class="landing-stat">
-                        <div>
-                            <strong>Calendar sync</strong>
-                            <small>Daily, weekly, and monthly context</small>
-                        </div>
-                        <div class="landing-stat-value">24h</div>
-                    </div>
-                    <div class="landing-stat">
-                        <div>
-                            <strong>Reminder coverage</strong>
-                            <small>Email and in-app nudges, aligned to due dates</small>
-                        </div>
-                        <div class="landing-stat-value">100%</div>
-                    </div>
-                </div>
-
-                <div class="landing-card-footer">
-                    Designed to replace scattered notes, missed deadlines, and last-minute planning with a calmer operating system.
-                </div>
-            </aside>
         </div>
-
-        <div class="landing-grid">
-            <article class="landing-feature primary">
-                <span class="landing-kicker">Why EtuAide</span>
-                <h3>Professional structure without the overhead.</h3>
-                <p>
-                    The home page now frames EtuAide as a serious planning product: cleaner hierarchy, tighter copy, and
-                    a visual system built entirely from black, white, blue, and purple tones.
-                </p>
-
-                <ul class="landing-list">
-                    <li>
-                        <strong>Task execution</strong>
-                        Break large objectives into manageable subtasks, then track completion with clear progress states.
-                    </li>
-                    <li>
-                        <strong>Calendar command</strong>
-                        Move from day planning to weekly reviews and monthly forecasting without changing mental models.
-                    </li>
-                    <li>
-                        <strong>Reliable follow-through</strong>
-                        Use reminders and notifications to keep momentum steady across classes, deliverables, and exams.
-                    </li>
-                </ul>
-            </article>
-
-            <article class="landing-feature secondary">
-                <span class="landing-kicker">Built for momentum</span>
-                <h3>A calmer planning experience.</h3>
-                <p>
-                    High contrast, controlled spacing, and restrained gradients keep the page polished while still feeling modern.
-                </p>
-            </article>
-        </div>
-
-        <div class="landing-columns">
-            <article class="landing-feature">
-                <span class="landing-kicker">Visibility</span>
-                <h3>See the whole workload.</h3>
-                <p>Review tasks, deadlines, and categories in one place before they become urgent.</p>
-            </article>
-
-            <article class="landing-feature">
-                <span class="landing-kicker">Discipline</span>
-                <h3>Keep priorities obvious.</h3>
-                <p>Highlight what needs action now and reduce the friction of deciding where to start.</p>
-            </article>
-
-            <article class="landing-feature">
-                <span class="landing-kicker">Consistency</span>
-                <h3>Stay on track each week.</h3>
-                <p>Use reminders, recurring work, and calendar context to maintain reliable study habits.</p>
-            </article>
-        </div>
-
-        <section class="landing-cta">
-            <div>
-                <h3>Move from intention to execution.</h3>
-                <p>
-                    Whether you are planning the week or mapping an entire semester, EtuAide gives you a cleaner surface to work from.
-                </p>
-            </div>
-
-            <div class="landing-actions">
-                <a class="btn" href="{{ auth()->check() ? route('dashboard') : route('register') }}">
-                    {{ auth()->check() ? 'Go to dashboard' : 'Start free' }}
-                </a>
-                <a class="btn secondary" href="{{ route('about') }}">Explore more</a>
-            </div>
-        </section>
     </section>
 @endsection

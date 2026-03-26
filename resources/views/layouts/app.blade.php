@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EtuAide Planner</title>
+    @if (request()->routeIs('home', 'about', 'faq', 'contact'))
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    @endif
     <style>
         :root {
             --ink: #050816;
@@ -301,6 +304,126 @@
             max-width: 100%;
             margin: 0;
             padding: 0;
+        }
+
+        .public-shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        .public-main {
+            flex: 1 0 auto;
+        }
+
+        .main-footer-container {
+            padding-top: 0;
+            padding-bottom: 56px;
+        }
+
+        .main-pages-footer {
+            margin-top: auto;
+        }
+
+        .main-pages-footer .footer-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: 0 18px 40px var(--shadow);
+        }
+
+        .main-pages-footer .project-logo-wrap {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: #f4f5f7;
+            border: 1px dashed rgba(16, 25, 53, 0.24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .main-pages-footer .project-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .main-pages-footer .social-links {
+            display: flex;
+        }
+
+        .main-pages-footer .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #ffffff;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .main-pages-footer .social-link:hover {
+            border-color: rgba(33, 86, 245, 0.28);
+            background: rgba(33, 86, 245, 0.08);
+            color: var(--violet-500);
+        }
+
+        .main-pages-footer .footer-link {
+            text-decoration: none;
+            color: rgba(5, 8, 22, 0.64);
+            font-weight: 600;
+        }
+
+        .main-pages-footer .footer-link:hover {
+            color: var(--violet-500);
+        }
+
+        body.theme-dark .main-pages-footer .footer-card {
+            background: rgba(9, 18, 42, 0.92);
+            border-color: rgba(139, 119, 255, 0.18);
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.3);
+        }
+
+        body.theme-dark .main-pages-footer .project-logo-wrap {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(139, 119, 255, 0.24);
+        }
+
+        body.theme-dark .main-pages-footer .social-link {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(139, 119, 255, 0.18);
+            color: #eef2ff;
+        }
+
+        body.theme-dark .main-pages-footer .social-link:hover {
+            background: rgba(33, 86, 245, 0.14);
+            color: #ffffff;
+        }
+
+        body.theme-dark .main-pages-footer .text-dark {
+            color: #f7f9ff !important;
+        }
+
+        body.theme-dark .main-pages-footer .text-secondary {
+            color: rgba(238, 242, 255, 0.68) !important;
+        }
+
+        body.theme-dark .main-pages-footer .footer-link {
+            color: rgba(238, 242, 255, 0.72);
+        }
+
+        body.theme-dark .main-pages-footer .footer-link:hover {
+            color: #ffffff;
         }
 
         .card {
@@ -683,6 +806,7 @@
     $isStudentShell = $currentUser
         && $currentUser->role === \App\Models\User::ROLE_STUDENT
         && request()->routeIs('dashboard', 'tasks.*', 'calendar.*', 'categories.*', 'notifications.*', 'settings.*');
+    $isMainMarketingPage = request()->routeIs('about', 'faq', 'contact');
 @endphp
 
 @if ($isStudentShell)
@@ -699,40 +823,33 @@
             <nav class="student-sidebar-nav" aria-label="Student navigation">
                 <a href="{{ route('dashboard') }}" class="student-sidebar-link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
                     <span>Dashboard</span>
-                    <small>01</small>
                 </a>
                 <a href="{{ route('tasks.index') }}" class="student-sidebar-link {{ request()->routeIs('tasks.*') ? 'is-active' : '' }}">
                     <span>Tasks</span>
-                    <small>02</small>
                 </a>
                 <a href="{{ route('calendar.index') }}" class="student-sidebar-link {{ request()->routeIs('calendar.*') ? 'is-active' : '' }}">
                     <span>Calendar</span>
-                    <small>03</small>
                 </a>
                 <a href="{{ route('categories.index') }}" class="student-sidebar-link {{ request()->routeIs('categories.*') ? 'is-active' : '' }}">
                     <span>Categories</span>
-                    <small>04</small>
                 </a>
                 <a href="{{ route('notifications.index') }}" class="student-sidebar-link {{ request()->routeIs('notifications.*') ? 'is-active' : '' }}">
                     <span>Notifications</span>
-                    <small>05</small>
                 </a>
                 <a href="{{ route('settings.edit') }}" class="student-sidebar-link {{ request()->routeIs('settings.*') ? 'is-active' : '' }}">
                     <span>Settings</span>
-                    <small>06</small>
                 </a>
+                <form method="POST" action="{{ route('logout') }}" class="student-sidebar-logout">
+                    @csrf
+                    <button type="submit" class="secondary">Log out</button>
+                </form>
             </nav>
 
             <div class="student-sidebar-footer">
                 <div class="student-sidebar-user">
                     <strong>{{ $currentUser->name }}</strong>
                     <span>{{ ucfirst($currentUser->role) }}</span>
-                </div>
-
-                <form method="POST" action="{{ route('logout') }}" class="student-sidebar-logout">
-                    @csrf
-                    <button type="submit" class="secondary">Log out</button>
-                </form>
+                </div>                
             </div>
         </aside>
 
@@ -747,45 +864,103 @@
         </main>
     </div>
 @else
-    <header>
-        <div class="nav">
-            <a href="{{ route('home') }}" class="brand">
-                <span class="brand-bubble">E</span>
-                <span>EtuAide Planner</span>
-            </a>
-            <div class="nav-links">
-                <a href="{{ route('home') }}">Home</a>
-                <a href="{{ route('about') }}">About</a>
-                <a href="{{ route('faq') }}">FAQ</a>
-                <a href="{{ route('contact') }}">Contact</a>
-                @auth
-                    <a href="{{ route('dashboard') }}">Dashboard</a>
-                    @if (auth()->user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}">Admin</a>
-                    @endif
-                @endauth
+    <div class="public-shell">
+        <header>
+            <div class="nav">
+                <a href="{{ route('home') }}" class="brand">
+                    <span class="brand-bubble">E</span>
+                    <span>EtuAide Planner</span>
+                </a>
+                <div class="nav-links">
+                    <a href="{{ route('home') }}">Home</a>
+                    <a href="{{ route('about') }}">About</a>
+                    <a href="{{ route('faq') }}">FAQ</a>
+                    <a href="{{ route('contact') }}">Contact</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                        @if (auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}">Admin</a>
+                        @endif
+                    @endauth
+                </div>
+                <div class="actions">
+                    @auth
+                        <span class="muted">{{ auth()->user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}" class="inline-form">
+                            @csrf
+                            <button type="submit" class="secondary">Logout</button>
+                        </form>
+                    @else
+                        <a class="btn secondary" href="{{ route('login') }}">Login</a>
+                        <a class="btn" href="{{ route('register') }}">Sign Up</a>
+                    @endauth
+                </div>
             </div>
-            <div class="actions">
-                @auth
-                    <span class="muted">{{ auth()->user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}" class="inline-form">
-                        @csrf
-                        <button type="submit" class="secondary">Logout</button>
-                    </form>
-                @else
-                    <a class="btn secondary" href="{{ route('login') }}">Login</a>
-                    <a class="btn" href="{{ route('register') }}">Sign Up</a>
-                @endauth
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="container">
-        @if (session('status'))
-            <div class="status">{{ session('status') }}</div>
+        <main class="public-main">
+            <div class="container">
+                @if (session('status'))
+                    <div class="status">{{ session('status') }}</div>
+                @endif
+
+                @yield('content')
+            </div>
+        </main>
+
+        @if ($isMainMarketingPage)
+            <footer class="main-pages-footer">
+                <div class="container main-footer-container">
+                    <div class="footer-card p-4 p-lg-4">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-lg-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="project-logo-wrap">
+                                        {{-- Example:
+                                        <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo" class="project-logo">
+                                        --}}
+                                    </div>
+
+                                    <div>
+                                        <div class="fw-bold text-dark mb-1">EtuAide</div>
+                                        <p class="mb-0 text-secondary small">
+                                            Academic planning for students who want more structure, clarity, and consistency.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="text-lg-center">
+                                    <div class="fw-semibold text-dark mb-2">Follow us</div>
+                                    <div class="d-flex justify-content-lg-center flex-wrap gap-2 social-links">
+                                        <a href="#" class="social-link" aria-label="Facebook">Facebook</a>
+                                        <a href="#" class="social-link" aria-label="Instagram">Instagram</a>
+                                        <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
+                                        <a href="#" class="social-link" aria-label="X">X</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="text-lg-end">
+                                    <div class="d-flex justify-content-lg-end flex-wrap gap-3">
+                                        <a class="footer-link" href="{{ route('about') }}">About</a>
+                                        @guest
+                                            <a class="footer-link" href="{{ route('login') }}">Sign in</a>
+                                            <a class="footer-link" href="{{ route('register') }}">Register</a>
+                                        @endguest
+                                    </div>
+                                    <p class="mb-0 text-secondary small mt-3">
+                                        &copy; {{ date('Y') }} EtuAide. All rights reserved.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         @endif
-
-        @yield('content')
     </div>
 @endif
 </body>
