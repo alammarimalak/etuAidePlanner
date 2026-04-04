@@ -816,7 +816,7 @@
     $isStudentShell = $currentUser
         && $currentUser->role === \App\Models\User::ROLE_STUDENT
         && request()->routeIs('dashboard', 'tasks.*', 'calendar.*', 'categories.*', 'notifications.*', 'settings.*');
-    $isMainMarketingPage = request()->routeIs('about', 'faq', 'contact');
+    $isMainMarketingPage = request()->routeIs('home', 'about', 'faq', 'contact');
 @endphp
 
 @if ($isStudentShell)
@@ -886,10 +886,10 @@
                     <span>EtuAide Planner</span>
                 </a>
                 <div class="nav-links">
-                    <a href="{{ route('home') }}">Home</a>
-                    <a href="{{ route('about') }}">About</a>
-                    <a href="{{ route('faq') }}">FAQ</a>
-                    <a href="{{ route('contact') }}">Contact</a>
+                    <a href="{{ route('home') }}#home">Home</a>
+                    <a href="{{ route('home') }}#about">About</a>
+                    <a href="{{ route('home') }}#faq">FAQ</a>
+                    <a href="{{ route('home') }}#contact">Contact</a>
                     @auth
                         <a href="{{ route('dashboard') }}">Dashboard</a>
                         @if (auth()->user()->role === 'admin')
@@ -957,7 +957,9 @@
                             <div class="col-lg-4">
                                 <div class="text-lg-end">
                                     <div class="d-flex justify-content-lg-end flex-wrap gap-3">
-                                        <a class="footer-link" href="{{ route('about') }}">About</a>
+                                        <a class="footer-link" href="{{ route('home') }}#about">About</a>
+                                        <a class="footer-link" href="{{ route('home') }}#faq">FAQ</a>
+                                        <a class="footer-link" href="{{ route('home') }}#contact">Contact</a>
                                         @guest
                                             <a class="footer-link" href="{{ route('login') }}">Sign in</a>
                                             <a class="footer-link" href="{{ route('register') }}">Register</a>

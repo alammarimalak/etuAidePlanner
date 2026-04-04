@@ -5,7 +5,6 @@
 @push('styles')
     <style>
         body.home-bootstrap.jira-inspired {
-            --jira-bg: #f7f8f9;
             --jira-surface: #ffffff;
             --jira-surface-muted: #fafbfc;
             --jira-border: #dfe1e6;
@@ -15,17 +14,9 @@
             --jira-blue: #0c66e4;
             --jira-blue-hover: #0055cc;
             --jira-blue-soft: #e9f2ff;
-            --jira-success: #1f845a;
             --jira-shadow: 0 1px 2px rgba(9, 30, 66, 0.08), 0 0 0 1px rgba(9, 30, 66, 0.04);
             --jira-radius: 16px;
-        }
-
-        html,
-        body {
-            min-height: 100%;
-        }
-
-        body.home-bootstrap.jira-inspired {
+            scroll-behavior: smooth;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -33,24 +24,20 @@
             color: var(--jira-text);
         }
 
+        .home-shell,
+        .home-content,
         .home-bootstrap.jira-inspired main,
-        .home-bootstrap.jira-inspired .container,
-        .home-bootstrap.jira-inspired .home-shell {
+        .home-bootstrap.jira-inspired .container {
             width: 100%;
         }
 
-        .home-bootstrap.jira-inspired .home-shell {
+        .home-shell,
+        .home-content {
             flex: 1 0 auto;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
         }
 
-        .home-bootstrap.jira-inspired .home-content {
-            position: relative;
-            z-index: 1;
-            flex: 1 0 auto;
+        .home-bootstrap.jira-inspired section[id] {
+            scroll-margin-top: 110px;
         }
 
         .home-bootstrap.jira-inspired .hero-card,
@@ -58,78 +45,65 @@
         .home-bootstrap.jira-inspired .feature-card,
         .home-bootstrap.jira-inspired .cta-card,
         .home-bootstrap.jira-inspired .insight-card,
-        .home-bootstrap.jira-inspired .footer-card {
-            background: var(--jira-surface);
+        .home-bootstrap.jira-inspired .faq-item,
+        .home-bootstrap.jira-inspired .contact-panel,
+        .home-bootstrap.jira-inspired .event-row {
             border: 1px solid var(--jira-border);
             border-radius: var(--jira-radius);
             box-shadow: var(--jira-shadow);
         }
 
-        .home-bootstrap.jira-inspired .hero-card {
-            background:
-                linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,251,252,1) 100%);
+        .home-bootstrap.jira-inspired .hero-card,
+        .home-bootstrap.jira-inspired .feature-card,
+        .home-bootstrap.jira-inspired .faq-item,
+        .home-bootstrap.jira-inspired .contact-panel,
+        .home-bootstrap.jira-inspired .event-row {
+            background: var(--jira-surface);
         }
 
-        .home-bootstrap.jira-inspired .insight-card {
-            background:
-                linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-            color: var(--jira-text);
+        .home-bootstrap.jira-inspired .hero-card {
+            background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+        }
+
+        .home-bootstrap.jira-inspired .insight-card,
+        .home-bootstrap.jira-inspired .contact-panel.soft {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
         }
 
         .home-bootstrap.jira-inspired .feature-card.primary {
-            background:
-                linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
             border-color: #c7dbff;
         }
 
+        .home-bootstrap.jira-inspired .metric-card {
+            background: var(--jira-surface-muted);
+        }
+
         .home-bootstrap.jira-inspired .cta-card {
-            background:
-                linear-gradient(135deg, #0c66e4 0%, #1d7afc 100%);
+            background: linear-gradient(135deg, #0c66e4 0%, #1d7afc 100%);
             border: none;
             color: #ffffff;
             box-shadow: 0 12px 28px rgba(12, 102, 228, 0.22);
         }
 
-        .home-bootstrap.jira-inspired .footer-card {
-            background: #ffffff;
-            border: 1px solid var(--jira-border);
-            border-radius: var(--jira-radius);
-            box-shadow: var(--jira-shadow);
-            margin-top: auto;
-        }
-
-        .home-bootstrap.jira-inspired .project-logo-wrap {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            background: #f4f5f7;
-            border: 1px dashed var(--jira-border-strong);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .home-bootstrap.jira-inspired .project-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .home-bootstrap.jira-inspired .eyebrow {
+        .home-bootstrap.jira-inspired .eyebrow,
+        .home-bootstrap.jira-inspired .section-tag,
+        .home-bootstrap.jira-inspired .metric-label {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.45rem 0.85rem;
-            border-radius: 999px;
-            background: var(--jira-blue-soft);
-            color: var(--jira-blue);
             font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
+            color: var(--jira-blue);
+        }
+
+        .home-bootstrap.jira-inspired .eyebrow {
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
+            background: var(--jira-blue-soft);
+            margin-bottom: 1.5rem;
         }
 
         .home-bootstrap.jira-inspired .display-title {
@@ -140,7 +114,8 @@
             max-width: 11ch;
         }
 
-        .home-bootstrap.jira-inspired .text-secondary {
+        .home-bootstrap.jira-inspired .text-secondary,
+        .home-bootstrap.jira-inspired .form-note {
             color: var(--jira-text-muted) !important;
         }
 
@@ -189,33 +164,13 @@
 
         .home-bootstrap.jira-inspired .btn-outline-light {
             color: #ffffff;
-            border-color: rgba(255,255,255,0.55);
+            border-color: rgba(255, 255, 255, 0.55);
         }
 
         .home-bootstrap.jira-inspired .btn-outline-light:hover {
-            background: rgba(255,255,255,0.12);
-            border-color: rgba(255,255,255,0.75);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.75);
             color: #ffffff;
-        }
-
-        .home-bootstrap.jira-inspired .metric-card {
-            background: var(--jira-surface-muted);
-        }
-
-        .home-bootstrap.jira-inspired .metric-label {
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--jira-blue);
-            margin-bottom: 0.5rem;
-        }
-
-        .home-bootstrap.jira-inspired .metric-card .h3,
-        .home-bootstrap.jira-inspired .feature-card h2,
-        .home-bootstrap.jira-inspired .feature-card h3,
-        .home-bootstrap.jira-inspired .insight-card h2 {
-            color: var(--jira-text);
         }
 
         .home-bootstrap.jira-inspired .stat-pill {
@@ -225,14 +180,14 @@
             font-weight: 700;
         }
 
-        .home-bootstrap.jira-inspired .event-row {
-            background: #ffffff;
-            border: 1px solid var(--jira-border);
-            border-radius: 14px;
+        .home-bootstrap.jira-inspired .event-row,
+        .home-bootstrap.jira-inspired .faq-item {
+            padding: 1.25rem;
             transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
         }
 
-        .home-bootstrap.jira-inspired .event-row:hover {
+        .home-bootstrap.jira-inspired .event-row:hover,
+        .home-bootstrap.jira-inspired .faq-item:hover {
             border-color: #b3d4ff;
             box-shadow: 0 4px 14px rgba(9, 30, 66, 0.08);
             transform: translateY(-1px);
@@ -246,15 +201,6 @@
             font-size: 1.1rem;
         }
 
-        .home-bootstrap.jira-inspired .section-tag {
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--jira-blue);
-            margin-bottom: 0.85rem;
-        }
-
         .home-bootstrap.jira-inspired .feature-list li + li {
             margin-top: 1rem;
         }
@@ -263,11 +209,7 @@
             padding: 1rem 1rem 1rem 1.1rem;
             border: 1px solid var(--jira-border);
             border-radius: 12px;
-            background: rgba(255,255,255,0.72);
-        }
-
-        .home-bootstrap.jira-inspired .feature-list strong {
-            color: var(--jira-text);
+            background: rgba(255, 255, 255, 0.72);
         }
 
         .home-bootstrap.jira-inspired .mini-note {
@@ -275,47 +217,16 @@
             padding-left: 1rem;
         }
 
-        .home-bootstrap.jira-inspired .footer-link {
-            text-decoration: none;
-            color: var(--jira-text-muted);
+        .home-bootstrap.jira-inspired label {
+            display: block;
             font-weight: 600;
-        }
-
-        .home-bootstrap.jira-inspired .footer-link:hover {
-            color: var(--jira-blue);
-        }
-
-        .home-bootstrap.jira-inspired .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.65rem 1rem;
-            border: 1px solid var(--jira-border);
-            border-radius: 10px;
-            background: #ffffff;
+            margin-bottom: 0.45rem;
             color: var(--jira-text);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .home-bootstrap.jira-inspired .social-link:hover {
-            border-color: #b3d4ff;
-            background: var(--jira-blue-soft);
-            color: var(--jira-blue);
         }
 
         @media (max-width: 991.98px) {
-            .home-bootstrap.jira-inspired .container {
-                padding-bottom: 56px;
-            }
-
             .home-bootstrap.jira-inspired .display-title {
                 max-width: none;
-            }
-
-            .home-bootstrap.jira-inspired .footer-card {
-                margin-top: 0;
             }
         }
 
@@ -332,113 +243,107 @@
     <section class="home-shell">
         <div class="home-content">
             <div class="container-xl px-4 px-lg-5 py-5">
-                <div class="row g-4 align-items-stretch mb-4">
-                    <div class="col-lg-7">
-                        <div class="hero-card h-100 p-4 p-lg-5">
-                            <span class="eyebrow mb-4">Academic planning, sharpened</span>
+                <section id="home" class="mb-4">
+                    <div class="row g-4 align-items-stretch">
+                        <div class="col-lg-7">
+                            <div class="hero-card h-100 p-4 p-lg-5">
+                                <span class="eyebrow">Academic planning, sharpened</span>
+                                <h1 class="display-title fw-bold mb-4">Plan every semester with clarity and control.</h1>
+                                <p class="lead text-secondary mb-4">
+                                    EtuAide brings tasks, calendars, reminders, and priorities into one focused workspace so students can plan with structure, stay aligned on deadlines, and keep momentum week after week.
+                                </p>
 
-                            <h1 class="display-title fw-bold mb-4">
-                                Plan every semester with clarity and control.
-                            </h1>
-
-                            <p class="lead text-secondary mb-4">
-                                EtuAide brings tasks, calendars, reminders, and priorities into one focused workspace so students can plan with structure, stay aligned on deadlines, and keep momentum week after week.
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-3 mb-4">
-                                @auth
-                                    <a class="btn btn-primary btn-lg px-4" href="{{ route('dashboard') }}">Open dashboard</a>
-                                    <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('tasks.index') }}">Review tasks</a>
-                                @else
-                                    <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">Create your account</a>
-                                    <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('login') }}">Sign in</a>
-                                @endauth
-                            </div>
-
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <div class="metric-card h-100 p-3 p-lg-4">
-                                        <div class="metric-label">Daily planning</div>
-                                        <div class="h4 fw-bold mb-2">Stay focused</div>
-                                        <p class="mb-0 text-secondary">Keep the next tasks visible and reduce context switching.</p>
-                                    </div>
+                                <div class="d-flex flex-wrap gap-3 mb-4">
+                                    @auth
+                                        <a class="btn btn-primary btn-lg px-4" href="{{ route('dashboard') }}">Open dashboard</a>
+                                        <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('tasks.index') }}">Review tasks</a>
+                                    @else
+                                        <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">Create your account</a>
+                                        <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('login') }}">Sign in</a>
+                                    @endauth
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class="metric-card h-100 p-3 p-lg-4">
-                                        <div class="metric-label">Weekly reviews</div>
-                                        <div class="h4 fw-bold mb-2">See deadlines</div>
-                                        <p class="mb-0 text-secondary">Track upcoming work with a clearer calendar view.</p>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="metric-card h-100 p-3 p-lg-4">
+                                            <div class="metric-label mb-2">Daily planning</div>
+                                            <div class="h4 fw-bold mb-2">Stay focused</div>
+                                            <p class="mb-0 text-secondary">Keep the next tasks visible and reduce context switching.</p>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="metric-card h-100 p-3 p-lg-4">
-                                        <div class="metric-label">Semester view</div>
-                                        <div class="h4 fw-bold mb-2">Plan ahead</div>
-                                        <p class="mb-0 text-secondary">Map exams, projects, and recurring commitments early.</p>
+                                    <div class="col-md-4">
+                                        <div class="metric-card h-100 p-3 p-lg-4">
+                                            <div class="metric-label mb-2">Weekly reviews</div>
+                                            <div class="h4 fw-bold mb-2">See deadlines</div>
+                                            <p class="mb-0 text-secondary">Track upcoming work with a clearer calendar view.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="metric-card h-100 p-3 p-lg-4">
+                                            <div class="metric-label mb-2">Semester view</div>
+                                            <div class="h4 fw-bold mb-2">Plan ahead</div>
+                                            <p class="mb-0 text-secondary">Map exams, projects, and recurring commitments early.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-5">
-                        <div class="insight-card h-100 p-4 p-lg-5">
-                            <div class="d-flex justify-content-between align-items-start gap-3 mb-4 flex-wrap">
-                                <div>
-                                    <div class="section-tag mb-2">Focused overview</div>
-                                    <h2 class="h1 mb-0">Today at a glance</h2>
+                        <div class="col-lg-5">
+                            <div class="insight-card h-100 p-4 p-lg-5">
+                                <div class="d-flex justify-content-between align-items-start gap-3 mb-4 flex-wrap">
+                                    <div>
+                                        <div class="section-tag mb-2">Focused overview</div>
+                                        <h2 class="h1 mb-0">Today at a glance</h2>
+                                    </div>
+                                    <span class="badge rounded-pill stat-pill px-3 py-2">Live workflow</span>
                                 </div>
-                                <span class="badge rounded-pill stat-pill px-3 py-2">Live workflow</span>
+
+                                <div class="d-grid gap-3">
+                                    <div class="event-row">
+                                        <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
+                                            <div>
+                                                <h3 class="h5 mb-1">Priority queue</h3>
+                                                <p class="mb-0 text-secondary">High-value tasks surfaced first for immediate attention.</p>
+                                            </div>
+                                            <div class="event-kpi">03 items</div>
+                                        </div>
+                                    </div>
+                                    <div class="event-row">
+                                        <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
+                                            <div>
+                                                <h3 class="h5 mb-1">Calendar sync</h3>
+                                                <p class="mb-0 text-secondary">Daily, weekly, and monthly planning context in one place.</p>
+                                            </div>
+                                            <div class="event-kpi">24h view</div>
+                                        </div>
+                                    </div>
+                                    <div class="event-row">
+                                        <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
+                                            <div>
+                                                <h3 class="h5 mb-1">Reminder coverage</h3>
+                                                <p class="mb-0 text-secondary">Email and in-app nudges aligned with due dates.</p>
+                                            </div>
+                                            <div class="event-kpi">100%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-secondary mt-4 mb-0 mini-note">
+                                    Replace scattered notes, missed deadlines, and last-minute planning with a calmer academic workflow.
+                                </p>
                             </div>
-
-                            <div class="d-grid gap-3">
-                                <div class="event-row p-3 p-lg-4">
-                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
-                                        <div>
-                                            <h3 class="h5 mb-1">Priority queue</h3>
-                                            <p class="mb-0 text-secondary">High-value tasks surfaced first for immediate attention.</p>
-                                        </div>
-                                        <div class="event-kpi">03 items</div>
-                                    </div>
-                                </div>
-
-                                <div class="event-row p-3 p-lg-4">
-                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
-                                        <div>
-                                            <h3 class="h5 mb-1">Calendar sync</h3>
-                                            <p class="mb-0 text-secondary">Daily, weekly, and monthly planning context in one place.</p>
-                                        </div>
-                                        <div class="event-kpi">24h view</div>
-                                    </div>
-                                </div>
-
-                                <div class="event-row p-3 p-lg-4">
-                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-column flex-sm-row">
-                                        <div>
-                                            <h3 class="h5 mb-1">Reminder coverage</h3>
-                                            <p class="mb-0 text-secondary">Email and in-app nudges aligned with due dates.</p>
-                                        </div>
-                                        <div class="event-kpi">100%</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <p class="text-secondary mt-4 mb-0 mini-note">
-                                Replace scattered notes, missed deadlines, and last-minute planning with a calmer academic workflow.
-                            </p>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 <div class="row g-4 mb-4">
                     <div class="col-lg-7">
                         <div class="feature-card primary h-100 p-4 p-lg-5">
-                            <div class="section-tag">Why EtuAide</div>
+                            <div class="section-tag mb-3">Why EtuAide</div>
                             <h2 class="display-6 fw-bold mb-3">Professional structure without the overhead.</h2>
                             <p class="text-secondary mb-4">
-                                Inspired by modern product workspaces, this home page uses flatter surfaces, stronger hierarchy, and clearer segmentation to make the experience feel more focused and operational.
+                                Inspired by modern product workspaces, this landing page uses flatter surfaces, stronger hierarchy, and clearer segmentation to make the experience feel focused and operational.
                             </p>
 
                             <ul class="feature-list list-unstyled mb-0">
@@ -457,13 +362,12 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="col-lg-5">
                         <div class="feature-card h-100 p-4 p-lg-5">
-                            <div class="section-tag">Built for momentum</div>
+                            <div class="section-tag mb-3">Built for momentum</div>
                             <h2 class="h2 fw-bold mb-3">A calmer planning experience.</h2>
                             <p class="text-secondary mb-0">
-                                Cleaner cards, clearer calls to action, quieter colors, and more structured spacing give the interface a product-first feel inspired by Jira and Atlassian design patterns.
+                                Cleaner cards, clearer calls to action, quieter colors, and more structured spacing give the interface a product-first feel.
                             </p>
                         </div>
                     </div>
@@ -472,23 +376,21 @@
                 <div class="row g-4 mb-4">
                     <div class="col-md-4">
                         <div class="feature-card h-100 p-4">
-                            <div class="section-tag">Visibility</div>
+                            <div class="section-tag mb-3">Visibility</div>
                             <h3 class="h3 fw-bold mb-3">See the whole workload.</h3>
                             <p class="mb-0 text-secondary">Review tasks, deadlines, and categories in one place before they become urgent.</p>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="feature-card h-100 p-4">
-                            <div class="section-tag">Discipline</div>
+                            <div class="section-tag mb-3">Discipline</div>
                             <h3 class="h3 fw-bold mb-3">Keep priorities obvious.</h3>
                             <p class="mb-0 text-secondary">Highlight what needs action now and reduce the friction of deciding where to start.</p>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="feature-card h-100 p-4">
-                            <div class="section-tag">Consistency</div>
+                            <div class="section-tag mb-3">Consistency</div>
                             <h3 class="h3 fw-bold mb-3">Stay on track each week.</h3>
                             <p class="mb-0 text-secondary">Use reminders, recurring work, and calendar context to maintain reliable study habits.</p>
                         </div>
@@ -503,64 +405,157 @@
                                 Whether you are planning the week or mapping an entire semester, EtuAide gives you a cleaner, more dependable workspace to operate from.
                             </p>
                         </div>
-
                         <div class="col-lg-4">
                             <div class="d-flex flex-column flex-sm-row flex-lg-column gap-3 align-items-stretch">
                                 <a class="btn btn-light btn-lg" href="{{ auth()->check() ? route('dashboard') : route('register') }}">
                                     {{ auth()->check() ? 'Go to dashboard' : 'Start free' }}
                                 </a>
-                                <a class="btn btn-outline-light btn-lg" href="{{ route('about') }}">Explore more</a>
+                                <a class="btn btn-outline-light btn-lg" href="#about">Explore more</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="footer-card p-4 p-lg-4 mt-4">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-lg-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="project-logo-wrap">
-                                    <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo" class="project-logo">
-                                </div>
-
-                                <div>
-                                    <div class="fw-bold text-dark mb-1">EtuAide</div>
-                                    <p class="mb-0 text-secondary small">
-                                        Academic planning for students who want more structure, clarity, and consistency.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="text-lg-center">
-                                <div class="fw-semibold text-dark mb-2">Follow us</div>
-                                <div class="d-flex justify-content-lg-center flex-wrap gap-2 social-links">
-                                    <a href="#" class="social-link" aria-label="Facebook">Facebook</a>
-                                    <a href="#" class="social-link" aria-label="Instagram">Instagram</a>
-                                    <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
-                                    <a href="#" class="social-link" aria-label="X">X</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="text-lg-end">
-                                <div class="d-flex justify-content-lg-end flex-wrap gap-3">
-                                    <a class="footer-link" href="{{ route('about') }}">About</a>
-                                    @guest
-                                        <a class="footer-link" href="{{ route('login') }}">Sign in</a>
-                                        <a class="footer-link" href="{{ route('register') }}">Register</a>
-                                    @endguest
-                                </div>
-
-                                <p class="mb-0 text-secondary small mt-3">
-                                    &copy; {{ date('Y') }} EtuAide. All rights reserved.
+                <section id="about" class="mb-4">
+                    <div class="feature-card primary p-4 p-lg-5">
+                        <div class="row g-4 align-items-start">
+                            <div class="col-lg-6">
+                                <div class="section-tag mb-3">About EtuAide</div>
+                                <h2 class="display-6 fw-bold mb-3">One planning space for academic clarity.</h2>
+                                <p class="text-secondary mb-0">
+                                    EtuAide is a student-first planner built to reduce noise. We bring tasks, calendar planning, reminders, and accountability into one focused workspace so students can act with more confidence and less friction.
                                 </p>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <div class="metric-card h-100 p-4">
+                                            <div class="metric-label mb-2">Our mission</div>
+                                            <p class="mb-0 text-secondary">Help students focus on what matters today while building steady momentum for long-term goals.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="metric-card h-100 p-4">
+                                            <div class="metric-label mb-2">How we work</div>
+                                            <p class="mb-0 text-secondary">Clear task states, structured calendars, and reminders that support follow-through without overwhelming the user.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="metric-card h-100 p-4">
+                                            <div class="metric-label mb-2">Who it is for</div>
+                                            <p class="mb-0 text-secondary">Students who want a cleaner system for deadlines, study routines, projects, and semester planning.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <section id="faq" class="mb-4">
+                    <div class="feature-card p-4 p-lg-5">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-4 flex-column flex-lg-row">
+                            <div>
+                                <div class="section-tag mb-2">FAQ</div>
+                                <h2 class="display-6 fw-bold mb-2">Common questions, answered clearly.</h2>
+                                <p class="text-secondary mb-0">Everything students and admins usually ask before getting started.</p>
+                            </div>
+                            <span class="badge rounded-pill stat-pill px-3 py-2">4 quick answers</span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="faq-item h-100">
+                                    <h3 class="h5 fw-bold">Can I change task status?</h3>
+                                    <p class="mb-0 text-secondary">Yes. Tasks and subtasks can move through pending, in progress, review, and done states.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="faq-item h-100">
+                                    <h3 class="h5 fw-bold">How do reminders work?</h3>
+                                    <p class="mb-0 text-secondary">Set reminders on tasks to receive in-app notifications and optional email nudges before deadlines.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="faq-item h-100">
+                                    <h3 class="h5 fw-bold">What counts as inactive?</h3>
+                                    <p class="mb-0 text-secondary">An account with no login or task activity for 14 days is treated as inactive for admin follow-up.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="faq-item h-100">
+                                    <h3 class="h5 fw-bold">Can admins reset passwords?</h3>
+                                    <p class="mb-0 text-secondary">Yes. The admin side is designed to support account management and recovery workflows.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="contact">
+                    <div class="row g-4">
+                        <div class="col-lg-5">
+                            <div class="contact-panel soft h-100 p-4 p-lg-5">
+                                <div class="section-tag mb-3">Contact</div>
+                                <h2 class="display-6 fw-bold mb-3">Reach the EtuAide team.</h2>
+                                <p class="text-secondary mb-4">
+                                    We love hearing from students, teachers, and parents. Send a message for support, onboarding, or partnership questions.
+                                </p>
+
+                                <div class="d-grid gap-3">
+                                    <div class="event-row">
+                                        <h3 class="h6 fw-bold mb-1">Email</h3>
+                                        <p class="mb-0 text-secondary">support@etuaide.com</p>
+                                    </div>
+                                    <div class="event-row">
+                                        <h3 class="h6 fw-bold mb-1">Campus hours</h3>
+                                        <p class="mb-0 text-secondary">Mon to Fri - 9:00 to 18:00</p>
+                                    </div>
+                                    <div class="event-row">
+                                        <h3 class="h6 fw-bold mb-1">Community</h3>
+                                        <p class="mb-0 text-secondary">Ask us about partnerships, onboarding, or student support workflows.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="contact-panel h-100 p-4 p-lg-5">
+                                <div class="section-tag mb-3">Send a message</div>
+                                <h2 class="h2 fw-bold mb-3">We'll get back to you soon.</h2>
+                                <p class="form-note mb-4">Use the form below and the team will follow up as quickly as possible.</p>
+
+                                <form method="POST" action="{{ route('contact.submit') }}" class="form-grid">
+                                    @csrf
+                                    <div>
+                                        <label for="contact-name">Name</label>
+                                        <input id="contact-name" type="text" name="name" value="{{ old('name') }}" required>
+                                        @error('name')
+                                            <div class="muted mt-2">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="contact-email">Email</label>
+                                        <input id="contact-email" type="email" name="email" value="{{ old('email') }}" required>
+                                        @error('email')
+                                            <div class="muted mt-2">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="contact-message">Message</label>
+                                        <textarea id="contact-message" name="message" rows="5" required>{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <div class="muted mt-2">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="d-flex justify-content-start">
+                                        <button type="submit" class="btn btn-primary">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
