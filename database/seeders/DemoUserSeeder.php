@@ -29,7 +29,7 @@ class DemoUserSeeder extends Seeder
         );
 
         User::updateOrCreate(
-            ['email' => 'student@etuaide.test'],
+            ['email' => 'alammarimalak17@gmail.com'],
             [
                 'name' => 'Sara Student',
                 'password' => $password,

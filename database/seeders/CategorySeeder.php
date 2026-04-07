@@ -28,7 +28,7 @@ class CategorySeeder extends Seeder
             );
         }
 
-        $student = User::where('email', 'student@etuaide.test')->first();
+        $student = User::where('email', 'alammarimalak17@gmail.com')->first();
         $amal = User::where('email', 'amal@etuaide.test')->first();
         $inactive = User::where('email', 'inactive@etuaide.test')->first();
 
