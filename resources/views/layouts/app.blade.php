@@ -77,13 +77,14 @@
         body::before,
         body::after {
             content: "";
-            position: absolute;
+            position: fixed;
             width: 380px;
             height: 380px;
             border-radius: 50%;
             filter: blur(0px);
             opacity: 0.4;
             z-index: 0;
+            pointer-events: none;
         }
 
         body::before {
@@ -338,6 +339,10 @@
             flex: 1 0 auto;
         }
 
+        .public-main.is-marketing > .container {
+            padding-bottom: 0;
+        }
+
         .main-footer-container {
             padding-top: 0;
             padding-bottom: 56px;
@@ -359,25 +364,6 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-        }
-
-        .main-pages-footer .footer-links {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            font-weight: 600;
-        }
-
-        .main-pages-footer .footer-links a {
-            padding: 6px 10px;
-            border-radius: 999px;
-            transition: background 0.2s ease, color 0.2s ease;
-            color: rgba(5, 8, 22, 0.74);
-        }
-
-        .main-pages-footer .footer-links a:hover {
-            background: rgba(33, 86, 245, 0.08);
-            color: var(--ink);
         }
 
         .main-pages-footer .footer-meta {
@@ -443,14 +429,8 @@
             border-top-color: rgba(139, 119, 255, 0.12);
         }
 
-        body.theme-dark .main-pages-footer .footer-links a,
         body.theme-dark .main-pages-footer .footer-copy {
             color: rgba(238, 242, 255, 0.72);
-        }
-
-        body.theme-dark .main-pages-footer .footer-links a:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #ffffff;
         }
 
         .card {
@@ -951,7 +931,7 @@
             </div>
         </header>
 
-        <main class="public-main">
+        <main class="public-main {{ $isMainMarketingPage ? 'is-marketing' : '' }}">
             <div class="container">
                 @if (session('status'))
                     <div class="status">{{ session('status') }}</div>
@@ -970,16 +950,6 @@
                         </span>
                         <span>EtuAide Planner</span>
                     </a>
-
-                    <div class="footer-links">
-                        <a href="{{ route('home') }}#about">About</a>
-                        <a href="{{ route('home') }}#faq">FAQ</a>
-                        <a href="{{ route('home') }}#contact">Contact</a>
-                        @guest
-                            <a href="{{ route('login') }}">Sign in</a>
-                            <a href="{{ route('register') }}">Register</a>
-                        @endguest
-                    </div>
 
                     <div class="footer-meta">
                         <div class="social-links" aria-label="Social media links">
