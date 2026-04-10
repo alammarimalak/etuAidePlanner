@@ -528,6 +528,12 @@
             border: 1px solid rgba(33, 86, 245, 0.12);
         }
 
+        body.theme-dark .status {
+            color: #ffffff;
+            background: rgba(139, 119, 255, 0.16);
+            border-color: rgba(139, 119, 255, 0.24);
+        }
+
         .form-grid {
             display: grid;
             gap: 12px;
