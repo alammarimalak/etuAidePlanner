@@ -345,78 +345,86 @@
 
         .main-pages-footer {
             margin-top: auto;
+            background: rgba(255, 255, 255, 0.82);
+            border-top: 1px solid var(--line);
+            backdrop-filter: blur(14px);
         }
 
-        .main-pages-footer .footer-card {
-            background: #ffffff;
-            border: 1px solid var(--line);
-            border-radius: 24px;
-            box-shadow: 0 18px 40px var(--shadow);
+        .main-pages-footer .footer-nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            gap: 16px;
+            padding: 16px 24px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
 
-        .main-pages-footer .project-logo-wrap {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            background: #f4f5f7;
-            border: 1px dashed rgba(16, 25, 53, 0.24);
+        .main-pages-footer .footer-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-weight: 600;
+        }
+
+        .main-pages-footer .footer-links a {
+            padding: 6px 10px;
+            border-radius: 999px;
+            transition: background 0.2s ease, color 0.2s ease;
+            color: rgba(5, 8, 22, 0.74);
+        }
+
+        .main-pages-footer .footer-links a:hover {
+            background: rgba(33, 86, 245, 0.08);
+            color: var(--ink);
+        }
+
+        .main-pages-footer .footer-meta {
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
-        .main-pages-footer .project-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
+        .main-pages-footer .footer-copy {
+            color: rgba(5, 8, 22, 0.64);
+            font-size: 0.92rem;
+            font-weight: 600;
         }
 
         .main-pages-footer .social-links {
             display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .main-pages-footer .social-link {
+            width: 42px;
+            height: 42px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.65rem 1rem;
             border: 1px solid var(--line);
-            border-radius: 10px;
+            border-radius: 999px;
             background: #ffffff;
             color: var(--ink);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            box-shadow: 0 10px 22px rgba(33, 86, 245, 0.12);
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
 
         .main-pages-footer .social-link:hover {
+            transform: translateY(-1px);
             border-color: rgba(33, 86, 245, 0.28);
             background: rgba(33, 86, 245, 0.08);
             color: var(--violet-500);
         }
 
-        .main-pages-footer .footer-link {
-            text-decoration: none;
-            color: rgba(5, 8, 22, 0.64);
-            font-weight: 600;
-        }
-
-        .main-pages-footer .footer-link:hover {
-            color: var(--violet-500);
-        }
-
-        body.theme-dark .main-pages-footer .footer-card {
-            background: rgba(9, 18, 42, 0.92);
-            border-color: rgba(139, 119, 255, 0.18);
-            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.3);
-        }
-
-        body.theme-dark .main-pages-footer .project-logo-wrap {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(139, 119, 255, 0.24);
+        .main-pages-footer .social-link svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
         }
 
         body.theme-dark .main-pages-footer .social-link {
@@ -430,19 +438,18 @@
             color: #ffffff;
         }
 
-        body.theme-dark .main-pages-footer .text-dark {
-            color: #f7f9ff !important;
+        body.theme-dark .main-pages-footer {
+            background: rgba(5, 8, 22, 0.84);
+            border-top-color: rgba(139, 119, 255, 0.12);
         }
 
-        body.theme-dark .main-pages-footer .text-secondary {
-            color: rgba(238, 242, 255, 0.68) !important;
-        }
-
-        body.theme-dark .main-pages-footer .footer-link {
+        body.theme-dark .main-pages-footer .footer-links a,
+        body.theme-dark .main-pages-footer .footer-copy {
             color: rgba(238, 242, 255, 0.72);
         }
 
-        body.theme-dark .main-pages-footer .footer-link:hover {
+        body.theme-dark .main-pages-footer .footer-links a:hover {
+            background: rgba(255, 255, 255, 0.06);
             color: #ffffff;
         }
 
@@ -806,6 +813,12 @@
                 align-items: flex-start;
             }
 
+            .main-pages-footer .footer-nav,
+            .main-pages-footer .footer-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
             .student-shell {
                 grid-template-columns: 1fr;
             }
@@ -950,53 +963,52 @@
 
         @if ($isMainMarketingPage)
             <footer class="main-pages-footer">
-                <div class="container main-footer-container">
-                    <div class="footer-card p-4 p-lg-4">
-                        <div class="row g-4 align-items-center">
-                            <div class="col-lg-4">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="project-logo-wrap"> 
-                                        <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo" class="project-logo">
-                                    </div>
+                <div class="footer-nav">
+                    <a href="{{ route('home') }}" class="brand">
+                        <span class="brand-bubble">
+                            <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
+                        </span>
+                        <span>EtuAide Planner</span>
+                    </a>
 
-                                    <div>
-                                        <div class="fw-bold text-dark mb-1">EtuAide</div>
-                                        <p class="mb-0 text-secondary small">
-                                            Academic planning for students who want more structure, clarity, and consistency.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="footer-links">
+                        <a href="{{ route('home') }}#about">About</a>
+                        <a href="{{ route('home') }}#faq">FAQ</a>
+                        <a href="{{ route('home') }}#contact">Contact</a>
+                        @guest
+                            <a href="{{ route('login') }}">Sign in</a>
+                            <a href="{{ route('register') }}">Register</a>
+                        @endguest
+                    </div>
 
-                            <div class="col-lg-4">
-                                <div class="text-lg-center">
-                                    <div class="fw-semibold text-dark mb-2">Follow us</div>
-                                    <div class="d-flex justify-content-lg-center flex-wrap gap-2 social-links">
-                                        <a href="#" class="social-link" aria-label="Facebook">Facebook</a>
-                                        <a href="#" class="social-link" aria-label="Instagram">Instagram</a>
-                                        <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
-                                        <a href="#" class="social-link" aria-label="X">X</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <div class="text-lg-end">
-                                    <div class="d-flex justify-content-lg-end flex-wrap gap-3">
-                                        <a class="footer-link" href="{{ route('home') }}#about">About</a>
-                                        <a class="footer-link" href="{{ route('home') }}#faq">FAQ</a>
-                                        <a class="footer-link" href="{{ route('home') }}#contact">Contact</a>
-                                        @guest
-                                            <a class="footer-link" href="{{ route('login') }}">Sign in</a>
-                                            <a class="footer-link" href="{{ route('register') }}">Register</a>
-                                        @endguest
-                                    </div>
-                                    <p class="mb-0 text-secondary small mt-3">
-                                        &copy; {{ date('Y') }} EtuAide. All rights reserved.
-                                    </p>
-                                </div>
-                            </div>
+                    <div class="footer-meta">
+                        <div class="social-links" aria-label="Social media links">
+                            <a href="#" class="social-link" aria-label="Facebook">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M13.5 22v-8h2.7l.4-3.1h-3.1V9c0-.9.2-1.5 1.6-1.5H17V4.7c-.4-.1-1.6-.2-3-.2-3 0-5 1.8-5 5.2v1.2H6V14h3v8h4.5Z"/>
+                                </svg>
+                                <span class="visually-hidden">Facebook</span>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3Zm0 1.8A2.7 2.7 0 0 0 4.8 7.5v9a2.7 2.7 0 0 0 2.7 2.7h9a2.7 2.7 0 0 0 2.7-2.7v-9a2.7 2.7 0 0 0-2.7-2.7h-9Zm9.75 1.35a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1ZM12 7.8A4.2 4.2 0 1 1 7.8 12 4.2 4.2 0 0 1 12 7.8Zm0 1.8A2.4 2.4 0 1 0 14.4 12 2.4 2.4 0 0 0 12 9.6Z"/>
+                                </svg>
+                                <span class="visually-hidden">Instagram</span>
+                            </a>
+                            <a href="#" class="social-link" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M6.5 8.8H3.3V20h3.2V8.8ZM4.9 3A1.9 1.9 0 1 0 5 6.8 1.9 1.9 0 0 0 4.9 3Zm15.8 9.9c0-3.4-1.8-5-4.3-5a3.8 3.8 0 0 0-3.4 1.9V8.8H9.9c0 .7 0 11.2 0 11.2H13v-6.2c0-.3 0-.7.1-.9a2.1 2.1 0 0 1 2-1.4c1.4 0 2 1.1 2 2.7V20h3.2v-7.1Z"/>
+                                </svg>
+                                <span class="visually-hidden">LinkedIn</span>
+                            </a>
+                            <a href="#" class="social-link" aria-label="X">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M18.9 4H21l-4.6 5.3L22 20h-4.6l-3.6-5.7L8.8 20H6.7l4.9-5.7L2 4h4.7l3.2 5.1L14.3 4h2.1Zm-1.6 14.4h1.3L6 5.5H4.7l12.6 12.9Z"/>
+                                </svg>
+                                <span class="visually-hidden">X</span>
+                            </a>
                         </div>
+                        <span class="footer-copy">&copy; {{ date('Y') }} EtuAide</span>
                     </div>
                 </div>
             </footer>
