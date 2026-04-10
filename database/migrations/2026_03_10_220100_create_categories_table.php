@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('color', 7)->nullable();
             $table->boolean('is_system')->default(false);
             $table->timestamps();
-
             $table->index(['user_id', 'is_system']);
         });
     }

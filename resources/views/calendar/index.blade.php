@@ -73,6 +73,19 @@
             min-width: 44px;
         }
 
+        .calendar-nav {
+            justify-content: flex-end;
+        }
+
+        .calendar-nav-icon {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border-radius: 999px;
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+
         .calendar-view-switch .is-active {
             background: linear-gradient(135deg, #0b132d 0%, var(--calendar-accent) 58%, var(--calendar-accent-strong) 100%);
             color: #ffffff;
@@ -119,6 +132,14 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
+        }
+
+        .calendar-canvas-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
         .calendar-canvas-header h2 {
@@ -561,6 +582,7 @@
             }
 
             .calendar-canvas-header,
+            .calendar-canvas-topbar,
             .calendar-modal-meta {
                 display: grid;
                 grid-template-columns: 1fr;
@@ -627,12 +649,6 @@
             </div>
 
             <div class="calendar-toolbar-actions">
-                <div class="calendar-nav">
-                    <a class="btn secondary" href="{{ route('calendar.index', ['view' => $view, 'date' => $previousDate]) }}">Prev</a>
-                    <a class="btn secondary" href="{{ route('calendar.index', ['view' => $view, 'date' => $todayDate]) }}">Today</a>
-                    <a class="btn secondary" href="{{ route('calendar.index', ['view' => $view, 'date' => $nextDate]) }}">Next</a>
-                </div>
-
                 <div class="calendar-view-switch">
                     <a class="btn secondary {{ $view === 'daily' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'daily', 'date' => $focusDate->toDateString()]) }}">Day</a>
                     <a class="btn secondary {{ $view === 'weekly' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'weekly', 'date' => $focusDate->toDateString()]) }}">Week</a>
@@ -643,16 +659,24 @@
 
         <div class="calendar-layout">
             <div class="calendar-canvas">
-                <div class="calendar-canvas-header">
-                    <div>
-                        <span class="status">Calendar Canvas</span>
-                        <h2>{{ $periodEventCount }} item{{ $periodEventCount === 1 ? '' : 's' }} in view</h2>
-                        <p class="muted">Simple squares, task lines, and a selected-day panel inspired by your sample calendar.</p>
+                <div class="calendar-canvas-topbar">
+                    <div class="calendar-nav">
+                        <a class="btn secondary calendar-nav-icon" href="{{ route('calendar.index', ['view' => $view, 'date' => $previousDate]) }}" aria-label="Previous period">‹</a>
+                        <a class="btn secondary" href="{{ route('calendar.index', ['view' => $view, 'date' => $todayDate]) }}">Today</a>
+                        <a class="btn secondary calendar-nav-icon" href="{{ route('calendar.index', ['view' => $view, 'date' => $nextDate]) }}" aria-label="Next period">›</a>
                     </div>
 
                     <div class="calendar-legend">
                         <span class="calendar-legend-item"><span class="calendar-legend-swatch task"></span> Due task</span>
                         <span class="calendar-legend-item"><span class="calendar-legend-swatch occurrence"></span> Scheduled occurrence</span>
+                    </div>
+                </div>
+
+                <div class="calendar-canvas-header">
+                    <div>
+                        <span class="status">Calendar Canvas</span>
+                        <h2>{{ $periodEventCount }} item{{ $periodEventCount === 1 ? '' : 's' }} in view</h2>
+                        <p class="muted">Simple squares, task lines, and a selected-day panel inspired by your sample calendar.</p>
                     </div>
                 </div>
 
