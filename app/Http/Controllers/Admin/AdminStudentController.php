@@ -47,6 +47,10 @@ class AdminStudentController extends Controller
             abort(404);
         }
 
+        if (!$student->notifications_enabled) {
+            return redirect()->back()->with('status', 'Notifications are disabled for this student.');
+        }
+
         Notification::create([
             'user_id' => $student->id,
             'type' => 'inactive_reminder',

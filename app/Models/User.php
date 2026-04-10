@@ -32,7 +32,6 @@ class User extends Authenticatable
         'role',
         'timezone',
         'theme',
-        'palette',
         'notifications_enabled',
         'last_login_at',
         'last_activity_at',

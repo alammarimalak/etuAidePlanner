@@ -9,8 +9,21 @@
             @method('PATCH')
 
             <div>
+                <label>Name</label>
+                <input type="text" name="name" value="{{ old('name', $currentUser->name) }}" required>
+                @error('name')
+                    <div class="muted">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div>
                 <label>Timezone</label>
-                <input type="text" name="timezone" value="{{ old('timezone', $currentUser->timezone) }}" placeholder="Africa/Casablanca">
+                <select name="timezone">
+                    <option value="">Use app default</option>
+                    @foreach ($timezones as $timezone)
+                        <option value="{{ $timezone->name }}" @selected(old('timezone', $currentUser->timezone) === $timezone->name)>{{ $timezone->name }}</option>
+                    @endforeach
+                </select>
                 @error('timezone')
                     <div class="muted">{{ $message }}</div>
                 @enderror
@@ -25,25 +38,35 @@
             </div>
 
             <div>
-                <label>Palette</label>
-                <select name="palette">
-                    <option value="">Default</option>
-                    <option value="lavender" @selected(old('palette', $currentUser->palette) === 'lavender')>Lavender</option>
-                    <option value="grape" @selected(old('palette', $currentUser->palette) === 'grape')>Grape</option>
-                    <option value="midnight" @selected(old('palette', $currentUser->palette) === 'midnight')>Midnight</option>
-                </select>
-            </div>
-
-            <div>
                 <label>
                     <input type="checkbox" name="notifications_enabled" value="1" @checked(old('notifications_enabled', $currentUser->notifications_enabled))>
                     Enable notifications
                 </label>
             </div>
 
+            <div>
+                <label>Current Password</label>
+                <input type="password" name="current_password" autocomplete="current-password">
+                @error('current_password')
+                    <div class="muted">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div>
+                <label>New Password</label>
+                <input type="password" name="password" autocomplete="new-password">
+                @error('password')
+                    <div class="muted">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div>
+                <label>Confirm New Password</label>
+                <input type="password" name="password_confirmation" autocomplete="new-password">
+            </div>
+
             <div class="actions">
                 <button type="submit">Save Settings</button>
-                <a class="btn secondary" href="{{ route('dashboard') }}">Back to Dashboard</a>
             </div>
         </form>
     </div>

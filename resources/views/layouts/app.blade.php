@@ -109,24 +109,6 @@
             right: -100px;
         }
 
-        body.palette-grape {
-            --violet-300: #e1d8ff;
-            --violet-400: #9f87ff;
-            --violet-500: #4d63ff;
-            --violet-700: #6b45f5;
-            --violet-900: #161d45;
-            --lavender: #f2efff;
-        }
-
-        body.palette-midnight {
-            --violet-300: #cdd7ff;
-            --violet-400: #7d98ff;
-            --violet-500: #295dff;
-            --violet-700: #4e4ff1;
-            --violet-900: #0f1733;
-            --lavender: #eef3ff;
-        }
-
         a {
             color: inherit;
             text-decoration: none;
@@ -917,7 +899,7 @@
     </style>
     @stack('styles')
 </head>
-<body class="@yield('body_class') {{ auth()->check() && auth()->user()->theme === 'dark' ? 'theme-dark' : '' }} {{ auth()->check() && auth()->user()->palette ? 'palette-' . auth()->user()->palette : '' }}">
+<body class="@yield('body_class') {{ auth()->check() && auth()->user()->theme === 'dark' ? 'theme-dark' : '' }}">
 <script>
     (function () {
         const storageKey = 'etuaide-theme';

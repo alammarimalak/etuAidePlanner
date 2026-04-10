@@ -12,8 +12,7 @@ return new class extends Migration
             $table->enum('role', ['student', 'admin'])->default('student')->after('password');
             $table->string('timezone')->nullable()->after('role');
             $table->enum('theme', ['light', 'dark'])->default('light')->after('timezone');
-            $table->string('palette')->nullable()->after('theme');
-            $table->boolean('notifications_enabled')->default(true)->after('palette');
+            $table->boolean('notifications_enabled')->default(true)->after('theme');
             $table->timestamp('last_login_at')->nullable()->after('notifications_enabled');
             $table->timestamp('last_activity_at')->nullable()->after('last_login_at');
         });
@@ -26,7 +25,6 @@ return new class extends Migration
                 'role',
                 'timezone',
                 'theme',
-                'palette',
                 'notifications_enabled',
                 'last_login_at',
                 'last_activity_at',
