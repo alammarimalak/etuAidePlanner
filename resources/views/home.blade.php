@@ -31,6 +31,12 @@
             width: 100%;
         }
 
+        .home-bootstrap.jira-inspired .public-main > .container {
+            max-width: 1440px;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
         .home-shell,
         .home-content {
             flex: 1 0 auto;
