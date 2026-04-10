@@ -258,16 +258,37 @@
         }
 
         .calendar-event {
-            display: block;
+            --event-accent: var(--calendar-task);
+            display: grid;
+            grid-template-columns: 8px minmax(0, 1fr);
+            align-items: center;
+            gap: 6px;
             width: 100%;
-            min-height: 6px;
-            height: 6px;
+            min-height: 10px;
             padding: 0;
             border-radius: 999px;
             border: 0;
-            background: rgba(16, 25, 53, 0.14);
+            background: transparent;
             box-shadow: none;
             cursor: grab;
+        }
+
+        .calendar-event::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--event-accent);
+            flex-shrink: 0;
+        }
+
+        .calendar-event::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--event-accent);
         }
 
         .calendar-event > span {
@@ -280,11 +301,11 @@
         }
 
         .calendar-event.task {
-            background: var(--calendar-task);
+            --event-accent: var(--calendar-task);
         }
 
         .calendar-event.occurrence {
-            background: var(--calendar-occurrence);
+            --event-accent: var(--calendar-occurrence);
         }
 
         .calendar-timeline {
@@ -484,18 +505,20 @@
         }
 
         .calendar-hover-accent {
+            --event-accent: var(--calendar-task);
             width: 8px;
             height: 8px;
             border-radius: 50%;
             margin-top: 5px;
+            background: var(--event-accent);
         }
 
         .calendar-hover-accent.task {
-            background: var(--calendar-task);
+            --event-accent: var(--calendar-task);
         }
 
         .calendar-hover-accent.occurrence {
-            background: var(--calendar-occurrence);
+            --event-accent: var(--calendar-occurrence);
         }
 
         .calendar-hover-item-title {
@@ -588,6 +611,7 @@
                     'time' => $event['time'],
                     'meta' => $event['meta'],
                     'status' => str_replace('_', ' ', $event['status']),
+                    'category_color' => $event['category_color'] ?? null,
                     'edit_url' => $event['edit_url'] ?? null,
                 ])
                 ->values())
@@ -654,7 +678,7 @@
                             <div class="calendar-cell calendar-target monthly {{ $isToday ? 'is-today' : '' }} {{ $isOutside ? 'is-outside' : '' }}" data-date="{{ $dateKey }}" data-time="09:00" data-display-date="{{ $displayDate }}" tabindex="0" role="button" aria-label="Add a task on {{ $displayDate }}">
                                 <div class="calendar-events">
                                     @forelse ($events as $event)
-                                        <div class="calendar-event {{ $event['type'] }}" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
+                                        <div class="calendar-event {{ $event['type'] }}" style="--event-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
                                             <span class="calendar-event-time">{{ $event['time'] }}</span>
                                             <span class="calendar-event-title">{{ $event['title'] }}</span>
                                             <span class="calendar-event-meta">{{ $event['meta'] }} - {{ str_replace('_', ' ', $event['status']) }}</span>
@@ -677,7 +701,7 @@
                             <div class="calendar-cell calendar-target weekly {{ $isToday ? 'is-today' : '' }}" data-date="{{ $dateKey }}" data-time="09:00" data-display-date="{{ $displayDate }}" tabindex="0" role="button" aria-label="Add a task on {{ $displayDate }}">
                                 <div class="calendar-events">
                                     @forelse ($events as $event)
-                                        <div class="calendar-event {{ $event['type'] }}" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
+                                        <div class="calendar-event {{ $event['type'] }}" style="--event-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
                                             <span class="calendar-event-time">{{ $event['time'] }}</span>
                                             <span class="calendar-event-title">{{ $event['title'] }}</span>
                                             <span class="calendar-event-meta">{{ $event['meta'] }} - {{ str_replace('_', ' ', $event['status']) }}</span>
@@ -709,7 +733,7 @@
                                     <div class="calendar-slot-time">{{ \Carbon\Carbon::createFromTime($hour)->format('g:i A') }}</div>
                                     <div class="calendar-slot-content">
                                         @forelse ($slotEvents as $event)
-                                            <div class="calendar-event {{ $event['type'] }}" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
+                                            <div class="calendar-event {{ $event['type'] }}" style="--event-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
                                                 <span class="calendar-event-time">{{ $event['time'] }}</span>
                                                 <span class="calendar-event-title">{{ $event['title'] }}</span>
                                                 <span class="calendar-event-meta">{{ $event['meta'] }} - {{ str_replace('_', ' ', $event['status']) }}</span>
@@ -823,7 +847,7 @@
 
             return entries.map((entry) => `
                 <div class="${allowEdit ? 'calendar-modal-item' : 'calendar-hover-item'}">
-                    ${allowEdit ? '' : `<span class="calendar-hover-accent ${escapeHtml(entry.type)}"></span>`}
+                    ${allowEdit ? '' : `<span class="calendar-hover-accent ${escapeHtml(entry.type)}" style="--event-accent: ${escapeHtml(entry.category_color || (entry.type === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)'))};"></span>`}
                     <div>
                         <div class="${allowEdit ? 'calendar-modal-item-title' : 'calendar-hover-item-title'}">${escapeHtml(entry.title)}</div>
                         <div class="${allowEdit ? 'calendar-modal-item-meta' : 'calendar-hover-item-meta'}">${escapeHtml(entry.time)} - ${escapeHtml(entry.meta)}</div>
