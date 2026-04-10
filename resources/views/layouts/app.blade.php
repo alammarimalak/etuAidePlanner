@@ -608,6 +608,11 @@
             font-weight: 700;
         }
 
+        body.theme-dark .pill {
+            color: #ffffff;
+            background: rgba(139, 119, 255, 0.18);
+        }
+
         .actions {
             display: flex;
             gap: 8px;
