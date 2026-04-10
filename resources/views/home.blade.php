@@ -230,6 +230,17 @@
             color: var(--jira-text);
         }
 
+        .home-bootstrap.jira-inspired .form-grid > div {
+            min-width: 0;
+        }
+
+        .home-bootstrap.jira-inspired .contact-panel input,
+        .home-bootstrap.jira-inspired .contact-panel textarea {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+
         @media (max-width: 991.98px) {
             .home-bootstrap.jira-inspired .display-title {
                 max-width: none;
