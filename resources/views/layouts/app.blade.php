@@ -189,6 +189,49 @@
             color: var(--ink);
         }
 
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(16, 25, 53, 0.14);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--ink);
+            box-shadow: 0 12px 24px rgba(33, 86, 245, 0.14);
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 28px rgba(33, 86, 245, 0.18);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid rgba(33, 86, 245, 0.35);
+            outline-offset: 2px;
+        }
+
+        .theme-toggle-icon {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #f59e0b;
+        }
+
+        .theme-toggle-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .theme-toggle-label {
+            white-space: nowrap;
+        }
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -508,6 +551,17 @@
             box-shadow: none;
         }
 
+        button.theme-toggle {
+            border: 1px solid rgba(16, 25, 53, 0.14);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--ink);
+            box-shadow: 0 12px 24px rgba(33, 86, 245, 0.14);
+        }
+
+        button.theme-toggle:hover {
+            box-shadow: 0 16px 28px rgba(33, 86, 245, 0.18);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -586,6 +640,17 @@
         body.theme-dark .student-sidebar-user {
             background: rgba(255, 255, 255, 0.05);
             border-color: rgba(139, 119, 255, 0.14);
+        }
+
+        body.theme-dark .theme-toggle {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(139, 119, 255, 0.2);
+            color: #eef2ff;
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
+        }
+
+        body.theme-dark .theme-toggle-icon {
+            color: #c4b5fd;
         }
 
         .inline-form {
@@ -793,6 +858,11 @@
                 align-items: flex-start;
             }
 
+            .theme-toggle {
+                width: 100%;
+                justify-content: center;
+            }
+
             .main-pages-footer .footer-nav,
             .main-pages-footer .footer-meta {
                 flex-direction: column;
@@ -818,6 +888,19 @@
     @stack('styles')
 </head>
 <body class="@yield('body_class') {{ auth()->check() && auth()->user()->theme === 'dark' ? 'theme-dark' : '' }} {{ auth()->check() && auth()->user()->palette ? 'palette-' . auth()->user()->palette : '' }}">
+<script>
+    (function () {
+        const storageKey = 'etuaide-theme';
+        const body = document.body;
+        const savedTheme = window.localStorage.getItem(storageKey);
+
+        if (savedTheme === 'dark') {
+            body.classList.add('theme-dark');
+        } else if (savedTheme === 'light') {
+            body.classList.remove('theme-dark');
+        }
+    })();
+</script>
 @php
     $currentUser = auth()->user();
     $isAdmin = $currentUser && $currentUser->role === \App\Models\User::ROLE_ADMIN;
@@ -917,6 +1000,17 @@
                     @endauth
                 </div>
                 <div class="actions">
+                    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch color theme">
+                        <span class="theme-toggle-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" data-theme-icon="sun">
+                                <path d="M12 4.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V5.5a.75.75 0 0 1 .75-.75Zm0 12.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 17Zm7.25-5.75a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.016-4.766a.75.75 0 0 1 1.06 0l1.061 1.061a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.062Zm-7.603 7.603a.75.75 0 0 1 1.06 0l1.062 1.061a.75.75 0 1 1-1.06 1.06l-1.062-1.06a.75.75 0 0 1 0-1.061Zm8.663 1.061a.75.75 0 0 1 1.06-1.06l1.061 1.06a.75.75 0 1 1-1.06 1.061l-1.061-1.061ZM8.724 7.545a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 0 1-1.062-1.06l1.061-1.061a.75.75 0 0 1 1.061 0ZM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Z"/>
+                            </svg>
+                            <svg viewBox="0 0 24 24" data-theme-icon="moon" hidden>
+                                <path d="M14.5 3.32a.75.75 0 0 1 .83.98 7.75 7.75 0 1 0 9.37 9.37.75.75 0 0 1 .98.83A9.25 9.25 0 1 1 14.5 3.32Z"/>
+                            </svg>
+                        </span>
+                        <span class="theme-toggle-label" data-theme-label>Dark mode</span>
+                    </button>
                     @auth
                         <span class="muted">{{ auth()->user()->name }}</span>
                         <form method="POST" action="{{ route('logout') }}" class="inline-form">
@@ -985,5 +1079,35 @@
         @endif
     </div>
 @endif
+<script>
+    (function () {
+        const toggle = document.querySelector('[data-theme-toggle]');
+        const label = document.querySelector('[data-theme-label]');
+        const sunIcon = document.querySelector('[data-theme-icon="sun"]');
+        const moonIcon = document.querySelector('[data-theme-icon="moon"]');
+        const storageKey = 'etuaide-theme';
+
+        if (!toggle || !label || !sunIcon || !moonIcon) {
+            return;
+        }
+
+        function syncThemeToggle() {
+            const isDark = document.body.classList.contains('theme-dark');
+            label.textContent = isDark ? 'Light mode' : 'Dark mode';
+            toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+            sunIcon.hidden = isDark;
+            moonIcon.hidden = !isDark;
+        }
+
+        toggle.addEventListener('click', function () {
+            const willBeDark = !document.body.classList.contains('theme-dark');
+            document.body.classList.toggle('theme-dark', willBeDark);
+            window.localStorage.setItem(storageKey, willBeDark ? 'dark' : 'light');
+            syncThemeToggle();
+        });
+
+        syncThemeToggle();
+    })();
+</script>
 </body>
 </html>
