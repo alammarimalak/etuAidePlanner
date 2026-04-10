@@ -70,6 +70,16 @@
             border-color: rgba(139, 119, 255, 0.18);
         }
 
+        body.theme-dark select {
+            color-scheme: dark;
+        }
+
+        body.theme-dark select option,
+        body.theme-dark select optgroup {
+            background: #000000;
+            color: #ffffff;
+        }
+
         body.theme-dark .muted {
             color: rgba(238, 242, 255, 0.68);
         }
@@ -187,6 +197,15 @@
         .nav-links a:hover {
             background: rgba(33, 86, 245, 0.08);
             color: var(--ink);
+        }
+
+        body.theme-dark .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        body.theme-dark .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
         }
 
         .theme-toggle {

@@ -83,7 +83,7 @@
                 </div>
                 <div>
                     <label>Recurrence Rule (RRULE)</label>
-                    <input type="text" name="recurrence_rule" id="recurrence_rule" value="{{ old('recurrence_rule', $task->recurrence_rule) }}" placeholder="FREQ=WEEKLY;BYDAY=MO">
+                    <input type="text" name="recurrence_rule" id="recurrence_rule" value="{{ old('recurrence_rule', $task->recurrence_rule) }}">
                 </div>
                 <div>
                     <label>Recurrence Timezone</label>
