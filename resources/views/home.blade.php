@@ -24,6 +24,24 @@
             color: var(--jira-text);
         }
 
+        body.theme-dark.home-bootstrap.jira-inspired {
+            --jira-surface: #101a2d;
+            --jira-surface-muted: #0c1525;
+            --jira-border: rgba(196, 181, 253, 0.14);
+            --jira-border-strong: rgba(196, 181, 253, 0.24);
+            --jira-text: #eef2ff;
+            --jira-text-muted: rgba(238, 242, 255, 0.74);
+            --jira-blue: #7da2ff;
+            --jira-blue-hover: #9db7ff;
+            --jira-blue-soft: rgba(125, 162, 255, 0.14);
+            --jira-shadow: 0 10px 24px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(196, 181, 253, 0.06);
+            background:
+                radial-gradient(circle at top left, rgba(33, 86, 245, 0.18), transparent 28%),
+                radial-gradient(circle at 85% 10%, rgba(93, 62, 240, 0.16), transparent 24%),
+                linear-gradient(180deg, #08101f 0%, #0d1730 46%, #050816 100%);
+            color: var(--jira-text);
+        }
+
         .home-shell,
         .home-content,
         .home-bootstrap.jira-inspired main,
@@ -92,6 +110,29 @@
             box-shadow: 0 12px 28px rgba(12, 102, 228, 0.22);
         }
 
+        body.theme-dark.home-bootstrap.jira-inspired .hero-card {
+            background: linear-gradient(180deg, #101a2d 0%, #0c1525 100%);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .insight-card,
+        body.theme-dark.home-bootstrap.jira-inspired .contact-panel.soft {
+            background: linear-gradient(180deg, #111c31 0%, #0d1628 100%);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .feature-card.primary {
+            background: linear-gradient(180deg, #101a2d 0%, #0d1628 100%);
+            border-color: rgba(125, 162, 255, 0.28);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .cta-card {
+            background: linear-gradient(135deg, #18346f 0%, #295dff 100%);
+            box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+        }
+
         .home-bootstrap.jira-inspired .eyebrow,
         .home-bootstrap.jira-inspired .section-tag,
         .home-bootstrap.jira-inspired .metric-label {
@@ -156,6 +197,18 @@
             color: var(--jira-text);
         }
 
+        body.theme-dark.home-bootstrap.jira-inspired .btn-outline-dark {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(196, 181, 253, 0.24);
+            color: var(--jira-text);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .btn-outline-dark:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(196, 181, 253, 0.4);
+            color: #ffffff;
+        }
+
         .home-bootstrap.jira-inspired .btn-light {
             background: #ffffff;
             border-color: #ffffff;
@@ -186,6 +239,10 @@
             font-weight: 700;
         }
 
+        body.theme-dark.home-bootstrap.jira-inspired .stat-pill {
+            border-color: rgba(125, 162, 255, 0.32);
+        }
+
         .home-bootstrap.jira-inspired .event-row,
         .home-bootstrap.jira-inspired .faq-item {
             padding: 1.25rem;
@@ -197,6 +254,12 @@
             border-color: #b3d4ff;
             box-shadow: 0 4px 14px rgba(9, 30, 66, 0.08);
             transform: translateY(-1px);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .event-row:hover,
+        body.theme-dark.home-bootstrap.jira-inspired .faq-item:hover {
+            border-color: rgba(125, 162, 255, 0.34);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
         }
 
         .home-bootstrap.jira-inspired .event-kpi {
@@ -216,6 +279,10 @@
             border: 1px solid var(--jira-border);
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.72);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .feature-list li {
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .home-bootstrap.jira-inspired .mini-note {
@@ -239,6 +306,18 @@
             display: block;
             width: 100%;
             max-width: 100%;
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired input,
+        body.theme-dark.home-bootstrap.jira-inspired textarea {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--jira-text);
+            border-color: rgba(196, 181, 253, 0.18);
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired input::placeholder,
+        body.theme-dark.home-bootstrap.jira-inspired textarea::placeholder {
+            color: rgba(238, 242, 255, 0.45);
         }
 
         @media (max-width: 991.98px) {
