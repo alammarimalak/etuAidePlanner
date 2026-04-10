@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminAlertController;
 use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendarController;
@@ -60,5 +61,7 @@ Route::middleware(['auth', 'activity'])->group(function () {
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('students', [AdminStudentController::class, 'index'])->name('students.index');
         Route::post('students/{student}/remind', [AdminStudentController::class, 'sendReminder'])->name('students.remind');
+        Route::patch('alerts/{alert}/resolve', [AdminAlertController::class, 'resolve'])->name('alerts.resolve');
+        Route::patch('alerts/{alert}/dismiss', [AdminAlertController::class, 'dismiss'])->name('alerts.dismiss');
     });
 });

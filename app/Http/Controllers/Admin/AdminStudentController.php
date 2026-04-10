@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminStudentController extends Controller
@@ -13,6 +14,7 @@ class AdminStudentController extends Controller
     public function index()
     {
         $admin = $this->currentUser();
+        $cutoff = Carbon::now()->subDays(14);
 
         $students = User::query()
             ->where('role', User::ROLE_STUDENT)
@@ -24,9 +26,16 @@ class AdminStudentController extends Controller
             ->orderBy('name')
             ->get();
 
+        $recentlyActiveCount = $students->filter(function (User $student) use ($cutoff) {
+            return $student->last_activity_at?->gte($cutoff) ?? false;
+        })->count();
+
         return view('admin.students.index', [
             'currentUser' => $admin,
             'students' => $students,
+            'recentlyActiveCount' => $recentlyActiveCount,
+            'needsFollowUpCount' => max($students->count() - $recentlyActiveCount, 0),
+            'activityCutoff' => $cutoff,
         ]);
     }
 
@@ -49,6 +58,6 @@ class AdminStudentController extends Controller
             ],
         ]);
 
-        return redirect()->route('admin.students.index')->with('status', 'Reminder queued.');
+        return redirect()->back()->with('status', 'Reminder queued.');
     }
 }

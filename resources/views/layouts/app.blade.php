@@ -241,6 +241,16 @@
             gap: 8px;
         }
 
+        .student-sidebar-section-label {
+            margin: 8px 0 2px;
+            padding: 0 14px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(5, 8, 22, 0.45);
+        }
+
         .student-sidebar-link {
             display: flex;
             align-items: center;
@@ -572,6 +582,10 @@
             color: rgba(238, 242, 255, 0.68);
         }
 
+        body.theme-dark .student-sidebar-section-label {
+            color: rgba(238, 242, 255, 0.46);
+        }
+
         body.theme-dark .student-sidebar-link {
             color: rgba(238, 242, 255, 0.76);
         }
@@ -813,26 +827,27 @@
 <body class="@yield('body_class') {{ auth()->check() && auth()->user()->theme === 'dark' ? 'theme-dark' : '' }} {{ auth()->check() && auth()->user()->palette ? 'palette-' . auth()->user()->palette : '' }}">
 @php
     $currentUser = auth()->user();
-    $isStudentShell = $currentUser
-        && $currentUser->role === \App\Models\User::ROLE_STUDENT
-        && request()->routeIs('dashboard', 'tasks.*', 'calendar.*', 'categories.*', 'notifications.*', 'settings.*');
+    $isAdmin = $currentUser && $currentUser->role === \App\Models\User::ROLE_ADMIN;
+    $isAppShell = $currentUser
+        && request()->routeIs('dashboard', 'tasks.*', 'calendar.*', 'categories.*', 'notifications.*', 'settings.*', 'admin.*');
     $isMainMarketingPage = request()->routeIs('home', 'about', 'faq', 'contact');
 @endphp
 
-@if ($isStudentShell)
+@if ($isAppShell)
     <div class="student-shell">
         <aside class="student-sidebar">
-            <a href="{{ route('dashboard') }}" class="student-sidebar-brand">
+            <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand">
                 <span class="brand-bubble">
                     <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
                 </span>
                 <span class="student-sidebar-copy">
                     <strong>EtuAide Planner</strong>
-                    <span>Student workspace</span>
+                    <span>{{ $isAdmin ? 'Admin workspace' : 'Student workspace' }}</span>
                 </span>
             </a>
 
-            <nav class="student-sidebar-nav" aria-label="Student navigation">
+            <nav class="student-sidebar-nav" aria-label="{{ $isAdmin ? 'Admin navigation' : 'Student navigation' }}">
+                <div class="student-sidebar-section-label">Workspace</div>
                 <a href="{{ route('dashboard') }}" class="student-sidebar-link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
                     <span>Dashboard</span>
                 </a>
@@ -851,6 +866,17 @@
                 <a href="{{ route('settings.edit') }}" class="student-sidebar-link {{ request()->routeIs('settings.*') ? 'is-active' : '' }}">
                     <span>Settings</span>
                 </a>
+
+                @if ($isAdmin)
+                    <div class="student-sidebar-section-label">Administration</div>
+                    <a href="{{ route('admin.dashboard') }}" class="student-sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}">
+                        <span>Admin Overview</span>
+                    </a>
+                    <a href="{{ route('admin.students.index') }}" class="student-sidebar-link {{ request()->routeIs('admin.students.*') ? 'is-active' : '' }}">
+                        <span>Students</span>
+                    </a>
+                @endif
+
                 <form method="POST" action="{{ route('logout') }}" class="student-sidebar-logout">
                     @csrf
                     <button type="submit" class="secondary">Log out</button>
@@ -860,8 +886,8 @@
             <div class="student-sidebar-footer">
                 <div class="student-sidebar-user">
                     <strong>{{ $currentUser->name }}</strong>
-                    <span>{{ ucfirst($currentUser->role) }}</span>
-                </div>                
+                    <span>{{ $isAdmin ? 'Administrator' : 'Student' }}</span>
+                </div>
             </div>
         </aside>
 
