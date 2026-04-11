@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactFormMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class HomeController extends Controller
 {
+    private const CONTACT_RECIPIENT = 'alammarimalak17@gmail.com';
+
     public function index()
     {
         return view('home');
@@ -39,6 +44,21 @@ class HomeController extends Controller
             return redirect()
                 ->to(route('home') . '#contact')
                 ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            Mail::to(self::CONTACT_RECIPIENT)->send(new ContactFormMessage(
+                senderName: (string) $request->input('name'),
+                senderEmail: (string) $request->input('email'),
+                messageBody: (string) $request->input('message'),
+            ));
+        } catch (Throwable $exception) {
+            return redirect()
+                ->to(route('home') . '#contact')
+                ->withErrors([
+                    'message' => 'Your message could not be sent right now. Please try again in a moment.',
+                ])
                 ->withInput();
         }
 

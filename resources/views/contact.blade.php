@@ -9,11 +9,11 @@
     <div class="grid grid-3">
         <div class="card">
             <h3>Email</h3>
-            <p class="muted">support@etuaide.com</p>
+            <p class="muted">alammarimalak17@gmail.com</p>
         </div>
         <div class="card">
             <h3>Campus hours</h3>
-            <p class="muted">Mon to Fri · 9:00 to 18:00</p>
+            <p class="muted">Mon to Fri - 9:00 to 18:00</p>
         </div>
         <div class="card">
             <h3>Community</h3>
