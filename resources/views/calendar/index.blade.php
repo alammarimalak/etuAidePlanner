@@ -279,7 +279,8 @@
         }
 
         .calendar-event {
-            --event-accent: var(--calendar-task);
+            --event-dot-accent: var(--calendar-task);
+            --event-line-accent: var(--calendar-task);
             display: grid;
             grid-template-columns: 8px minmax(0, 1fr);
             align-items: center;
@@ -299,7 +300,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--event-accent);
+            background: var(--event-dot-accent);
             flex-shrink: 0;
         }
 
@@ -309,7 +310,7 @@
             width: 100%;
             height: 4px;
             border-radius: 999px;
-            background: var(--event-accent);
+            background: var(--event-line-accent);
         }
 
         .calendar-event > span {
@@ -322,11 +323,13 @@
         }
 
         .calendar-event.task {
-            --event-accent: var(--calendar-task);
+            --event-dot-accent: var(--calendar-task);
+            --event-line-accent: var(--calendar-task);
         }
 
         .calendar-event.occurrence {
-            --event-accent: var(--calendar-occurrence);
+            --event-dot-accent: var(--calendar-occurrence);
+            --event-line-accent: var(--calendar-occurrence);
         }
 
         .calendar-timeline {
@@ -702,7 +705,7 @@
                             <div class="calendar-cell calendar-target monthly {{ $isToday ? 'is-today' : '' }} {{ $isOutside ? 'is-outside' : '' }}" data-date="{{ $dateKey }}" data-time="09:00" data-display-date="{{ $displayDate }}" tabindex="0" role="button" aria-label="Add a task on {{ $displayDate }}">
                                 <div class="calendar-events">
                                     @forelse ($events as $event)
-                                        <div class="calendar-event {{ $event['type'] }}" style="--event-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
+                                        <div class="calendar-event {{ $event['type'] }}" style="--event-line-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
                                             <span class="calendar-event-time">{{ $event['time'] }}</span>
                                             <span class="calendar-event-title">{{ $event['title'] }}</span>
                                             <span class="calendar-event-meta">{{ $event['meta'] }} - {{ str_replace('_', ' ', $event['status']) }}</span>
@@ -725,7 +728,7 @@
                             <div class="calendar-cell calendar-target weekly {{ $isToday ? 'is-today' : '' }}" data-date="{{ $dateKey }}" data-time="09:00" data-display-date="{{ $displayDate }}" tabindex="0" role="button" aria-label="Add a task on {{ $displayDate }}">
                                 <div class="calendar-events">
                                     @forelse ($events as $event)
-                                        <div class="calendar-event {{ $event['type'] }}" style="--event-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
+                                        <div class="calendar-event {{ $event['type'] }}" style="--event-line-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
                                             <span class="calendar-event-time">{{ $event['time'] }}</span>
                                             <span class="calendar-event-title">{{ $event['title'] }}</span>
                                             <span class="calendar-event-meta">{{ $event['meta'] }} - {{ str_replace('_', ' ', $event['status']) }}</span>
@@ -757,7 +760,7 @@
                                     <div class="calendar-slot-time">{{ \Carbon\Carbon::createFromTime($hour)->format('g:i A') }}</div>
                                     <div class="calendar-slot-content">
                                         @forelse ($slotEvents as $event)
-                                            <div class="calendar-event {{ $event['type'] }}" style="--event-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
+                                            <div class="calendar-event {{ $event['type'] }}" style="--event-line-accent: {{ $event['category_color'] ?: ($event['type'] === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)') }};" title="{{ $event['time'] }} - {{ $event['title'] }}" draggable="true" data-type="{{ $event['type'] }}" data-id="{{ $event['id'] }}" data-time="{{ $event['time'] }}">
                                                 <span class="calendar-event-time">{{ $event['time'] }}</span>
                                                 <span class="calendar-event-title">{{ $event['title'] }}</span>
                                                 <span class="calendar-event-meta">{{ $event['meta'] }} - {{ str_replace('_', ' ', $event['status']) }}</span>
@@ -871,7 +874,7 @@
 
             return entries.map((entry) => `
                 <div class="${allowEdit ? 'calendar-modal-item' : 'calendar-hover-item'}">
-                    ${allowEdit ? '' : `<span class="calendar-hover-accent ${escapeHtml(entry.type)}" style="--event-accent: ${escapeHtml(entry.category_color || (entry.type === 'task' ? 'var(--calendar-task)' : 'var(--calendar-occurrence)'))};"></span>`}
+                    ${allowEdit ? '' : `<span class="calendar-hover-accent ${escapeHtml(entry.type)}"></span>`}
                     <div>
                         <div class="${allowEdit ? 'calendar-modal-item-title' : 'calendar-hover-item-title'}">${escapeHtml(entry.title)}</div>
                         <div class="${allowEdit ? 'calendar-modal-item-meta' : 'calendar-hover-item-meta'}">${escapeHtml(entry.time)} - ${escapeHtml(entry.meta)}</div>

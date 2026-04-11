@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
         $data['user_id'] = $user->id;
@@ -45,7 +45,7 @@ class CategoryController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
         $category->update($data);

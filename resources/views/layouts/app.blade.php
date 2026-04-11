@@ -970,13 +970,6 @@
                     <button type="submit" class="secondary">Log out</button>
                 </form>
             </nav>
-
-            <div class="student-sidebar-footer">
-                <div class="student-sidebar-user">
-                    <strong>{{ $currentUser->name }}</strong>
-                    <span>{{ $isAdmin ? 'Administrator' : 'Student' }}</span>
-                </div>
-            </div>
         </aside>
 
         <main class="student-main">

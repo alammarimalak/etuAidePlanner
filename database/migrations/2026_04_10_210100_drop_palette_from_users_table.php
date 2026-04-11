@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (!Schema::hasColumn('users', 'palette')) {
+            return;
+        }
+
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('palette');
         });
@@ -15,6 +19,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (Schema::hasColumn('users', 'palette')) {
+            return;
+        }
+
         Schema::table('users', function (Blueprint $table) {
             $table->string('palette')->nullable()->after('theme');
         });
