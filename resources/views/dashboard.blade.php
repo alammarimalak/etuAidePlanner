@@ -46,6 +46,18 @@
             margin-top: 10px;
         }
 
+        .dashboard-hero-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard-action-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
         @media (max-width: 960px) {
             .dashboard-hero,
             .dashboard-summary,
@@ -65,9 +77,19 @@
                 <p class="muted">
                     Track execution, review upcoming work, and stay ahead of deadlines from one focused workspace.
                 </p>
-                <div class="actions">
-                    <a class="btn" href="{{ route('tasks.create') }}">Create task</a>
-                    <a class="btn secondary" href="{{ route('calendar.index') }}">Open calendar</a>
+                <div class="actions dashboard-hero-actions">
+                    <a class="btn" href="{{ route('tasks.create') }}">
+                        <svg class="dashboard-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor" d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1Z"/>
+                        </svg>
+                        <span>Create task</span>
+                    </a>
+                    <a class="btn secondary" href="{{ route('calendar.index') }}">
+                        <svg class="dashboard-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor" d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1Zm12 8H5v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8ZM6 6a1 1 0 0 0-1 1v1h14V7a1 1 0 0 0-1-1H6Z"/>
+                        </svg>
+                        <span>Open calendar</span>
+                    </a>
                 </div>
             </div>
 
