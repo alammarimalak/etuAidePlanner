@@ -24,9 +24,12 @@ class ContactFormTest extends TestCase
         $response->assertRedirect(route('home') . '#contact');
 
         Mail::assertSent(ContactFormMessage::class, function (ContactFormMessage $mail) {
+            $mail->build();
+
             return $mail->senderName === 'Malak'
                 && $mail->senderEmail === 'malak@example.com'
                 && $mail->messageBody === 'Hello from the contact form.'
+                && $mail->hasFrom('malak@example.com', 'Malak')
                 && $mail->hasTo('alammarimalak17@gmail.com');
         });
     }

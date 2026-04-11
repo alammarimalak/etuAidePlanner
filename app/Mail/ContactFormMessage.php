@@ -20,8 +20,9 @@ class ContactFormMessage extends Mailable
     public function build(): static
     {
         return $this
+            ->from($this->senderEmail, $this->senderName)
             ->replyTo($this->senderEmail, $this->senderName)
-            ->subject('New contact message from ' . $this->senderName)
+            ->subject('New EtuAide inquiry from ' . $this->senderName)
             ->view('emails.contact-form-message');
     }
 }
