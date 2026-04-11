@@ -349,16 +349,6 @@
                                     EtuAide brings tasks, calendars, reminders, and priorities into one focused workspace so students can plan with structure, stay aligned on deadlines, and keep momentum week after week.
                                 </p>
 
-                                <div class="d-flex flex-wrap gap-3 mb-4">
-                                    @auth
-                                        <a class="btn btn-primary btn-lg px-4" href="{{ route('dashboard') }}">Open dashboard</a>
-                                        <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('tasks.index') }}">Review tasks</a>
-                                    @else
-                                        <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">Create your account</a>
-                                        <a class="btn btn-outline-dark btn-lg px-4" href="{{ route('login') }}">Sign in</a>
-                                    @endauth
-                                </div>
-
                                 <div class="row g-3">
                                     <div class="col-md-4">
                                         <div class="metric-card h-100 p-3 p-lg-4">
@@ -489,25 +479,6 @@
                             <div class="section-tag mb-3">Consistency</div>
                             <h3 class="h3 fw-bold mb-3">Stay on track each week.</h3>
                             <p class="mb-0 text-secondary">Use reminders, recurring work, and calendar context to maintain reliable study habits.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cta-card p-4 p-lg-5 mb-4">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-lg-8">
-                            <h2 class="display-6 fw-bold mb-3">Move from intention to execution.</h2>
-                            <p class="mb-0" style="color: rgba(255,255,255,0.86);">
-                                Whether you are planning the week or mapping an entire semester, EtuAide gives you a cleaner, more dependable workspace to operate from.
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="d-flex flex-column flex-sm-row flex-lg-column gap-3 align-items-stretch">
-                                <a class="btn btn-light btn-lg" href="{{ auth()->check() ? route('dashboard') : route('register') }}">
-                                    {{ auth()->check() ? 'Go to dashboard' : 'Start free' }}
-                                </a>
-                                <a class="btn btn-outline-light btn-lg" href="#about">Explore more</a>
-                            </div>
                         </div>
                     </div>
                 </div>
