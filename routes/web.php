@@ -60,6 +60,8 @@ Route::middleware(['auth', 'activity'])->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('students', [AdminStudentController::class, 'index'])->name('students.index');
+        Route::get('students/email/create', [AdminStudentController::class, 'createEmail'])->name('students.email.create');
+        Route::post('students/email', [AdminStudentController::class, 'sendEmail'])->name('students.email.send');
         Route::post('students/{student}/remind', [AdminStudentController::class, 'sendReminder'])->name('students.remind');
         Route::patch('alerts/{alert}/resolve', [AdminAlertController::class, 'resolve'])->name('alerts.resolve');
         Route::patch('alerts/{alert}/dismiss', [AdminAlertController::class, 'dismiss'])->name('alerts.dismiss');

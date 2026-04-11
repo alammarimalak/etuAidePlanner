@@ -53,6 +53,7 @@
             </div>
 
             <div class="actions">
+                <a class="btn" href="{{ route('admin.students.email.create') }}">Create an email</a>
                 <a class="btn secondary" href="{{ route('admin.dashboard') }}">Back to admin overview</a>
             </div>
         </div>
