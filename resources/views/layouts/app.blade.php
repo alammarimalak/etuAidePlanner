@@ -327,6 +327,23 @@
             opacity: 0.8;
         }
 
+        .student-sidebar-badge {
+            min-width: 28px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(33, 86, 245, 0.12);
+            color: var(--violet-900);
+            font-size: 0.78rem;
+            font-weight: 800;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .student-sidebar-link.is-active .student-sidebar-badge {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+
         .student-sidebar-footer {
             margin-top: auto;
             display: grid;
@@ -649,6 +666,11 @@
             border-color: rgba(139, 119, 255, 0.16);
         }
 
+        body.theme-dark .student-sidebar-badge {
+            background: rgba(255, 255, 255, 0.12);
+            color: #eef2ff;
+        }
+
         body.theme-dark .student-sidebar-user {
             background: rgba(255, 255, 255, 0.05);
             border-color: rgba(139, 119, 255, 0.14);
@@ -916,6 +938,7 @@
 @php
     $currentUser = auth()->user();
     $isAdmin = $currentUser && $currentUser->role === \App\Models\User::ROLE_ADMIN;
+    $unreadNotificationCount = $currentUser?->notifications()->whereNull('read_at')->count() ?? 0;
     $isAppShell = $currentUser
         && request()->routeIs('dashboard', 'tasks.*', 'calendar.*', 'categories.*', 'notifications.*', 'settings.*', 'admin.*');
     $isMainMarketingPage = request()->routeIs('home', 'about', 'faq', 'contact');
@@ -948,8 +971,11 @@
                 <a href="{{ route('categories.index') }}" class="student-sidebar-link {{ request()->routeIs('categories.*') ? 'is-active' : '' }}">
                     <span>Categories</span>
                 </a>
-                <a href="{{ route('notifications.index') }}" class="student-sidebar-link {{ request()->routeIs('notifications.*') ? 'is-active' : '' }}">
+                <a href="{{ route('notifications.index') }}" class="student-sidebar-link {{ request()->routeIs('notifications.*') ? 'is-active' : '' }}" data-notifications-nav>
                     <span>Notifications</span>
+                    @if ($unreadNotificationCount > 0)
+                        <span class="student-sidebar-badge">{{ $unreadNotificationCount }}</span>
+                    @endif
                 </a>
                 <a href="{{ route('settings.edit') }}" class="student-sidebar-link {{ request()->routeIs('settings.*') ? 'is-active' : '' }}">
                     <span>Settings</span>

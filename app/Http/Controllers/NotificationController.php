@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
@@ -21,13 +22,20 @@ class NotificationController extends Controller
         ]);
     }
 
-    public function markRead(Notification $notification)
+    public function markRead(Request $request, Notification $notification)
     {
         $this->authorize('view', $notification);
 
         $notification->update([
-            'read_at' => now(),
+            'read_at' => $notification->read_at ?? now(),
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => 'ok',
+                'read_at' => optional($notification->fresh()->read_at)?->toIso8601String(),
+            ]);
+        }
 
         return redirect()->route('notifications.index')->with('status', 'Notification marked as read.');
     }
