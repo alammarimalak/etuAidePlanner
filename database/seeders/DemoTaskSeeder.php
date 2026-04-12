@@ -198,7 +198,7 @@ class DemoTaskSeeder extends Seeder
             'completed_at' => null,
         ]);
 
-        $this->upsertNotification($inactive, 'inactive_reminder', 'We miss you at EtuAide', 'Log back in to review your open tasks and keep your semester on track.', [
+        $this->upsertNotification($inactive, 'inactive_reminder', 'We miss you at EtuAide Planner', 'Log back in to review your open tasks and keep your semester on track.', [
             'sent_by' => 'admin',
             'admin_id' => $admin->id,
         ]);

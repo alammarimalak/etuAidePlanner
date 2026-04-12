@@ -66,7 +66,7 @@ class SendTaskReminders extends Command
                     "Reminder: {$task->title}\n\nYou asked to be reminded about this task. Log in to review your progress.",
                     function ($message) use ($user) {
                         $message->to($user->email)
-                            ->subject('EtuAide Task Reminder');
+                            ->subject('EtuAide Planner Task Reminder');
                     }
                 );
 

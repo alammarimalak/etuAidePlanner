@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="card">
-        <h1 class="section-title">About EtuAide</h1>
-        <p class="muted">EtuAide is a student-first planner that combines clear structure with a playful mood. We believe great organization can feel light, friendly, and empowering.</p>
+        <h1 class="section-title">About EtuAide Planner</h1>
+        <p class="muted">EtuAide Planner is a student-first planner that combines clear structure with a playful mood. We believe great organization can feel light, friendly, and empowering.</p>
     </div>
 
     <div class="cards">

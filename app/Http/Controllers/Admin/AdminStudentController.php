@@ -149,7 +149,7 @@ class AdminStudentController extends Controller
         Notification::create([
             'user_id' => $student->id,
             'type' => 'inactive_reminder',
-            'title' => 'We miss you at EtuAide',
+            'title' => 'We miss you at EtuAide Planner',
             'body' => 'It looks like you have been inactive. Log in to review your tasks and stay on track.',
             'data' => [
                 'sent_by' => 'admin',

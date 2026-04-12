@@ -1,14 +1,14 @@
 <p align="center">
-<img src="public/images/logo.png" alt="EtuAide Maroc Logo" width="200">
+<img src="public/images/logo.png" alt="EtuAide Planner Logo" width="200">
 </p>
 
-# EtuAide Maroc - Student Task Management Platform
+# EtuAide Planner - Student Task Management Platform
 
-An intelligent task management and productivity platform designed for students and educational administrators in Morocco. EtuAide Maroc helps students organize their academic workload, track progress, and manage their time efficiently while enabling administrators to oversee student activities and provide timely support.
+An intelligent task management and productivity platform designed for students and educational administrators in Morocco. EtuAide Planner helps students organize their academic workload, track progress, and manage their time efficiently while enabling administrators to oversee student activities and provide timely support.
 
 ## About the Project
 
-EtuAide Maroc is a comprehensive web-based educational platform built with Laravel that bridges the gap between students' needs and administrative oversight. The platform provides a centralized hub for task management, reminders, notifications, and comprehensive activity tracking to enhance academic success and institutional accountability.
+EtuAide Planner is a comprehensive web-based educational platform built with Laravel that bridges the gap between students' needs and administrative oversight. The platform provides a centralized hub for task management, reminders, notifications, and comprehensive activity tracking to enhance academic success and institutional accountability.
 
 ## Features for Students
 

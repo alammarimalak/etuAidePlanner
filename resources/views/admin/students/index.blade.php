@@ -62,7 +62,7 @@
             <div class="card admin-students-stat">
                 <h3>Total Students</h3>
                 <strong>{{ $students->count() }}</strong>
-                <p class="muted">Learners currently registered in EtuAide.</p>
+                <p class="muted">Learners currently registered in EtuAide Planner.</p>
             </div>
             <div class="card admin-students-stat">
                 <h3>Recently Active</h3>
