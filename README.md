@@ -1,3 +1,7 @@
+<p align="center">
+<img src="public/images/logo.png" alt="EtuAide Maroc Logo" width="200">
+</p>
+
 # EtuAide Maroc - Student Task Management Platform
 
 An intelligent task management and productivity platform designed for students and educational administrators in Morocco. EtuAide Maroc helps students organize their academic workload, track progress, and manage their time efficiently while enabling administrators to oversee student activities and provide timely support.
