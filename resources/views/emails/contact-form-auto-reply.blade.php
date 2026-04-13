@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>New contact message</title>
+    <title>We received your message</title>
 </head>
 <body style="margin:0; padding:32px 16px; background-color:#EEF3FF; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827; line-height:1.6;">
 
     <div style="text-align:center; margin-bottom:24px;">
         <div style="display:inline-flex; align-items:center; gap:8px; font-size:18px; font-weight:600; color:#1a1a2e;">
-            <img src="../public/images/logo.png" alt="EtuAide" height="32" style="vertical-align:middle;">
+            <img src="{{ asset('images/logo.png') }}" alt="EtuAide" height="32" style="vertical-align:middle;">
             EtuAide
         </div>
     </div>
@@ -20,11 +20,14 @@
                 EtuAide Contact Form
             </div>
             <h1 style="margin:0; font-size:22px; font-weight:700; color:#111827; line-height:1.35;">
-                Message received from {{ $senderName }}
+                We received your message, {{ $senderName }}
             </h1>
         </div>
 
         <div style="padding:28px 32px;">
+            <p style="margin:0 0 20px; font-size:15px; color:#374151;">
+                Thanks for contacting EtuAide. Your message has been sent successfully, and our team will get back to you shortly.
+            </p>
 
             <table width="100%" cellpadding="0" cellspacing="0" style="font-size:15px; margin-bottom:24px;">
                 <tr>
@@ -39,14 +42,14 @@
                 </tr>
             </table>
 
-            <a href="mailto:{{ $senderEmail }}" style="display:block; background:#2156f5; color:#ffffff; text-align:center; padding:14px 24px; border-radius:6px; font-size:15px; font-weight:600; text-decoration:none; margin-bottom:28px;">
-                Reply to {{ $senderName }}
+            <a href="mailto:{{ $supportEmail }}" style="display:block; background:#2156f5; color:#ffffff; text-align:center; padding:14px 24px; border-radius:6px; font-size:15px; font-weight:600; text-decoration:none; margin-bottom:28px;">
+                Contact the EtuAide team
             </a>
 
             <hr style="border:none; border-top:1px solid #e8edff; margin:0 0 24px;">
 
             <div style="font-size:12px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">
-                Message
+                Your message
             </div>
             <div style="background:#f5f7ff; border:1px solid #d4deff; border-radius:6px; padding:20px; font-size:15px; color:#374151; line-height:1.7;">
                 @foreach (preg_split("/(\r\n|\n|\r)/", $messageBody) as $paragraph)
@@ -67,7 +70,7 @@
     </div>
 
     <div style="text-align:center; margin-top:20px;">
-        <p style="font-size:12px; color:#9ca3af; margin:0;">© 2026 EtuAide · All rights reserved</p>
+        <p style="font-size:12px; color:#9ca3af; margin:0;">&copy; 2026 EtuAide &middot; All rights reserved</p>
     </div>
 
 </body>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactFormAutoReply;
 use App\Mail\ContactFormMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -47,23 +48,30 @@ class HomeController extends Controller
                 ->withInput();
         }
 
+        $contactData = $validator->validated();
+
         try {
             Mail::to(self::CONTACT_RECIPIENT)->send(new ContactFormMessage(
-                senderName: (string) $request->input('name'),
-                senderEmail: (string) $request->input('email'),
-                messageBody: (string) $request->input('message'),
+                senderName: (string) $contactData['name'],
+                senderEmail: (string) $contactData['email'],
+                messageBody: (string) $contactData['message'],
+            ));
+
+            Mail::to((string) $contactData['email'])->send(new ContactFormAutoReply(
+                senderName: (string) $contactData['name'],
+                senderEmail: (string) $contactData['email'],
+                messageBody: (string) $contactData['message'],
+                supportEmail: self::CONTACT_RECIPIENT,
             ));
         } catch (Throwable $exception) {
             return redirect()
                 ->to(route('home') . '#contact')
-                ->withErrors([
-                    'message' => 'Your message could not be sent right now. Please try again in a moment.',
-                ])
+                ->with('contact_error', 'Your message could not be sent right now. Please try again in a moment.')
                 ->withInput();
         }
 
         return redirect()
             ->to(route('home') . '#contact')
-            ->with('status', 'Thanks! Your message is on its way.');
+            ->with('contact_status', 'Thanks! Your message is on its way. Please check your inbox for our confirmation email.');
     }
 }

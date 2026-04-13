@@ -308,6 +308,47 @@
             max-width: 100%;
         }
 
+        .home-bootstrap.jira-inspired .contact-submit-row {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .home-bootstrap.jira-inspired .contact-feedback {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 0.65rem 0.95rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .home-bootstrap.jira-inspired .contact-feedback.is-success {
+            background: #e9f7ef;
+            border: 1px solid #b7e2c6;
+            color: #1f6b3d;
+        }
+
+        .home-bootstrap.jira-inspired .contact-feedback.is-error {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            color: #b42318;
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .contact-feedback.is-success {
+            background: rgba(34, 197, 94, 0.14);
+            border-color: rgba(34, 197, 94, 0.28);
+            color: #bbf7d0;
+        }
+
+        body.theme-dark.home-bootstrap.jira-inspired .contact-feedback.is-error {
+            background: rgba(248, 113, 113, 0.14);
+            border-color: rgba(248, 113, 113, 0.3);
+            color: #fecaca;
+        }
+
         body.theme-dark.home-bootstrap.jira-inspired input,
         body.theme-dark.home-bootstrap.jira-inspired textarea {
             background: rgba(255, 255, 255, 0.04);
@@ -615,8 +656,14 @@
                                             <div class="muted mt-2">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="d-flex justify-content-start">
+                                    <div class="contact-submit-row">
                                         <button type="submit" class="btn btn-primary">Send Message</button>
+                                        @if (session('contact_status'))
+                                            <div class="contact-feedback is-success">{{ session('contact_status') }}</div>
+                                        @endif
+                                        @if (session('contact_error'))
+                                            <div class="contact-feedback is-error">{{ session('contact_error') }}</div>
+                                        @endif
                                     </div>
                                 </form>
                             </div>
