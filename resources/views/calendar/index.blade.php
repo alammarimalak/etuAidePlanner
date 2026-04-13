@@ -412,13 +412,18 @@
         }
 
         .calendar-modal-close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border: 0;
             background: var(--calendar-surface-soft);
             color: var(--calendar-text);
             width: 40px;
             height: 40px;
+            padding: 0;
             border-radius: 50%;
             font-size: 1.1rem;
+            line-height: 1;
             cursor: pointer;
         }
 

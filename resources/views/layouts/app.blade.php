@@ -170,10 +170,30 @@
         }
 
         .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 6px 10px;
             border-radius: 999px;
             transition: background 0.2s ease, color 0.2s ease;
             color: rgba(5, 8, 22, 0.74);
+        }
+
+        .nav-link-icon,
+        .nav-action-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .nav-link-icon svg,
+        .nav-action-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
         .nav-links a:hover {
@@ -193,14 +213,15 @@
         .theme-toggle {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            padding: 0;
             border-radius: 999px;
             border: 1px solid rgba(16, 25, 53, 0.14);
             background: rgba(255, 255, 255, 0.9);
             color: var(--ink);
             box-shadow: 0 12px 24px rgba(33, 86, 245, 0.14);
-            font-weight: 700;
             line-height: 1;
         }
 
@@ -229,8 +250,16 @@
             fill: currentColor;
         }
 
-        .theme-toggle-label {
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
             white-space: nowrap;
+            border: 0;
         }
 
         .container {
@@ -618,6 +647,22 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-user-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 6px;
+            font-weight: 600;
+        }
+
+        .nav-action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .muted {
@@ -895,8 +940,7 @@
             }
 
             .theme-toggle {
-                width: 100%;
-                justify-content: center;
+                width: 44px;
             }
 
             .main-pages-footer .footer-nav,
@@ -1021,14 +1065,56 @@
                     <span>EtuAide Planner</span>
                 </a>
                 <div class="nav-links">
-                    <a href="{{ route('home') }}#home">Home</a>
-                    <a href="{{ route('home') }}#about">About</a>
-                    <a href="{{ route('home') }}#faq">FAQ</a>
-                    <a href="{{ route('home') }}#contact">Contact</a>
+                    <a href="{{ route('home') }}#home">
+                        <span class="nav-link-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 3.3 3.8 10a1 1 0 0 0-.3.74V20a1 1 0 0 0 1 1H9v-5.25a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V21h4.5a1 1 0 0 0 1-1v-9.26a1 1 0 0 0-.36-.77L12 3.3Z"/>
+                            </svg>
+                        </span>
+                        <span>Home</span>
+                    </a>
+                    <a href="{{ route('home') }}#about">
+                        <span class="nav-link-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2.75a9.25 9.25 0 1 0 9.25 9.25A9.26 9.26 0 0 0 12 2.75Zm0 4a1.2 1.2 0 1 1-1.2 1.2A1.2 1.2 0 0 1 12 6.75Zm1.25 10.5h-2.5a.75.75 0 0 1 0-1.5h.5v-3h-.5a.75.75 0 0 1 0-1.5H12a.75.75 0 0 1 .75.75v3.75h.5a.75.75 0 0 1 0 1.5Z"/>
+                            </svg>
+                        </span>
+                        <span>About</span>
+                    </a>
+                    <a href="{{ route('home') }}#faq">
+                        <span class="nav-link-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2.75a9.25 9.25 0 1 0 9.25 9.25A9.26 9.26 0 0 0 12 2.75Zm0 14.5a1.05 1.05 0 1 1 1.05-1.05A1.05 1.05 0 0 1 12 17.25Zm1.14-4.78-.63.37a.98.98 0 0 0-.51.84.75.75 0 0 1-1.5 0 2.47 2.47 0 0 1 1.26-2.14l.62-.36a1.67 1.67 0 1 0-2.5-1.45.75.75 0 0 1-1.5 0 3.17 3.17 0 1 1 4.76 2.74Z"/>
+                            </svg>
+                        </span>
+                        <span>FAQ</span>
+                    </a>
+                    <a href="{{ route('home') }}#contact">
+                        <span class="nav-link-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4.75 5.5A2.75 2.75 0 0 1 7.5 2.75h9a2.75 2.75 0 0 1 2.75 2.75v13A2.75 2.75 0 0 1 16.5 21.25h-9A2.75 2.75 0 0 1 4.75 18.5v-13Zm2.4.5 4.35 4.02a.75.75 0 0 0 1 0L16.85 6h-9.7Zm10.6 1-4.23 3.9a2.25 2.25 0 0 1-3.04 0L6.25 7v11.5c0 .69.56 1.25 1.25 1.25h9c.69 0 1.25-.56 1.25-1.25V7Z"/>
+                            </svg>
+                        </span>
+                        <span>Contact</span>
+                    </a>
                     @auth
-                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                        <a href="{{ route('dashboard') }}">
+                            <span class="nav-link-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4.75 4.75h6.5v6.5h-6.5Zm8 0h6.5v9h-6.5Zm-8 8h6.5v6.5h-6.5Zm8 10v-4.5h6.5v4.5Zm1.5-16.5v6h3.5v-6Zm-8 8v3.5h3.5v-3.5Zm8 5.5v1.5h3.5v-1.5Z"/>
+                                </svg>
+                            </span>
+                            <span>Dashboard</span>
+                        </a>
                         @if (auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}">Admin</a>
+                            <a href="{{ route('admin.dashboard') }}">
+                                <span class="nav-link-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="m12 2.75 7.25 2.9v5.83c0 4.25-2.55 8.14-6.47 9.88a1.93 1.93 0 0 1-1.56 0C7.3 19.62 4.75 15.73 4.75 11.48V5.65L12 2.75Zm0 1.62L6.25 6.67v4.81c0 3.64 2.17 6.97 5.51 8.46.15.07.33.07.48 0 3.34-1.49 5.51-4.82 5.51-8.46V6.67L12 4.37Zm-.75 4.38h1.5v3.5h3a.75.75 0 0 1 0 1.5h-3.75a.75.75 0 0 1-.75-.75v-4.25Z"/>
+                                    </svg>
+                                </span>
+                                <span>Admin</span>
+                            </a>
                         @endif
                     @endauth
                 </div>
@@ -1042,17 +1128,45 @@
                                 <path d="M14.5 3.32a.75.75 0 0 1 .83.98 7.75 7.75 0 1 0 9.37 9.37.75.75 0 0 1 .98.83A9.25 9.25 0 1 1 14.5 3.32Z"/>
                             </svg>
                         </span>
-                        <span class="theme-toggle-label" data-theme-label>Dark mode</span>
+                        <span class="sr-only" data-theme-label>Dark mode</span>
                     </button>
                     @auth
-                        <span class="muted">{{ auth()->user()->name }}</span>
+                        <span class="muted nav-user-name">
+                            <span class="nav-action-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12.25a4.75 4.75 0 1 0-4.75-4.75A4.76 4.76 0 0 0 12 12.25Zm0 1.5c-4.03 0-7.25 2.15-7.25 4.75a.75.75 0 0 0 .75.75h13a.75.75 0 0 0 .75-.75c0-2.6-3.22-4.75-7.25-4.75Z"/>
+                                </svg>
+                            </span>
+                            <span>{{ auth()->user()->name }}</span>
+                        </span>
                         <form method="POST" action="{{ route('logout') }}" class="inline-form">
                             @csrf
-                            <button type="submit" class="secondary">Logout</button>
+                            <button type="submit" class="secondary nav-action-button">
+                                <span class="nav-action-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M10.75 4.75a.75.75 0 0 1 0 1.5h-3.5v11.5h3.5a.75.75 0 0 1 0 1.5H6.5a.75.75 0 0 1-.75-.75V5.5a.75.75 0 0 1 .75-.75Zm5.72 3.97a.75.75 0 0 1 1.06 0l2.75 2.75a.75.75 0 0 1 0 1.06l-2.75 2.75a.75.75 0 1 1-1.06-1.06l1.47-1.47h-7.19a.75.75 0 0 1 0-1.5h7.19l-1.47-1.47a.75.75 0 0 1 0-1.06Z"/>
+                                    </svg>
+                                </span>
+                                <span>Logout</span>
+                            </button>
                         </form>
                     @else
-                        <a class="btn secondary" href="{{ route('login') }}">Login</a>
-                        <a class="btn" href="{{ route('register') }}">Sign Up</a>
+                        <a class="btn secondary nav-action-button" href="{{ route('login') }}">
+                            <span class="nav-action-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M10.75 4.75a.75.75 0 0 1 0 1.5h-3.5v11.5h3.5a.75.75 0 0 1 0 1.5H6.5a.75.75 0 0 1-.75-.75V5.5a.75.75 0 0 1 .75-.75Zm5.72 3.97a.75.75 0 0 1 1.06 0l2.75 2.75a.75.75 0 0 1 0 1.06l-2.75 2.75a.75.75 0 1 1-1.06-1.06l1.47-1.47h-7.19a.75.75 0 0 1 0-1.5h7.19l-1.47-1.47a.75.75 0 0 1 0-1.06Z"/>
+                                </svg>
+                            </span>
+                            <span>Login</span>
+                        </a>
+                        <a class="btn nav-action-button" href="{{ route('register') }}">
+                            <span class="nav-action-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12.25a4.75 4.75 0 1 0-4.75-4.75A4.76 4.76 0 0 0 12 12.25Zm0 1.5c-4.03 0-7.25 2.15-7.25 4.75a.75.75 0 0 0 .75.75h13a.75.75 0 0 0 .75-.75c0-2.6-3.22-4.75-7.25-4.75Zm6.25-6.5h1.5v1.5h1.5a.75.75 0 0 1 0 1.5h-1.5v1.5a.75.75 0 0 1-1.5 0v-1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Z"/>
+                                </svg>
+                            </span>
+                            <span>Sign Up</span>
+                        </a>
                     @endauth
                 </div>
             </div>
@@ -1115,18 +1229,22 @@
 <script>
     (function () {
         const toggle = document.querySelector('[data-theme-toggle]');
-        const label = document.querySelector('[data-theme-label]');
         const sunIcon = document.querySelector('[data-theme-icon="sun"]');
         const moonIcon = document.querySelector('[data-theme-icon="moon"]');
+        const label = document.querySelector('[data-theme-label]');
         const storageKey = 'etuaide-theme';
 
-        if (!toggle || !label || !sunIcon || !moonIcon) {
+        if (!toggle || !sunIcon || !moonIcon) {
             return;
         }
 
         function syncThemeToggle() {
             const isDark = document.body.classList.contains('theme-dark');
-            label.textContent = isDark ? 'Light mode' : 'Dark mode';
+            const nextLabel = isDark ? 'Light mode' : 'Dark mode';
+            toggle.setAttribute('aria-label', nextLabel);
+            if (label) {
+                label.textContent = nextLabel;
+            }
             toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
             sunIcon.hidden = isDark;
             moonIcon.hidden = !isDark;
