@@ -32,10 +32,7 @@
         body {
             margin: 0;
             font-family: "Segoe UI Variable", "Aptos", "Trebuchet MS", sans-serif;
-            background:
-                radial-gradient(circle at top left, rgba(33, 86, 245, 0.12), transparent 28%),
-                radial-gradient(circle at 85% 8%, rgba(93, 62, 240, 0.12), transparent 26%),
-                linear-gradient(180deg, #f7f9ff 0%, #eef2ff 42%, #ffffff 100%);
+            background: #f7f9ff;
             color: var(--ink);
             min-height: 100vh;
             position: relative;
@@ -45,10 +42,7 @@
 
         body.theme-dark {
             color: #eef2ff;
-            background:
-                radial-gradient(circle at top left, rgba(33, 86, 245, 0.22), transparent 28%),
-                radial-gradient(circle at 85% 10%, rgba(93, 62, 240, 0.18), transparent 24%),
-                linear-gradient(180deg, #08101f 0%, #0d1730 46%, #050816 100%);
+            background: #08101f;
         }
 
         body.theme-dark .card {
@@ -95,16 +89,15 @@
             opacity: 0.4;
             z-index: 0;
             pointer-events: none;
+            background: transparent;
         }
 
         body::before {
-            background: radial-gradient(circle, rgba(33, 86, 245, 0.2) 0%, transparent 70%);
             top: -120px;
             left: -140px;
         }
 
         body::after {
-            background: radial-gradient(circle, rgba(93, 62, 240, 0.18) 0%, transparent 70%);
             bottom: -140px;
             right: -100px;
         }
@@ -283,11 +276,8 @@
             top: 0;
             height: 100vh;
             padding: 28px 20px;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(238, 242, 255, 0.82)),
-                linear-gradient(180deg, rgba(33, 86, 245, 0.08), rgba(93, 62, 240, 0.08));
+            background: #ffffff;
             border-right: 1px solid var(--line);
-            backdrop-filter: blur(18px);
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -349,7 +339,7 @@
 
         .student-sidebar-link.is-active {
             color: #ffffff;
-            background: linear-gradient(135deg, #0b132d 0%, var(--violet-500) 58%, var(--violet-700) 100%);
+            background: var(--violet-500);
             box-shadow: 0 18px 30px rgba(33, 86, 245, 0.2);
         }
 
@@ -583,7 +573,7 @@
         }
 
         button, .btn {
-            background: linear-gradient(135deg, #0b132d 0%, var(--violet-500) 58%, var(--violet-700) 100%);
+            background: var(--violet-500);
             color: #ffffff;
             border: none;
             cursor: pointer;
@@ -688,9 +678,7 @@
         }
 
         body.theme-dark .student-sidebar {
-            background:
-                linear-gradient(180deg, rgba(7, 16, 37, 0.92), rgba(9, 18, 42, 0.86)),
-                linear-gradient(180deg, rgba(33, 86, 245, 0.12), rgba(93, 62, 240, 0.1));
+            background: rgba(9, 18, 42, 0.96);
             border-right-color: rgba(139, 119, 255, 0.14);
         }
 
@@ -753,14 +741,14 @@
         }
 
         .hero-card {
-            background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(239, 231, 255, 0.9));
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 24px;
             padding: 24px;
             box-shadow: 0 24px 50px rgba(109, 40, 217, 0.2);
         }
 
         body.theme-dark .hero-card {
-            background: linear-gradient(160deg, rgba(27, 14, 51, 0.95), rgba(43, 22, 82, 0.9));
+            background: rgba(27, 14, 51, 0.95);
         }
 
         .badge {
