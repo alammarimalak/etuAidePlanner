@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <title>New contact message</title>
 </head>
+@php($logoSrc = $message->embed(public_path('images/logo.png')))
 <body style="margin:0; padding:32px 16px; background-color:#EEF3FF; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827; line-height:1.6;">
 
     <div style="text-align:center; margin-bottom:24px;">
         <div style="display:inline-flex; align-items:center; gap:8px; font-size:18px; font-weight:600; color:#1a1a2e;">
-            <img src="{{ url('images/logo.png') }}" alt="EtuAide" height="32" style="vertical-align:middle;">
+            <img src="../public/images/logo.png" alt="EtuAide" height="32" style="vertical-align:middle;">
             EtuAide
         </div>
     </div>
@@ -67,7 +68,7 @@
     </div>
 
     <div style="text-align:center; margin-top:20px;">
-        <p style="font-size:12px; color:#9ca3af; margin:0;">© 2026 EtuAide · All rights reserved</p>
+        <p style="font-size:12px; color:#9ca3af; margin:0;">&copy; 2026 EtuAide &middot; All rights reserved</p>
     </div>
 
 </body>

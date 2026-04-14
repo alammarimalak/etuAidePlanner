@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <title>We received your message</title>
 </head>
+@php($logoSrc = $message->embed(public_path('images/logo.png')))
 <body style="margin:0; padding:32px 16px; background-color:#EEF3FF; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827; line-height:1.6;">
 
     <div style="text-align:center; margin-bottom:24px;">
         <div style="display:inline-flex; align-items:center; gap:8px; font-size:18px; font-weight:600; color:#1a1a2e;">
-            <img src="{{ url('images/logo.png') }}" alt="EtuAide" height="32" style="vertical-align:middle;">
-            EtuAide
+            <img src="{{ $logoSrc }}" alt="EtuAide" height="32" style="vertical-align:middle;">
         </div>
     </div>
 
