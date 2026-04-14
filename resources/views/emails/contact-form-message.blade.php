@@ -9,8 +9,7 @@
 
     <div style="text-align:center; margin-bottom:24px;">
         <div style="display:inline-flex; align-items:center; gap:8px; font-size:18px; font-weight:600; color:#1a1a2e;">
-            <img src="../public/images/logo.png" alt="EtuAide" height="32" style="vertical-align:middle;">
-            EtuAide
+            <img src="{{ $logoSrc }}" alt="EtuAide" height="32" style="vertical-align:middle;">
         </div>
     </div>
 
