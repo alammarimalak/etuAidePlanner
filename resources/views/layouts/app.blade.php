@@ -1,10 +1,14 @@
+@php
+    $lightLogoUrl = asset('storage/EtuAide_lightmode.png');
+    $darkLogoUrl = asset('storage/EtuAide_darkmode.png');
+@endphp
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EtuAide Planner</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ $lightLogoUrl }}">
     @if (request()->routeIs('home', 'about', 'faq', 'contact'))
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     @endif
@@ -135,23 +139,28 @@
         }
 
         .brand-bubble {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid var(--line);
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(33, 86, 245, 0.12);
             flex-shrink: 0;
+            width: 65px;
+            max-width: 100%;
         }
 
-        .brand-bubble img {
+        .brand-logo {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
+            height: auto;
+            display: block;
+        }
+
+        .brand-logo--dark {
+            display: none;
+        }
+
+        body.theme-dark .brand-logo--light {
+            display: none;
+        }
+
+        body.theme-dark .brand-logo--dark {
             display: block;
         }
 
@@ -286,9 +295,12 @@
         }
 
         .student-sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .student-sidebar-brand .brand-bubble {
+            width: 61px;
         }
 
         .student-sidebar-copy strong {
@@ -927,6 +939,10 @@
                 align-items: flex-start;
             }
 
+            .brand-bubble {
+                width: 58px;
+            }
+
             .theme-toggle {
                 width: 44px;
             }
@@ -983,10 +999,11 @@
         <aside class="student-sidebar">
             <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand">
                 <span class="brand-bubble">
-                    <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
+                    <img class="brand-logo brand-logo--light" src="{{ $lightLogoUrl }}" alt="EtuAide logo">
+                    <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
                 </span>
                 <span class="student-sidebar-copy">
-                    <strong>EtuAide Planner</strong>
+                    <strong>Planner</strong>
                     <span>{{ $isAdmin ? 'Admin workspace' : 'Student workspace' }}</span>
                 </span>
             </a>
@@ -1048,9 +1065,10 @@
             <div class="nav">
                 <a href="{{ route('home') }}" class="brand">
                     <span class="brand-bubble">
-                        <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
+                        <img class="brand-logo brand-logo--light" src="{{ $lightLogoUrl }}" alt="EtuAide logo">
+                        <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
                     </span>
-                    <span>EtuAide Planner</span>
+                    <span>Planner</span>
                 </a>
                 <div class="nav-links">
                     <a href="{{ route('home') }}#home">
@@ -1175,9 +1193,10 @@
                 <div class="footer-nav">
                     <a href="{{ route('home') }}" class="brand">
                         <span class="brand-bubble">
-                            <img src="{{ asset('images/logo.png') }}" alt="EtuAide logo">
+                            <img class="brand-logo brand-logo--light" src="{{ $lightLogoUrl }}" alt="EtuAide logo">
+                            <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
                         </span>
-                        <span>EtuAide Planner</span>
+                        <span>Planner</span>
                     </a>
 
                     <div class="footer-meta">

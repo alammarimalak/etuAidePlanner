@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>New contact message</title>
 </head>
-@php($logoSrc = $message->embed(public_path('images/logo.png')))
+@php($logoSrc = $message->embed(storage_path('app/public/EtuAide_lightmode.png')))
 <body style="margin:0; padding:32px 16px; background-color:#EEF3FF; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827; line-height:1.6;">
 
     <div style="text-align:center; margin-bottom:24px;">

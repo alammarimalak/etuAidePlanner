@@ -34,35 +34,29 @@
 
         .brand-row {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            gap: 0;
             margin-bottom: 28px;
         }
 
-        .brand-mark {
-            width: 36px;
-            height: 36px;
-            border-radius: 14px;
-            display: grid;
-            place-items: center;
-            background: var(--etuaide-primary);
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: 0 14px 24px rgba(33, 86, 245, 0.14);
+        .brand-logo {
+            width: min(100%, 103px);
+            height: auto;
+            display: block;
         }
 
-        .brand-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--etuaide-text);
+        .brand-logo--dark {
+            display: none;
         }
 
-        .brand-subtitle {
-            font-size: 0.95rem;
-            color: var(--etuaide-muted);
-            text-align: center;
+        body.theme-dark .brand-logo--light {
+            display: none;
+        }
+
+        body.theme-dark .brand-logo--dark {
+            display: block;
         }
 
         .page-heading {
@@ -243,7 +237,8 @@
     <div class="login-container">
         <div class="login-card">
             <div class="brand-row">
-                <img src="{{ url('images/logo.png') }}" alt="EtuAide" >
+                <img class="brand-logo brand-logo--light" src="{{ asset('storage/EtuAide_lightmode.png') }}" alt="EtuAide">
+                <img class="brand-logo brand-logo--dark" src="{{ asset('storage/EtuAide_darkmode.png') }}" alt="EtuAide">
             </div>
 
             <h1 class="page-heading">Sign in to EtuAide</h1>
