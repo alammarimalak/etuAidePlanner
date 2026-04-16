@@ -13,6 +13,14 @@
             --etuaide-shadow: 0 18px 45px rgba(58, 80, 126, 0.12);
         }
 
+        body.theme-dark {
+            --etuaide-surface: rgba(10, 19, 41, 0.94);
+            --etuaide-border: rgba(139, 119, 255, 0.2);
+            --etuaide-text: #eef2ff;
+            --etuaide-muted: #9aa8ca;
+            --etuaide-shadow: 0 22px 48px rgba(0, 0, 0, 0.34);
+        }
+
         .login-container {
             min-height: 100vh;
             display: flex;
@@ -20,6 +28,13 @@
             justify-content: center;
             padding: 24px;
             background: #eef4fb;
+        }
+
+        body.theme-dark .login-container {
+            background:
+                radial-gradient(circle at top left, rgba(33, 86, 245, 0.16), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(93, 62, 240, 0.18), transparent 28%),
+                #08101f;
         }
 
         .login-card {
@@ -30,6 +45,11 @@
             box-shadow: var(--etuaide-shadow);
             padding: 34px;
             border: 1px solid rgba(33, 86, 245, 0.08);
+        }
+
+        body.theme-dark .login-card {
+            border-color: var(--etuaide-border);
+            backdrop-filter: blur(14px);
         }
 
         .brand-row {
@@ -106,6 +126,10 @@
             border-color: var(--etuaide-primary);
             background: #ffffff;
             box-shadow: 0 0 0 4px rgba(33, 86, 245, 0.06);
+        }
+
+        body.theme-dark .form-group input:focus {
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .muted {
@@ -203,9 +227,19 @@
             transition: border-color 0.2s ease, transform 0.15s ease;
         }
 
+        body.theme-dark .social-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--etuaide-border);
+            color: var(--etuaide-text);
+        }
+
         .social-btn:hover {
             border-color: #b7c3ea;
             transform: translateY(-1px);
+        }
+
+        body.theme-dark .social-btn:hover {
+            border-color: rgba(139, 119, 255, 0.34);
         }
 
         .social-btn.google {
