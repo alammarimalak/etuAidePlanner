@@ -2,6 +2,30 @@
 
 @push('styles')
     <style>
+        .tasks-filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: end;
+        }
+
+        .tasks-filter-field {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .tasks-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .tasks-filter-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
         .tasks-filter-actions .secondary {
             display: inline-flex;
             align-items: center;
@@ -58,6 +82,16 @@
         body.theme-dark .task-icon-action.delete {
             color: #fca5a5;
         }
+
+        @media (max-width: 720px) {
+            .tasks-filter-form {
+                align-items: stretch;
+            }
+
+            .tasks-filter-actions {
+                width: 100%;
+            }
+        }
     </style>
 @endpush
 
@@ -65,8 +99,8 @@
     <h1>Tasks</h1>
 
     <div class="card">
-        <form method="GET" action="{{ route('tasks.index') }}" class="form-grid">
-            <div>
+        <form method="GET" action="{{ route('tasks.index') }}" class="tasks-filter-form" data-auto-filter-form>
+            <div class="tasks-filter-field">
                 <label>Status</label>
                 <select name="status">
                     <option value="">All</option>
@@ -75,7 +109,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="tasks-filter-field">
                 <label>Priority</label>
                 <select name="priority">
                     <option value="">All</option>
@@ -84,7 +118,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="tasks-filter-field">
                 <label>Category</label>
                 <select name="category_id">
                     <option value="">All</option>
@@ -94,7 +128,7 @@
                 </select>
             </div>
             <div class="actions tasks-filter-actions">
-                <button type="submit">Filter</button>
+                <a class="secondary" href="{{ route('tasks.index') }}">Reset</a>
                 <a class="secondary" href="{{ route('tasks.create') }}">New Task</a>
             </div>
         </form>
@@ -150,4 +184,18 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterForm = document.querySelector('[data-auto-filter-form]');
+
+            if (!filterForm) {
+                return;
+            }
+
+            filterForm.querySelectorAll('select').forEach((input) => {
+                input.addEventListener('change', () => filterForm.requestSubmit());
+            });
+        });
+    </script>
 @endsection

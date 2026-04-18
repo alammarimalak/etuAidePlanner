@@ -84,6 +84,11 @@ class TaskController extends Controller
 
         $data['user_id'] = $user->id;
         $data['is_recurring'] = $request->boolean('is_recurring');
+        $data['recurrence_timezone'] = null;
+
+        if (!$data['is_recurring']) {
+            $data['recurrence_rule'] = null;
+        }
 
         if ($data['status'] === Task::STATUS_DONE) {
             $data['completed_at'] = now();
@@ -150,6 +155,11 @@ class TaskController extends Controller
         ]);
 
         $data['is_recurring'] = $request->boolean('is_recurring');
+        $data['recurrence_timezone'] = null;
+
+        if (!$data['is_recurring']) {
+            $data['recurrence_rule'] = null;
+        }
 
         if ($data['status'] === Task::STATUS_DONE) {
             $data['completed_at'] = $task->completed_at ?? now();

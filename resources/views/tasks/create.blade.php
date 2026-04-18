@@ -1,51 +1,103 @@
 @extends('layouts.app')
 
+@push('styles')
+    <style>
+        .task-form-row {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: end;
+        }
+
+        .task-form-row.title-row {
+            grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.8fr);
+        }
+
+        .task-recurrence-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: end;
+        }
+
+        .task-description textarea {
+            width: 100%;
+            min-height: 140px;
+            display: block;
+        }
+
+        .weekday-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .weekday-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 760px) {
+            .task-form-row,
+            .task-form-row.title-row,
+            .task-recurrence-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+@endpush
+
 @section('content')
     <h1>Create Task</h1>
 
     <div class="card">
         <form method="POST" action="{{ route('tasks.store') }}" class="form-grid" id="task-form">
             @csrf
-            <div>
-                <label>Title</label>
-                <input type="text" name="title" value="{{ old('title') }}" required>
+            <div class="task-form-row title-row">
+                <div>
+                    <label>Title</label>
+                    <input type="text" name="title" value="{{ old('title') }}" required>
+                </div>
+                <div>
+                    <label>Priority</label>
+                    <select name="priority">
+                        @foreach (['high', 'medium', 'low'] as $priority)
+                            <option value="{{ $priority }}" @selected(old('priority', 'medium') === $priority)>{{ ucfirst($priority) }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            <div>
-                <label>Description</label>
-                <textarea name="description" rows="4">{{ old('description') }}</textarea>
+            <div class="task-form-row">
+                <div>
+                    <label>Status</label>
+                    <select name="status">
+                        @foreach (['pending', 'in_progress', 'review', 'done'] as $status)
+                            <option value="{{ $status }}" @selected(old('status', 'pending') === $status)>{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label>Category</label>
+                    <select name="category_id">
+                        <option value="">None</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" @selected((int) old('category_id') === $category->id)>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            <div>
-                <label>Priority</label>
-                <select name="priority">
-                    @foreach (['high', 'medium', 'low'] as $priority)
-                        <option value="{{ $priority }}" @selected(old('priority', 'medium') === $priority)>{{ ucfirst($priority) }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label>Status</label>
-                <select name="status">
-                    @foreach (['pending', 'in_progress', 'review', 'done'] as $status)
-                        <option value="{{ $status }}" @selected(old('status', 'pending') === $status)>{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label>Category</label>
-                <select name="category_id">
-                    <option value="">None</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" @selected((int) old('category_id') === $category->id)>{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label>Start At</label>
-                <input type="datetime-local" name="start_at" value="{{ old('start_at') }}">
-            </div>
-            <div>
-                <label>Due At</label>
-                <input type="datetime-local" name="due_at" value="{{ old('due_at') }}">
+            <div class="task-form-row">
+                <div>
+                    <label>Start At</label>
+                    <input type="datetime-local" name="start_at" value="{{ old('start_at') }}">
+                </div>
+                <div>
+                    <label>Due At</label>
+                    <input type="datetime-local" name="due_at" value="{{ old('due_at') }}">
+                </div>
             </div>
             <div>
                 <label>
@@ -56,7 +108,8 @@
 
             <div class="card recurrence-builder" data-rule="{{ old('recurrence_rule') }}">
                 <h3>Recurrence Builder</h3>
-                <div class="form-grid">
+                <input type="hidden" name="recurrence_rule" id="recurrence_rule" value="{{ old('recurrence_rule') }}">
+                <div class="task-recurrence-grid">
                     <div>
                         <label>Frequency</label>
                         <select data-field="freq">
@@ -80,14 +133,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <label>Recurrence Rule (RRULE)</label>
-                    <input type="text" name="recurrence_rule" id="recurrence_rule" value="{{ old('recurrence_rule') }}">
-                </div>
-                <div>
-                    <label>Recurrence Timezone</label>
-                    <input type="text" name="recurrence_timezone" value="{{ old('recurrence_timezone') }}" placeholder="Africa/Casablanca">
-                </div>
+            </div>
+            <div class="task-description">
+                <label>Description</label>
+                <textarea name="description" rows="4">{{ old('description') }}</textarea>
             </div>
 
             <div class="actions">
