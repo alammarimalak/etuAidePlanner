@@ -45,14 +45,14 @@ class CalendarController extends Controller
             ->whereHas('task', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->with('task.category')
+            ->with('task.category', 'task.subtasks')
             ->orderBy('scheduled_at')
             ->get();
 
         $dueTasks = Task::query()
             ->where('user_id', $user->id)
             ->whereBetween('due_at', [$start, $end])
-            ->with('category')
+            ->with('category', 'subtasks')
             ->orderBy('due_at')
             ->get();
 
@@ -86,6 +86,33 @@ class CalendarController extends Controller
             return $task->due_at->toDateString();
         });
 
+        $taskDetails = $dueTasks
+            ->concat($occurrences->map->task)
+            ->unique('id')
+            ->mapWithKeys(function (Task $task) {
+                return [$task->id => [
+                    'id' => $task->id,
+                    'title' => $task->title,
+                    'description' => $task->description,
+                    'priority' => $task->priority,
+                    'status' => $task->status,
+                    'category_id' => $task->category_id,
+                    'is_recurring' => $task->is_recurring,
+                    'recurrence_rule' => $task->recurrence_rule,
+                    'start_at' => $task->start_at?->format('Y-m-d\TH:i'),
+                    'due_at' => $task->due_at?->format('Y-m-d\TH:i'),
+                    'subtasks' => $task->subtasks
+                        ->sortBy('sort_order')
+                        ->values()
+                        ->map(fn ($subtask) => [
+                            'id' => $subtask->id,
+                            'title' => $subtask->title,
+                            'status' => $subtask->status,
+                        ])
+                        ->all(),
+                ]];
+            });
+
         $eventsByDate = collect($days)
             ->mapWithKeys(function (Carbon $day) use ($occurrencesByDate, $tasksByDate) {
                 $dateKey = $day->toDateString();
@@ -94,6 +121,7 @@ class CalendarController extends Controller
                     ->map(function (TaskOccurrence $occurrence) {
                         return [
                             'id' => $occurrence->id,
+                            'task_id' => $occurrence->task->id,
                             'type' => 'occurrence',
                             'title' => $occurrence->task->title,
                             'status' => $occurrence->status,
@@ -111,6 +139,7 @@ class CalendarController extends Controller
                     ->map(function (Task $task) {
                         return [
                             'id' => $task->id,
+                            'task_id' => $task->id,
                             'type' => 'task',
                             'title' => $task->title,
                             'status' => $task->status,
@@ -156,6 +185,7 @@ class CalendarController extends Controller
             'end' => $end,
             'days' => $days,
             'categories' => $categories,
+            'taskDetails' => $taskDetails,
             'weekdays' => $weekdays,
             'eventsByDate' => $eventsByDate,
             'today' => $now->copy()->startOfDay(),

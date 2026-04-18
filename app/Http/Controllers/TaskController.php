@@ -81,6 +81,7 @@ class TaskController extends Controller
             'start_at' => ['nullable', 'date'],
             'due_at' => ['nullable', 'date'],
             'subtasks' => ['nullable', 'array'],
+            'subtasks.*.id' => ['nullable', 'integer'],
             'subtasks.*.title' => ['nullable', 'string', 'max:255'],
             'subtasks.*.status' => ['nullable', 'in:pending,in_progress,review,done'],
         ]);
@@ -99,16 +100,9 @@ class TaskController extends Controller
 
         $task = Task::create($data);
 
-        collect($request->input('subtasks', []))
-            ->filter(fn ($subtask) => filled($subtask['title'] ?? null))
-            ->values()
-            ->each(function (array $subtask, int $index) use ($task) {
-                $task->subtasks()->create([
-                    'title' => trim($subtask['title']),
-                    'status' => $subtask['status'] ?? 'pending',
-                    'sort_order' => $index,
-                ]);
-            });
+        if ($request->boolean('subtasks_present')) {
+            $this->syncSubtasks($task, $request->input('subtasks', []));
+        }
 
         if ($request->boolean('from_calendar')) {
             return redirect()->back()->with('status', 'Task added to your calendar.');
@@ -166,6 +160,10 @@ class TaskController extends Controller
             'recurrence_timezone' => ['nullable', 'string', 'max:100'],
             'start_at' => ['nullable', 'date'],
             'due_at' => ['nullable', 'date'],
+            'subtasks' => ['nullable', 'array'],
+            'subtasks.*.id' => ['nullable', 'integer'],
+            'subtasks.*.title' => ['nullable', 'string', 'max:255'],
+            'subtasks.*.status' => ['nullable', 'in:pending,in_progress,review,done'],
         ]);
 
         $data['is_recurring'] = $request->boolean('is_recurring');
@@ -182,6 +180,14 @@ class TaskController extends Controller
         }
 
         $task->update($data);
+
+        if ($request->boolean('subtasks_present')) {
+            $this->syncSubtasks($task, $request->input('subtasks', []));
+        }
+
+        if ($request->boolean('from_calendar')) {
+            return redirect()->back()->with('status', 'Task updated.');
+        }
 
         return redirect()->route('tasks.show', $task)->with('status', 'Task updated.');
     }
@@ -208,5 +214,41 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()->route('tasks.index')->with('status', 'Task deleted.');
+    }
+
+    private function syncSubtasks(Task $task, array $subtasks): void
+    {
+        $existingIds = $task->subtasks()->pluck('id')->all();
+
+        $retainedIds = collect($subtasks)
+            ->filter(fn ($subtask) => filled($subtask['title'] ?? null))
+            ->values()
+            ->map(function (array $subtask, int $index) use ($task, $existingIds) {
+                $subtaskId = isset($subtask['id']) ? (int) $subtask['id'] : null;
+
+                if ($subtaskId && in_array($subtaskId, $existingIds, true)) {
+                    $task->subtasks()->whereKey($subtaskId)->update([
+                        'title' => trim($subtask['title']),
+                        'status' => $subtask['status'] ?? 'pending',
+                        'sort_order' => $index,
+                    ]);
+
+                    return $subtaskId;
+                }
+
+                $createdSubtask = $task->subtasks()->create([
+                    'title' => trim($subtask['title']),
+                    'status' => $subtask['status'] ?? 'pending',
+                    'sort_order' => $index,
+                ]);
+
+                return $createdSubtask->id;
+            })
+            ->filter()
+            ->all();
+
+        $task->subtasks()
+            ->whereNotIn('id', $retainedIds)
+            ->delete();
     }
 }

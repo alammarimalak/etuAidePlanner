@@ -432,6 +432,8 @@
             background: #ffffff;
             box-shadow: 0 28px 58px rgba(5, 8, 22, 0.24);
             overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-gutter: stable both-edges;
             color: var(--ink);
         }
 
@@ -555,6 +557,10 @@
             background: #ffffff;
         }
 
+        .calendar-recurrence-builder.is-hidden {
+            display: none;
+        }
+
         .calendar-recurrence-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -637,6 +643,13 @@
             background: var(--calendar-surface-strong);
         }
 
+        .calendar-modal-item-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+        }
+
         .calendar-modal-item-title {
             font-weight: 700;
             color: var(--calendar-text);
@@ -648,9 +661,9 @@
         }
 
         .calendar-modal-item-actions {
-            margin-top: 10px;
             display: flex;
             justify-content: flex-end;
+            margin-top: 0;
         }
 
         .calendar-hover-card[hidden] {
@@ -801,6 +814,7 @@
         $calendarDetailEvents = $eventsByDate
             ->map(fn ($events) => $events
                 ->map(fn ($event) => [
+                    'task_id' => $event['task_id'] ?? $event['id'],
                     'title' => $event['title'],
                     'type' => $event['type'],
                     'time' => $event['time'],
@@ -958,16 +972,18 @@
         <div class="calendar-modal" role="dialog" aria-modal="true" aria-labelledby="calendar-modal-title">
             <div class="calendar-modal-header">
                 <div>
-                    <span class="status">Quick Add</span>
-                    <h3 id="calendar-modal-title">Add a task from the calendar</h3>
-                    <p class="muted">Fill in the task details, add subtasks if needed, and save it directly into this calendar slot.</p>
+                    <span class="status" data-modal-status-badge>Quick Add</span>
+                    <h3 id="calendar-modal-title" data-modal-heading>Add a task from the calendar</h3>
+                    <p class="muted" data-modal-copy>Fill in the task details, add subtasks if needed, and save it directly into this calendar slot.</p>
                 </div>
                 <button type="button" class="calendar-modal-close" data-modal-close aria-label="Close quick add">x</button>
             </div>
 
             <form id="calendar-popup-form" class="calendar-modal-form" method="POST" action="{{ route('tasks.store') }}">
                 @csrf
+                <input type="hidden" name="_method" value="POST" data-modal-method>
                 <input type="hidden" name="from_calendar" value="1">
+                <input type="hidden" name="subtasks_present" value="1">
                 <input type="hidden" id="calendar-modal-date" value="">
 
                 <div class="calendar-modal-meta">
@@ -1088,7 +1104,7 @@
                 </div>
 
                 <div class="calendar-modal-actions">
-                    <button type="submit">Create Task</button>
+                    <button type="submit" data-modal-submit-label>Create Task</button>
                     <button type="button" class="secondary" data-modal-close>Cancel</button>
                 </div>
             </form>
@@ -1097,17 +1113,25 @@
 
     <script>
         const csrfToken = '{{ csrf_token() }}';
+        const taskStoreRoute = '{{ route('tasks.store') }}';
         const taskRouteTemplate = '{{ route('tasks.move', ':id') }}';
+        const taskUpdateRouteTemplate = '{{ route('tasks.update', ':id') }}';
         const occurrenceRouteTemplate = '{{ route('occurrences.update', ':id') }}';
         const calendarEventsByDate = @json($calendarDetailEvents);
+        const calendarTaskDetails = @json($taskDetails);
         const modalShell = document.querySelector('.calendar-modal-shell');
         const modalForm = document.getElementById('calendar-popup-form');
+        const modalMethodInput = modalForm ? modalForm.querySelector('[data-modal-method]') : null;
         const modalDateInput = document.getElementById('calendar-modal-date');
         const modalTitleInput = document.getElementById('calendar-modal-title-input');
         const modalStartAtInput = document.getElementById('calendar-modal-start-at');
         const modalDueAtInput = document.getElementById('calendar-modal-due-at');
         const modalDateLabel = document.querySelector('[data-selected-date-label]');
         const modalTimeLabel = document.querySelector('[data-selected-time-label]');
+        const modalStatusBadge = document.querySelector('[data-modal-status-badge]');
+        const modalHeading = document.querySelector('[data-modal-heading]');
+        const modalCopy = document.querySelector('[data-modal-copy]');
+        const modalSubmitLabel = document.querySelector('[data-modal-submit-label]');
         const modalEvents = document.getElementById('calendar-modal-events');
         const modalSubtasksList = document.getElementById('calendar-subtasks-list');
         const addSubtaskButton = document.querySelector('[data-add-subtask]');
@@ -1121,6 +1145,7 @@
         let selectedDate = '{{ $focusDate->toDateString() }}';
         let selectedTime = '09:00';
         let subtaskIndex = 0;
+        let editingTaskId = null;
 
         const escapeHtml = (value) => String(value)
             .replace(/&/g, '&amp;')
@@ -1215,6 +1240,7 @@
             row.className = 'calendar-subtask-row';
             row.innerHTML = `
                 <div>
+                    <input type="hidden" name="subtasks[${subtaskIndex}][id]" value="${values.id || ''}">
                     <label>Subtask Title</label>
                     <input type="text" name="subtasks[${subtaskIndex}][title]" value="${escapeHtml(values.title || '')}" placeholder="Example: Draft the outline">
                 </div>
@@ -1237,6 +1263,81 @@
 
             modalSubtasksList.appendChild(row);
             subtaskIndex += 1;
+        };
+
+        const resetRecurrenceBuilder = (rule = '') => {
+            const parsedRule = parseRecurrenceRule(rule);
+
+            if (modalRecurrenceFreq) {
+                modalRecurrenceFreq.value = parsedRule.freq || 'DAILY';
+            }
+
+            if (modalRecurrenceInterval) {
+                modalRecurrenceInterval.value = parsedRule.interval || 1;
+            }
+
+            modalRecurrenceDays.forEach((input) => {
+                input.checked = parsedRule.byday.includes(input.value);
+            });
+        };
+
+        const setModalMode = (mode, taskId = null) => {
+            editingTaskId = mode === 'edit' ? taskId : null;
+
+            if (modalForm) {
+                modalForm.action = mode === 'edit' && taskId
+                    ? taskUpdateRouteTemplate.replace(':id', taskId)
+                    : taskStoreRoute;
+            }
+
+            if (modalMethodInput) {
+                modalMethodInput.value = mode === 'edit' ? 'PATCH' : 'POST';
+            }
+
+            if (modalStatusBadge) {
+                modalStatusBadge.textContent = mode === 'edit' ? 'Edit Task' : 'Quick Add';
+            }
+
+            if (modalHeading) {
+                modalHeading.textContent = mode === 'edit' ? 'Edit a task from the calendar' : 'Add a task from the calendar';
+            }
+
+            if (modalCopy) {
+                modalCopy.textContent = mode === 'edit'
+                    ? 'Update the task details below and save the changes directly from your calendar.'
+                    : 'Fill in the task details, add subtasks if needed, and save it directly into this calendar slot.';
+            }
+
+            if (modalSubmitLabel) {
+                modalSubmitLabel.textContent = mode === 'edit' ? 'Save Changes' : 'Create Task';
+            }
+        };
+
+        const fillModalFromTask = (task) => {
+            if (!task || !modalForm) {
+                return;
+            }
+
+            modalForm.querySelector('input[name="title"]').value = task.title || '';
+            modalForm.querySelector('textarea[name="description"]').value = task.description || '';
+            modalForm.querySelector('select[name="priority"]').value = task.priority || 'medium';
+            modalForm.querySelector('select[name="status"]').value = task.status || 'pending';
+            modalForm.querySelector('select[name="category_id"]').value = task.category_id ?? '';
+            modalStartAtInput.value = task.start_at || '';
+            modalDueAtInput.value = task.due_at || toDateTimeLocalValue(selectedDate, selectedTime);
+            modalRecurringCheckbox.checked = Boolean(task.is_recurring);
+            resetRecurrenceBuilder(task.recurrence_rule || '');
+            toggleRecurrenceBuilder();
+            buildRecurrenceRule();
+
+            if (modalSubtasksList) {
+                modalSubtasksList.innerHTML = '';
+            }
+
+            subtaskIndex = 0;
+            (task.subtasks || []).forEach((subtask) => createSubtaskRow(subtask));
+            renderSubtaskEmptyState();
+            updateModalSelectionSummary();
         };
 
         const updateModalSelectionSummary = () => {
@@ -1265,10 +1366,16 @@
                 <div class="${allowEdit ? 'calendar-modal-item' : 'calendar-hover-item'}">
                     ${allowEdit ? '' : `<span class="calendar-hover-accent ${escapeHtml(entry.type)}"></span>`}
                     <div>
-                        <div class="${allowEdit ? 'calendar-modal-item-title' : 'calendar-hover-item-title'}">${escapeHtml(entry.title)}</div>
+                        ${allowEdit ? `
+                            <div class="calendar-modal-item-top">
+                                <div class="calendar-modal-item-title">${escapeHtml(entry.title)}</div>
+                                <div class="calendar-modal-item-actions">
+                                    <button type="button" class="btn secondary" data-edit-task="${escapeHtml(entry.task_id)}">Edit</button>
+                                </div>
+                            </div>
+                        ` : `<div class="calendar-hover-item-title">${escapeHtml(entry.title)}</div>`}
                         <div class="${allowEdit ? 'calendar-modal-item-meta' : 'calendar-hover-item-meta'}">${escapeHtml(entry.time)} - ${escapeHtml(entry.meta)}</div>
                         ${allowEdit ? `<div class="calendar-modal-item-meta text-capitalize">${escapeHtml(entry.status)}</div>` : ''}
-                        ${allowEdit && entry.edit_url ? `<div class="calendar-modal-item-actions"><a class="btn secondary" href="${escapeHtml(entry.edit_url)}">Edit</a></div>` : ''}
                     </div>
                 </div>
             `).join('');
@@ -1329,6 +1436,7 @@
 
             hideHoverCard();
             modalForm.reset();
+            setModalMode('create');
             subtaskIndex = 0;
             if (modalSubtasksList) {
                 modalSubtasksList.innerHTML = '';
@@ -1339,10 +1447,39 @@
             modalDueAtInput.value = toDateTimeLocalValue(date, time || '09:00');
             modalDateLabel.textContent = displayDate || date;
             modalTimeLabel.textContent = time || '09:00';
+            resetRecurrenceBuilder('');
             toggleRecurrenceBuilder();
             buildRecurrenceRule();
             renderSubtaskEmptyState();
             renderModalEvents(date);
+            updateModalSelectionSummary();
+
+            window.requestAnimationFrame(() => {
+                modalTitleInput.focus();
+            });
+        };
+
+        const openEditTaskModal = (taskId) => {
+            const task = calendarTaskDetails[taskId];
+
+            if (!task || !modalShell || !modalForm) {
+                return;
+            }
+
+            hideHoverCard();
+            modalForm.reset();
+            setModalMode('edit', taskId);
+            modalShell.hidden = false;
+
+            const primaryDateTime = task.due_at || task.start_at || toDateTimeLocalValue(selectedDate, selectedTime);
+            const [datePart, timePart] = primaryDateTime.split('T');
+            selectedDate = datePart || selectedDate;
+            selectedTime = (timePart || selectedTime).slice(0, 5);
+            modalDateInput.value = selectedDate;
+
+            fillModalFromTask(task);
+            renderModalEvents(selectedDate);
+            updateSelectedTarget(selectedDate, selectedTime);
 
             window.requestAnimationFrame(() => {
                 modalTitleInput.focus();
@@ -1356,6 +1493,7 @@
 
             modalShell.hidden = true;
             modalForm.reset();
+            setModalMode('create');
             if (modalSubtasksList) {
                 modalSubtasksList.innerHTML = '';
             }
@@ -1363,6 +1501,7 @@
             modalDateInput.value = '';
             modalDueAtInput.value = '';
             modalStartAtInput.value = '';
+            resetRecurrenceBuilder('');
             toggleRecurrenceBuilder();
             buildRecurrenceRule();
             renderSubtaskEmptyState();
@@ -1473,6 +1612,19 @@
         document.querySelectorAll('[data-modal-close]').forEach((closeTrigger) => {
             closeTrigger.addEventListener('click', closeCalendarModal);
         });
+
+        if (modalEvents) {
+            modalEvents.addEventListener('click', (event) => {
+                const editButton = event.target.closest('[data-edit-task]');
+
+                if (!editButton) {
+                    return;
+                }
+
+                event.preventDefault();
+                openEditTaskModal(editButton.getAttribute('data-edit-task'));
+            });
+        }
 
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && modalShell && !modalShell.hidden) {
