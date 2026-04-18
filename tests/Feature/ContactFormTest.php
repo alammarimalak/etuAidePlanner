@@ -30,7 +30,7 @@ class ContactFormTest extends TestCase
             return $mail->senderName === 'Malak'
                 && $mail->senderEmail === 'malak@example.com'
                 && $mail->messageBody === 'Hello from the contact form.'
-                && $mail->hasFrom('malak@example.com', 'Malak')
+                && $mail->hasReplyTo('malak@example.com', 'Malak')
                 && $mail->hasTo('alammarimalak17@gmail.com');
         });
 

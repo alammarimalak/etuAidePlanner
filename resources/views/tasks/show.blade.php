@@ -4,11 +4,21 @@
     <h1>{{ $task->title }}</h1>
 
     <div class="card">
-        <p class="muted">Status: <span class="pill">{{ $task->status }}</span></p>
-        <p>Priority: {{ ucfirst($task->priority) }}</p>
-        <p>Due: {{ optional($task->due_at)->format('M d, Y H:i') ?? '—' }}</p>
+        <p class="muted">
+            Status:
+            <span class="pill status-{{ str_replace('_', '-', $task->status) }}">
+                {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+            </span>
+        </p>
+        <p>
+            Priority:
+            <span class="pill priority-{{ str_replace('_', '-', $task->priority) }}">
+                {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+            </span>
+        </p>
+        <p>Due: {{ optional($task->due_at)->format('M d, Y H:i') ?? '-' }}</p>
         <p>Category: {{ $task->category?->name ?? 'None' }}</p>
-        <p>Description: {{ $task->description ?? '—' }}</p>
+        <p>Description: {{ $task->description ?? '-' }}</p>
 
         <div class="actions">
             <a href="{{ route('tasks.edit', $task) }}">Edit Task</a>
@@ -96,7 +106,9 @@
             @forelse ($task->occurrences as $occurrence)
                 <li>
                     {{ $occurrence->scheduled_at->format('M d, Y H:i') }}
-                    <span class="pill">{{ $occurrence->status }}</span>
+                    <span class="pill status-{{ str_replace('_', '-', $occurrence->status) }}">
+                        {{ ucfirst(str_replace('_', ' ', $occurrence->status)) }}
+                    </span>
                 </li>
             @empty
                 <li class="muted">No occurrences yet.</li>
@@ -104,3 +116,4 @@
         </ul>
     </div>
 @endsection
+

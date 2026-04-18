@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Mail\ContactFormAutoReply;
 use App\Mail\ContactFormMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class HomeController extends Controller
 {
-    private const CONTACT_RECIPIENT = 'alammarimalak17@gmail.com';
-
     public function index()
     {
         return view('home');
@@ -49,9 +48,10 @@ class HomeController extends Controller
         }
 
         $contactData = $validator->validated();
+        $contactRecipient = (string) config('mail.contact.recipient');
 
         try {
-            Mail::to(self::CONTACT_RECIPIENT)->send(new ContactFormMessage(
+            Mail::to($contactRecipient)->send(new ContactFormMessage(
                 senderName: (string) $contactData['name'],
                 senderEmail: (string) $contactData['email'],
                 messageBody: (string) $contactData['message'],
@@ -61,9 +61,15 @@ class HomeController extends Controller
                 senderName: (string) $contactData['name'],
                 senderEmail: (string) $contactData['email'],
                 messageBody: (string) $contactData['message'],
-                supportEmail: self::CONTACT_RECIPIENT,
+                supportEmail: $contactRecipient,
             ));
         } catch (Throwable $exception) {
+            Log::error('Contact form email failed to send.', [
+                'sender_email' => (string) $contactData['email'],
+                'recipient_email' => $contactRecipient,
+                'error' => $exception->getMessage(),
+            ]);
+
             return redirect()
                 ->to(route('home') . '#contact')
                 ->with('contact_error', 'Your message could not be sent right now. Please try again in a moment.')

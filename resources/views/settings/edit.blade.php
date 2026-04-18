@@ -17,6 +17,10 @@
             background: rgba(255, 255, 255, 0.46);
         }
 
+        .settings-panel > div {
+            min-width: 0;
+        }
+
         .settings-panel h2 {
             margin: 0;
             font-size: 1.05rem;
@@ -30,6 +34,32 @@
             grid-column: 1 / -1;
         }
 
+        .settings-password-field {
+            display: grid;
+            grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
+            gap: 16px;
+            align-items: start;
+            min-width: 0;
+        }
+
+        .settings-password-field label {
+            margin-top: 12px;
+            font-weight: 700;
+        }
+
+        .settings-password-input {
+            display: grid;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .settings-panel input,
+        .settings-panel select {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+
         body.theme-dark .settings-panel {
             background: rgba(255, 255, 255, 0.03);
             border-color: rgba(139, 119, 255, 0.18);
@@ -38,6 +68,15 @@
         @media (max-width: 860px) {
             .settings-layout {
                 grid-template-columns: 1fr;
+            }
+
+            .settings-password-field {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .settings-password-field label {
+                margin-top: 0;
             }
         }
     </style>
@@ -100,25 +139,31 @@
                     <p class="muted">Use these fields only when you want to change your password.</p>
                 </div>
 
-                <div>
-                    <label>Current Password</label>
-                    <input type="password" name="current_password" autocomplete="current-password">
-                    @error('current_password')
-                        <div class="muted">{{ $message }}</div>
-                    @enderror
+                <div class="settings-password-field">
+                    <label for="current_password">Current Password</label>
+                    <div class="settings-password-input">
+                        <input id="current_password" type="password" name="current_password" autocomplete="current-password">
+                        @error('current_password')
+                            <div class="muted">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
-                <div>
-                    <label>New Password</label>
-                    <input type="password" name="password" autocomplete="new-password">
-                    @error('password')
-                        <div class="muted">{{ $message }}</div>
-                    @enderror
+                <div class="settings-password-field">
+                    <label for="password">New Password</label>
+                    <div class="settings-password-input">
+                        <input id="password" type="password" name="password" autocomplete="new-password">
+                        @error('password')
+                            <div class="muted">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
-                <div>
-                    <label>Confirm New Password</label>
-                    <input type="password" name="password_confirmation" autocomplete="new-password">
+                <div class="settings-password-field">
+                    <label for="password_confirmation">Confirm New Password</label>
+                    <div class="settings-password-input">
+                        <input id="password_confirmation" type="password" name="password_confirmation" autocomplete="new-password">
+                    </div>
                 </div>
             </div>
 

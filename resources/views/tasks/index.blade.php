@@ -149,8 +149,16 @@
                 @forelse ($tasks as $task)
                     <tr>
                         <td>{{ $task->title }}</td>
-                        <td><span class="pill">{{ $task->status }}</span></td>
-                        <td>{{ ucfirst($task->priority) }}</td>
+                        <td>
+                            <span class="pill status-{{ str_replace('_', '-', $task->status) }}">
+                                {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="pill priority-{{ str_replace('_', '-', $task->priority) }}">
+                                {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+                            </span>
+                        </td>
                         <td>{{ optional($task->due_at)->format('M d, Y') ?? '-' }}</td>
                         <td>
                             <div class="task-table-actions">

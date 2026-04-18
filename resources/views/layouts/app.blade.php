@@ -294,6 +294,20 @@
             scrollbar-gutter: stable;
         }
 
+        .student-sidebar::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .student-sidebar::-webkit-scrollbar-track {
+            background: rgba(16, 25, 53, 0.08);
+            border-radius: 999px;
+        }
+
+        .student-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(33, 86, 245, 0.28);
+            border-radius: 999px;
+        }
+
         .student-sidebar-brand {
             display: grid;
             gap: 10px;
@@ -638,11 +652,76 @@
             background: rgba(93, 62, 240, 0.1);
             color: var(--violet-900);
             font-weight: 700;
+            border: 1px solid transparent;
+        }
+
+        .pill.status-done,
+        .pill.priority-low {
+            background: rgba(34, 197, 94, 0.16);
+            border-color: rgba(34, 197, 94, 0.24);
+            color: #166534;
+        }
+
+        .pill.status-pending {
+            background: rgba(249, 115, 22, 0.16);
+            border-color: rgba(249, 115, 22, 0.24);
+            color: #9a3412;
+        }
+
+        .pill.status-in-progress,
+        .pill.priority-medium {
+            background: rgba(250, 204, 21, 0.18);
+            border-color: rgba(250, 204, 21, 0.3);
+            color: #854d0e;
+        }
+
+        .pill.status-review {
+            background: rgba(148, 163, 184, 0.18);
+            border-color: rgba(148, 163, 184, 0.28);
+            color: #475569;
+        }
+
+        .pill.priority-high {
+            background: rgba(239, 68, 68, 0.16);
+            border-color: rgba(239, 68, 68, 0.24);
+            color: #b91c1c;
         }
 
         body.theme-dark .pill {
             color: #ffffff;
             background: rgba(139, 119, 255, 0.18);
+        }
+
+        body.theme-dark .pill.status-done,
+        body.theme-dark .pill.priority-low {
+            background: rgba(34, 197, 94, 0.22);
+            border-color: rgba(74, 222, 128, 0.24);
+            color: #dcfce7;
+        }
+
+        body.theme-dark .pill.status-pending {
+            background: rgba(249, 115, 22, 0.22);
+            border-color: rgba(251, 146, 60, 0.24);
+            color: #ffedd5;
+        }
+
+        body.theme-dark .pill.status-in-progress,
+        body.theme-dark .pill.priority-medium {
+            background: rgba(234, 179, 8, 0.22);
+            border-color: rgba(250, 204, 21, 0.24);
+            color: #fef3c7;
+        }
+
+        body.theme-dark .pill.status-review {
+            background: rgba(100, 116, 139, 0.28);
+            border-color: rgba(148, 163, 184, 0.26);
+            color: #e2e8f0;
+        }
+
+        body.theme-dark .pill.priority-high {
+            background: rgba(239, 68, 68, 0.22);
+            border-color: rgba(248, 113, 113, 0.24);
+            color: #fee2e2;
         }
 
         .actions {
@@ -692,6 +771,15 @@
         body.theme-dark .student-sidebar {
             background: rgba(9, 18, 42, 0.96);
             border-right-color: rgba(139, 119, 255, 0.14);
+            scrollbar-color: #18357a rgba(8, 16, 31, 0.92);
+        }
+
+        body.theme-dark .student-sidebar::-webkit-scrollbar-track {
+            background: rgba(8, 16, 31, 0.92);
+        }
+
+        body.theme-dark .student-sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #1f4fb8 0%, #102a63 100%);
         }
 
         body.theme-dark .student-sidebar-copy span,

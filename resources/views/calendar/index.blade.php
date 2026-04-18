@@ -127,9 +127,10 @@
         }
 
         .calendar-view-switch .is-active {
-            background: linear-gradient(135deg, #0b132d 0%, var(--calendar-accent) 58%, var(--calendar-accent-strong) 100%);
+            background: var(--violet-500);
+            border-color: transparent;
             color: #ffffff;
-            box-shadow: 0 16px 28px rgba(5, 8, 22, 0.18);
+            box-shadow: 0 16px 28px rgba(33, 86, 245, 0.22);
         }
 
         .calendar-summary {
@@ -734,23 +735,71 @@
         body.theme-dark .calendar-recurrence-builder,
         body.theme-dark .calendar-subtask-row,
         body.theme-dark .calendar-modal-item {
-            background: #ffffff;
-            border-color: rgba(16, 25, 53, 0.12);
-            color: var(--ink);
+            background: rgba(9, 18, 42, 0.96);
+            border-color: rgba(33, 86, 245, 0.18);
+            color: #eef2ff;
         }
 
         body.theme-dark .calendar-modal label,
         body.theme-dark .calendar-modal-close,
         body.theme-dark .calendar-modal-item-meta {
-            color: var(--ink-soft);
+            color: rgba(238, 242, 255, 0.82);
         }
 
         body.theme-dark .calendar-modal .muted {
-            color: rgba(16, 25, 53, 0.64);
+            color: rgba(238, 242, 255, 0.7);
         }
 
         body.theme-dark .calendar-modal-item-title {
-            color: var(--ink);
+            color: #f8fbff;
+        }
+
+        body.theme-dark .calendar-modal {
+            background:
+                linear-gradient(180deg, rgba(7, 14, 31, 0.98), rgba(10, 21, 45, 0.98)),
+                radial-gradient(circle at top right, rgba(33, 86, 245, 0.14), transparent 34%);
+            box-shadow: 0 28px 58px rgba(0, 0, 0, 0.44);
+        }
+
+        body.theme-dark .calendar-modal-backdrop {
+            background: rgba(2, 8, 23, 0.78);
+        }
+
+        body.theme-dark .calendar-modal input,
+        body.theme-dark .calendar-modal select,
+        body.theme-dark .calendar-modal textarea {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: #eef2ff !important;
+            border-color: rgba(33, 86, 245, 0.2);
+        }
+
+        body.theme-dark .calendar-inline-check label,
+        body.theme-dark .calendar-modal-header p,
+        body.theme-dark .calendar-modal-meta-card strong {
+            color: #eef2ff;
+        }
+
+        body.theme-dark .calendar-modal-close {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        body.theme-dark .calendar-subtask-empty {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(33, 86, 245, 0.18);
+            color: rgba(238, 242, 255, 0.7);
+        }
+
+        body.theme-dark .calendar-view-switch .is-active {
+            background: var(--violet-500);
+            color: #ffffff;
+        }
+
+        body.theme-dark .calendar-canvas .btn:not(.secondary),
+        body.theme-dark .calendar-modal .btn:not(.secondary),
+        body.theme-dark .calendar-modal button:not(.secondary):not(.calendar-modal-close) {
+            background: var(--violet-500);
+            color: #ffffff;
+            box-shadow: 0 16px 28px rgba(33, 86, 245, 0.22);
         }
 
         body.theme-dark .calendar-cell.is-outside {
