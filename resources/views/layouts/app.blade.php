@@ -1042,6 +1042,10 @@
                     </a>
                 @endif
 
+                <a href="{{ route('home') }}" class="student-sidebar-link">
+                    <span>Home</span>
+                </a>
+
                 <form method="POST" action="{{ route('logout') }}" class="student-sidebar-logout">
                     @csrf
                     <button type="submit" class="secondary">Log out</button>

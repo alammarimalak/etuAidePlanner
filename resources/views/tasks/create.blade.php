@@ -6,7 +6,7 @@
             display: grid;
             gap: 14px;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            align-items: end;
+            align-items: start;
         }
 
         .task-form-row.title-row {
@@ -18,6 +18,30 @@
             gap: 14px;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             align-items: end;
+        }
+
+        .task-form-row > div,
+        .task-recurrence-grid > div,
+        .task-description {
+            display: grid;
+            gap: 8px;
+            align-content: start;
+        }
+
+        .task-form-row label,
+        .task-recurrence-grid label,
+        .task-description label {
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .task-form-row input,
+        .task-form-row select,
+        .task-recurrence-grid input,
+        .task-recurrence-grid select,
+        .task-description textarea {
+            width: 100%;
         }
 
         .task-description textarea {

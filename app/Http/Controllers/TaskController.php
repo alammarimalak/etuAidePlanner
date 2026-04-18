@@ -80,6 +80,9 @@ class TaskController extends Controller
             'recurrence_timezone' => ['nullable', 'string', 'max:100'],
             'start_at' => ['nullable', 'date'],
             'due_at' => ['nullable', 'date'],
+            'subtasks' => ['nullable', 'array'],
+            'subtasks.*.title' => ['nullable', 'string', 'max:255'],
+            'subtasks.*.status' => ['nullable', 'in:pending,in_progress,review,done'],
         ]);
 
         $data['user_id'] = $user->id;
@@ -95,6 +98,17 @@ class TaskController extends Controller
         }
 
         $task = Task::create($data);
+
+        collect($request->input('subtasks', []))
+            ->filter(fn ($subtask) => filled($subtask['title'] ?? null))
+            ->values()
+            ->each(function (array $subtask, int $index) use ($task) {
+                $task->subtasks()->create([
+                    'title' => trim($subtask['title']),
+                    'status' => $subtask['status'] ?? 'pending',
+                    'sort_order' => $index,
+                ]);
+            });
 
         if ($request->boolean('from_calendar')) {
             return redirect()->back()->with('status', 'Task added to your calendar.');

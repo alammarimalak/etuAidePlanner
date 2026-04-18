@@ -56,6 +56,15 @@
             margin: 0;
         }
 
+        .calendar-toolbar-note {
+            max-width: 360px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--calendar-shell-border);
+            background: var(--calendar-surface-soft);
+            color: var(--calendar-text-soft);
+        }
+
         .calendar-toolbar-actions,
         .calendar-nav,
         .calendar-view-switch {
@@ -65,12 +74,24 @@
             align-items: center;
         }
 
+        .calendar-toolbar-actions {
+            justify-content: flex-end;
+        }
+
         .calendar-nav a,
         .calendar-view-switch a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             min-width: 44px;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
         .calendar-nav {
@@ -82,8 +103,27 @@
             height: 44px;
             padding: 0;
             border-radius: 999px;
-            font-size: 1.15rem;
             line-height: 1;
+            font-size: 0;
+            color: transparent;
+            position: relative;
+        }
+
+        .calendar-nav-icon::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+            transform: translate(-50%, -50%) rotate(45deg);
+            color: var(--calendar-text);
+        }
+
+        .calendar-nav .calendar-nav-icon:first-child::before {
+            transform: translate(-50%, -50%) rotate(-135deg);
         }
 
         .calendar-view-switch .is-active {
@@ -383,15 +423,16 @@
         .calendar-modal {
             position: relative;
             z-index: 1;
-            width: min(520px, calc(100vw - 32px));
-            margin: min(10vh, 72px) auto 0;
-            padding: 24px;
+            width: min(980px, calc(100vw - 32px));
+            max-height: calc(100vh - 40px);
+            margin: 20px auto 0;
+            padding: 28px;
             border-radius: 28px;
-            border: 1px solid var(--calendar-accent-border);
-            background:
-                linear-gradient(180deg, var(--calendar-surface-strong), var(--calendar-surface)),
-                radial-gradient(circle at top right, var(--calendar-accent-soft), transparent 28%);
+            border: 1px solid rgba(16, 25, 53, 0.12);
+            background: #ffffff;
             box-shadow: 0 28px 58px rgba(5, 8, 22, 0.24);
+            overflow-y: auto;
+            color: var(--ink);
         }
 
         .calendar-modal-header {
@@ -416,8 +457,8 @@
             align-items: center;
             justify-content: center;
             border: 0;
-            background: var(--calendar-surface-soft);
-            color: var(--calendar-text);
+            background: rgba(16, 25, 53, 0.06);
+            color: var(--ink);
             width: 40px;
             height: 40px;
             padding: 0;
@@ -429,13 +470,18 @@
 
         .calendar-modal-form {
             display: grid;
-            gap: 16px;
+            gap: 18px;
         }
 
-        .calendar-modal-grid {
+        .calendar-modal-row {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 140px;
-            gap: 12px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            align-items: start;
+        }
+
+        .calendar-modal-row.title-row {
+            grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.8fr);
         }
 
         .calendar-modal-meta {
@@ -447,8 +493,8 @@
         .calendar-modal-meta-card {
             padding: 14px 16px;
             border-radius: 18px;
-            border: 1px solid var(--calendar-shell-border);
-            background: var(--calendar-surface-soft);
+            border: 1px solid rgba(16, 25, 53, 0.1);
+            background: #ffffff;
         }
 
         .calendar-modal-meta-card strong {
@@ -457,11 +503,119 @@
             font-size: 1rem;
         }
 
-        .calendar-modal label {
+        .calendar-modal-row > div,
+        .calendar-recurrence-grid > div,
+        .calendar-modal-description,
+        .calendar-subtasks {
             display: grid;
             gap: 8px;
+            align-content: start;
+        }
+
+        .calendar-modal label {
             font-weight: 700;
-            color: var(--calendar-text-soft);
+            color: var(--ink-soft);
+        }
+
+        .calendar-modal input,
+        .calendar-modal select,
+        .calendar-modal textarea {
+            width: 100%;
+            background: #ffffff !important;
+            color: var(--ink) !important;
+            border: 1px solid rgba(16, 25, 53, 0.18);
+        }
+
+        .calendar-modal textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .calendar-modal .muted {
+            color: rgba(16, 25, 53, 0.64);
+        }
+
+        .calendar-inline-check label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink);
+        }
+
+        .calendar-inline-check input {
+            width: auto;
+        }
+
+        .calendar-recurrence-builder {
+            display: grid;
+            gap: 16px;
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 25, 53, 0.1);
+            background: #ffffff;
+        }
+
+        .calendar-recurrence-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            align-items: start;
+        }
+
+        .calendar-weekday-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .calendar-weekday-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .calendar-weekday-toggle input {
+            width: auto;
+        }
+
+        .calendar-subtasks {
+            gap: 14px;
+        }
+
+        .calendar-subtasks-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .calendar-subtasks-header p {
+            margin: 0;
+        }
+
+        .calendar-subtasks-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .calendar-subtask-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 180px auto;
+            gap: 12px;
+            align-items: end;
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(16, 25, 53, 0.1);
+            background: #ffffff;
+        }
+
+        .calendar-subtask-empty {
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px dashed rgba(16, 25, 53, 0.18);
+            color: rgba(16, 25, 53, 0.62);
         }
 
         .calendar-modal-actions {
@@ -562,21 +716,28 @@
             color: var(--calendar-text-soft);
         }
 
+        body.theme-dark .calendar-modal,
+        body.theme-dark .calendar-modal-meta-card,
+        body.theme-dark .calendar-recurrence-builder,
+        body.theme-dark .calendar-subtask-row,
+        body.theme-dark .calendar-modal-item {
+            background: #ffffff;
+            border-color: rgba(16, 25, 53, 0.12);
+            color: var(--ink);
+        }
+
         body.theme-dark .calendar-modal label,
         body.theme-dark .calendar-modal-close,
-        body.theme-dark .calendar-modal-item-meta,
-        body.theme-dark .calendar-hover-item-meta {
-            color: rgba(238, 242, 255, 0.8);
+        body.theme-dark .calendar-modal-item-meta {
+            color: var(--ink-soft);
         }
 
-        body.theme-dark .calendar-modal-close {
-            background: rgba(255, 255, 255, 0.08);
+        body.theme-dark .calendar-modal .muted {
+            color: rgba(16, 25, 53, 0.64);
         }
 
-        body.theme-dark .calendar-modal-item-title,
-        body.theme-dark .calendar-hover-title,
-        body.theme-dark .calendar-hover-item-title {
-            color: #eef2ff;
+        body.theme-dark .calendar-modal-item-title {
+            color: var(--ink);
         }
 
         body.theme-dark .calendar-cell.is-outside {
@@ -591,7 +752,11 @@
 
             .calendar-canvas-header,
             .calendar-canvas-topbar,
-            .calendar-modal-meta {
+            .calendar-modal-meta,
+            .calendar-modal-row,
+            .calendar-modal-row.title-row,
+            .calendar-recurrence-grid,
+            .calendar-subtask-row {
                 display: grid;
                 grid-template-columns: 1fr;
             }
@@ -657,17 +822,19 @@
             </div>
 
             <div class="calendar-toolbar-actions">
-                <div class="calendar-view-switch">
-                    <a class="btn secondary {{ $view === 'daily' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'daily', 'date' => $focusDate->toDateString()]) }}">Day</a>
-                    <a class="btn secondary {{ $view === 'weekly' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'weekly', 'date' => $focusDate->toDateString()]) }}">Week</a>
-                    <a class="btn secondary {{ $view === 'monthly' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'monthly', 'date' => $focusDate->toDateString()]) }}">Month</a>
-                </div>
+                <p class="calendar-toolbar-note">Choose a view, use the arrows to move through time, then click any day or hour slot to add a task directly into the calendar.</p>
             </div>
         </div>
 
         <div class="calendar-layout">
             <div class="calendar-canvas">
                 <div class="calendar-canvas-topbar">
+                    <div class="calendar-view-switch">
+                        <a class="btn secondary {{ $view === 'daily' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'daily', 'date' => $focusDate->toDateString()]) }}">Day</a>
+                        <a class="btn secondary {{ $view === 'weekly' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'weekly', 'date' => $focusDate->toDateString()]) }}">Week</a>
+                        <a class="btn secondary {{ $view === 'monthly' ? 'is-active' : '' }}" href="{{ route('calendar.index', ['view' => 'monthly', 'date' => $focusDate->toDateString()]) }}">Month</a>
+                    </div>
+
                     <div class="calendar-nav">
                         <a class="btn secondary calendar-nav-icon" href="{{ route('calendar.index', ['view' => $view, 'date' => $previousDate]) }}" aria-label="Previous period">‹</a>
                         <a class="btn secondary" href="{{ route('calendar.index', ['view' => $view, 'date' => $todayDate]) }}">Today</a>
@@ -751,7 +918,7 @@
                                 <div class="calendar-cell-title">{{ $focusDate->format('l') }}</div>
                                 <div class="muted">{{ $focusDate->format('F d, Y') }}</div>
                             </div>
-                            <a class="btn secondary" href="{{ route('tasks.create') }}">Full task form</a>
+                            <p class="muted" style="margin: 0; max-width: 320px;">Select an hour to add a task quickly, or drag existing items to reschedule them inside the calendar.</p>
                         </div>
 
                         <div class="calendar-timeline">
@@ -793,17 +960,14 @@
                 <div>
                     <span class="status">Quick Add</span>
                     <h3 id="calendar-modal-title">Add a task from the calendar</h3>
-                    <p class="muted">Choose the time, name the task, and it will be added straight into this schedule.</p>
+                    <p class="muted">Fill in the task details, add subtasks if needed, and save it directly into this calendar slot.</p>
                 </div>
                 <button type="button" class="calendar-modal-close" data-modal-close aria-label="Close quick add">x</button>
             </div>
 
             <form id="calendar-popup-form" class="calendar-modal-form" method="POST" action="{{ route('tasks.store') }}">
                 @csrf
-                <input type="hidden" name="priority" value="medium">
-                <input type="hidden" name="status" value="pending">
                 <input type="hidden" name="from_calendar" value="1">
-                <input type="hidden" name="due_at" value="">
                 <input type="hidden" id="calendar-modal-date" value="">
 
                 <div class="calendar-modal-meta">
@@ -824,23 +988,107 @@
                     </div>
                 </div>
 
-                <label for="calendar-modal-title-input">
-                    Task
-                    <input id="calendar-modal-title-input" type="text" name="title" placeholder="Example: Review chapter notes" required>
-                </label>
+                <div class="calendar-modal-row title-row">
+                    <div>
+                        <label for="calendar-modal-title-input">Title</label>
+                        <input id="calendar-modal-title-input" type="text" name="title" placeholder="Example: Review chapter notes" required>
+                    </div>
+                    <div>
+                        <label for="calendar-modal-priority">Priority</label>
+                        <select id="calendar-modal-priority" name="priority">
+                            @foreach (['high', 'medium', 'low'] as $priority)
+                                <option value="{{ $priority }}" @selected($priority === 'medium')>{{ ucfirst($priority) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
-                <div class="calendar-modal-grid">
-                    <label for="calendar-modal-time">
-                        Time
-                        <input id="calendar-modal-time" type="time" value="09:00" required>
-                    </label>
+                <div class="calendar-modal-row">
+                    <div>
+                        <label for="calendar-modal-status">Status</label>
+                        <select id="calendar-modal-status" name="status">
+                            @foreach (['pending', 'in_progress', 'review', 'done'] as $status)
+                                <option value="{{ $status }}" @selected($status === 'pending')>{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="calendar-modal-category">Category</label>
+                        <select id="calendar-modal-category" name="category_id">
+                            <option value="">None</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="calendar-modal-row">
+                    <div>
+                        <label for="calendar-modal-start-at">Start At</label>
+                        <input id="calendar-modal-start-at" type="datetime-local" name="start_at">
+                    </div>
+                    <div>
+                        <label for="calendar-modal-due-at">Due At</label>
+                        <input id="calendar-modal-due-at" type="datetime-local" name="due_at">
+                    </div>
+                </div>
+
+                <div class="calendar-inline-check">
                     <label>
-                        Action
-                        <button type="submit">Add</button>
+                        <input type="checkbox" name="is_recurring" id="calendar-is-recurring" value="1">
+                        Recurring Task
                     </label>
                 </div>
 
+                <div class="calendar-recurrence-builder" data-rule="">
+                    <input type="hidden" name="recurrence_rule" id="calendar-recurrence-rule" value="">
+                    <div class="calendar-recurrence-grid">
+                        <div>
+                            <label for="calendar-recurrence-frequency">Frequency</label>
+                            <select id="calendar-recurrence-frequency" data-calendar-field="freq">
+                                <option value="DAILY">Daily</option>
+                                <option value="WEEKLY">Weekly</option>
+                                <option value="MONTHLY">Monthly</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="calendar-recurrence-interval">Interval</label>
+                            <input id="calendar-recurrence-interval" type="number" min="1" value="1" data-calendar-field="interval">
+                        </div>
+                        <div>
+                            <label>Weekly Days</label>
+                            <div class="calendar-weekday-pills">
+                                @foreach (['MO' => 'Mon', 'TU' => 'Tue', 'WE' => 'Wed', 'TH' => 'Thu', 'FR' => 'Fri', 'SA' => 'Sat', 'SU' => 'Sun'] as $value => $label)
+                                    <label class="calendar-weekday-toggle">
+                                        <input type="checkbox" value="{{ $value }}" data-calendar-field="day"> {{ $label }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-modal-description">
+                    <label for="calendar-modal-description">Description</label>
+                    <textarea id="calendar-modal-description" name="description" rows="4" placeholder="Add notes, context, or a checklist summary"></textarea>
+                </div>
+
+                <div class="calendar-subtasks">
+                    <div class="calendar-subtasks-header">
+                        <div>
+                            <strong>Subtasks</strong>
+                            <p class="muted">Add smaller steps before creating the task.</p>
+                        </div>
+                        <button type="button" class="secondary" data-add-subtask>Add Subtask</button>
+                    </div>
+                    <div id="calendar-subtasks-list" class="calendar-subtasks-list">
+                        <div class="calendar-subtask-empty">No subtasks yet. Use "Add Subtask" to create one.</div>
+                    </div>
+                </div>
+
                 <div class="calendar-modal-actions">
+                    <button type="submit">Create Task</button>
                     <button type="button" class="secondary" data-modal-close>Cancel</button>
                 </div>
             </form>
@@ -855,15 +1103,24 @@
         const modalShell = document.querySelector('.calendar-modal-shell');
         const modalForm = document.getElementById('calendar-popup-form');
         const modalDateInput = document.getElementById('calendar-modal-date');
-        const modalDueAtInput = modalForm ? modalForm.querySelector('input[name="due_at"]') : null;
-        const modalTimeInput = document.getElementById('calendar-modal-time');
         const modalTitleInput = document.getElementById('calendar-modal-title-input');
+        const modalStartAtInput = document.getElementById('calendar-modal-start-at');
+        const modalDueAtInput = document.getElementById('calendar-modal-due-at');
         const modalDateLabel = document.querySelector('[data-selected-date-label]');
         const modalTimeLabel = document.querySelector('[data-selected-time-label]');
         const modalEvents = document.getElementById('calendar-modal-events');
+        const modalSubtasksList = document.getElementById('calendar-subtasks-list');
+        const addSubtaskButton = document.querySelector('[data-add-subtask]');
+        const modalRecurringCheckbox = document.getElementById('calendar-is-recurring');
+        const modalRecurrenceBuilder = document.querySelector('.calendar-recurrence-builder');
+        const modalRecurrenceRuleInput = document.getElementById('calendar-recurrence-rule');
+        const modalRecurrenceFreq = document.querySelector('[data-calendar-field="freq"]');
+        const modalRecurrenceInterval = document.querySelector('[data-calendar-field="interval"]');
+        const modalRecurrenceDays = Array.from(document.querySelectorAll('[data-calendar-field="day"]'));
         const hoverCard = document.getElementById('calendar-hover-card');
         let selectedDate = '{{ $focusDate->toDateString() }}';
         let selectedTime = '09:00';
+        let subtaskIndex = 0;
 
         const escapeHtml = (value) => String(value)
             .replace(/&/g, '&amp;')
@@ -871,6 +1128,133 @@
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;');
+
+        const toDateTimeLocalValue = (date, time = '09:00') => `${date}T${time}`;
+        const extractTimeFromDateTime = (value) => value && value.includes('T') ? value.split('T')[1].slice(0, 5) : '09:00';
+
+        const parseRecurrenceRule = (rule) => {
+            const data = { freq: 'DAILY', interval: 1, byday: [] };
+
+            if (!rule) {
+                return data;
+            }
+
+            rule.split(';').forEach((part) => {
+                const [key, value] = part.split('=');
+
+                if (key === 'FREQ') {
+                    data.freq = value;
+                }
+
+                if (key === 'INTERVAL') {
+                    data.interval = parseInt(value || '1', 10);
+                }
+
+                if (key === 'BYDAY') {
+                    data.byday = value ? value.split(',') : [];
+                }
+            });
+
+            return data;
+        };
+
+        const buildRecurrenceRule = () => {
+            if (!modalRecurringCheckbox || !modalRecurringCheckbox.checked || !modalRecurrenceRuleInput) {
+                if (modalRecurrenceRuleInput) {
+                    modalRecurrenceRuleInput.value = '';
+                }
+
+                return;
+            }
+
+            const freq = modalRecurrenceFreq.value;
+            const interval = Math.max(parseInt(modalRecurrenceInterval.value || '1', 10), 1);
+            let rule = `FREQ=${freq};INTERVAL=${interval}`;
+
+            if (freq === 'WEEKLY') {
+                const days = modalRecurrenceDays.filter((input) => input.checked).map((input) => input.value);
+
+                if (days.length) {
+                    rule += `;BYDAY=${days.join(',')}`;
+                }
+            }
+
+            modalRecurrenceRuleInput.value = rule;
+        };
+
+        const toggleRecurrenceBuilder = () => {
+            if (!modalRecurrenceBuilder || !modalRecurringCheckbox) {
+                return;
+            }
+
+            modalRecurrenceBuilder.classList.toggle('is-hidden', !modalRecurringCheckbox.checked);
+        };
+
+        const renderSubtaskEmptyState = () => {
+            if (!modalSubtasksList) {
+                return;
+            }
+
+            if (modalSubtasksList.children.length === 0) {
+                modalSubtasksList.innerHTML = '<div class="calendar-subtask-empty">No subtasks yet. Use "Add Subtask" to create one.</div>';
+            }
+        };
+
+        const createSubtaskRow = (values = {}) => {
+            if (!modalSubtasksList) {
+                return;
+            }
+
+            const emptyState = modalSubtasksList.querySelector('.calendar-subtask-empty');
+
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const row = document.createElement('div');
+            row.className = 'calendar-subtask-row';
+            row.innerHTML = `
+                <div>
+                    <label>Subtask Title</label>
+                    <input type="text" name="subtasks[${subtaskIndex}][title]" value="${escapeHtml(values.title || '')}" placeholder="Example: Draft the outline">
+                </div>
+                <div>
+                    <label>Status</label>
+                    <select name="subtasks[${subtaskIndex}][status]">
+                        <option value="pending"${(values.status || 'pending') === 'pending' ? ' selected' : ''}>Pending</option>
+                        <option value="in_progress"${values.status === 'in_progress' ? ' selected' : ''}>In Progress</option>
+                        <option value="review"${values.status === 'review' ? ' selected' : ''}>Review</option>
+                        <option value="done"${values.status === 'done' ? ' selected' : ''}>Done</option>
+                    </select>
+                </div>
+                <button type="button" class="secondary" data-remove-subtask>Remove</button>
+            `;
+
+            row.querySelector('[data-remove-subtask]').addEventListener('click', () => {
+                row.remove();
+                renderSubtaskEmptyState();
+            });
+
+            modalSubtasksList.appendChild(row);
+            subtaskIndex += 1;
+        };
+
+        const updateModalSelectionSummary = () => {
+            const primaryDateTime = modalDueAtInput?.value || modalStartAtInput?.value || '';
+            const derivedDate = primaryDateTime.includes('T') ? primaryDateTime.split('T')[0] : modalDateInput.value;
+
+            if (derivedDate) {
+                modalDateInput.value = derivedDate;
+            }
+
+            if (modalDateLabel) {
+                modalDateLabel.textContent = derivedDate || 'Choose a day';
+            }
+
+            if (modalTimeLabel) {
+                modalTimeLabel.textContent = extractTimeFromDateTime(primaryDateTime);
+            }
+        };
 
         const renderEventItems = (entries, allowEdit = false) => {
             if (!entries.length) {
@@ -944,12 +1328,20 @@
             }
 
             hideHoverCard();
+            modalForm.reset();
+            subtaskIndex = 0;
+            if (modalSubtasksList) {
+                modalSubtasksList.innerHTML = '';
+            }
             modalShell.hidden = false;
             modalDateInput.value = date;
-            modalTimeInput.value = time || '09:00';
+            modalStartAtInput.value = toDateTimeLocalValue(date, time || '09:00');
+            modalDueAtInput.value = toDateTimeLocalValue(date, time || '09:00');
             modalDateLabel.textContent = displayDate || date;
             modalTimeLabel.textContent = time || '09:00';
-            modalDueAtInput.value = `${date} ${modalTimeInput.value}:00`;
+            toggleRecurrenceBuilder();
+            buildRecurrenceRule();
+            renderSubtaskEmptyState();
             renderModalEvents(date);
 
             window.requestAnimationFrame(() => {
@@ -964,9 +1356,16 @@
 
             modalShell.hidden = true;
             modalForm.reset();
-            modalTimeInput.value = '09:00';
+            if (modalSubtasksList) {
+                modalSubtasksList.innerHTML = '';
+            }
+            subtaskIndex = 0;
             modalDateInput.value = '';
             modalDueAtInput.value = '';
+            modalStartAtInput.value = '';
+            toggleRecurrenceBuilder();
+            buildRecurrenceRule();
+            renderSubtaskEmptyState();
             modalDateLabel.textContent = 'Choose a day';
             modalTimeLabel.textContent = '09:00';
             updateSelectedTarget('', '');
@@ -1082,14 +1481,36 @@
         });
 
         if (modalForm) {
-            modalTimeInput.addEventListener('input', () => {
-                modalTimeLabel.textContent = modalTimeInput.value || '09:00';
-            });
+            if (addSubtaskButton) {
+                addSubtaskButton.addEventListener('click', () => createSubtaskRow());
+            }
+
+            if (modalRecurringCheckbox) {
+                modalRecurringCheckbox.addEventListener('change', () => {
+                    toggleRecurrenceBuilder();
+                    buildRecurrenceRule();
+                });
+            }
+
+            [modalRecurrenceFreq, modalRecurrenceInterval, ...modalRecurrenceDays]
+                .filter(Boolean)
+                .forEach((input) => {
+                    input.addEventListener('change', buildRecurrenceRule);
+                });
+
+            [modalStartAtInput, modalDueAtInput]
+                .filter(Boolean)
+                .forEach((input) => {
+                    input.addEventListener('input', updateModalSelectionSummary);
+                });
 
             modalForm.addEventListener('submit', () => {
-                const time = modalTimeInput.value || '09:00';
-                modalDueAtInput.value = `${modalDateInput.value} ${time}:00`;
+                buildRecurrenceRule();
             });
+
+            toggleRecurrenceBuilder();
+            buildRecurrenceRule();
+            renderSubtaskEmptyState();
         }
 
         hideHoverCard();

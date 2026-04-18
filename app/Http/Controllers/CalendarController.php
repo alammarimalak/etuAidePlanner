@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Task;
 use App\Models\TaskOccurrence;
 use Carbon\Carbon;
@@ -53,6 +54,14 @@ class CalendarController extends Controller
             ->whereBetween('due_at', [$start, $end])
             ->with('category')
             ->orderBy('due_at')
+            ->get();
+
+        $categories = Category::query()
+            ->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhere('is_system', true);
+            })
+            ->orderBy('name')
             ->get();
 
         $days = [];
@@ -146,6 +155,7 @@ class CalendarController extends Controller
             'start' => $start,
             'end' => $end,
             'days' => $days,
+            'categories' => $categories,
             'weekdays' => $weekdays,
             'eventsByDate' => $eventsByDate,
             'today' => $now->copy()->startOfDay(),
