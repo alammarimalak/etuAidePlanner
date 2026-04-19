@@ -93,7 +93,7 @@
             <div class="settings-panel">
                 <div>
                     <h2>Profile Settings</h2>
-                    <p class="muted">Update your name, timezone, appearance, and notification preference.</p>
+                    <p class="muted">Update your name, timezone, and notification preference.</p>
                 </div>
 
                 <div>
@@ -115,14 +115,6 @@
                     @error('timezone')
                         <div class="muted">{{ $message }}</div>
                     @enderror
-                </div>
-
-                <div>
-                    <label>Theme</label>
-                    <select name="theme">
-                        <option value="light" @selected(old('theme', $currentUser->theme) === 'light')>Light</option>
-                        <option value="dark" @selected(old('theme', $currentUser->theme) === 'dark')>Dark</option>
-                    </select>
                 </div>
 
                 <div>

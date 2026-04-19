@@ -308,13 +308,31 @@
             border-radius: 999px;
         }
 
-        .student-sidebar-brand {
+        .student-sidebar-brand-shell {
             display: grid;
             gap: 10px;
         }
 
-        .student-sidebar-brand .brand-bubble {
+        .student-sidebar-brand-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .student-sidebar-brand-mark {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .student-sidebar-brand-mark .brand-bubble {
             width: 61px;
+        }
+
+        .student-sidebar-brand {
+            display: grid;
+            gap: 6px;
+            color: inherit;
         }
 
         .student-sidebar-copy strong {
@@ -326,6 +344,14 @@
         .student-sidebar-copy span {
             color: rgba(5, 8, 22, 0.6);
             font-size: 0.92rem;
+        }
+
+        .student-sidebar-theme-toggle.theme-toggle {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            margin-top: 4px;
+            box-shadow: none;
         }
 
         .student-sidebar-nav {
@@ -1085,16 +1111,42 @@
 @if ($isAppShell)
     <div class="student-shell">
         <aside class="student-sidebar">
-            <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand">
-                <span class="brand-bubble">
-                    <img class="brand-logo brand-logo--light" src="{{ $lightLogoUrl }}" alt="EtuAide logo">
-                    <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
-                </span>
-                <span class="student-sidebar-copy">
-                    <strong>Planner</strong>
-                    <span>{{ $isAdmin ? 'Admin workspace' : 'Student workspace' }}</span>
-                </span>
-            </a>
+            <div class="student-sidebar-brand-shell">
+                <div class="student-sidebar-brand-top">
+                    <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand-mark" aria-label="Go to workspace home">
+                        <span class="brand-bubble">
+                            <img class="brand-logo brand-logo--light" src="{{ $lightLogoUrl }}" alt="EtuAide logo">
+                            <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
+                        </span>
+                    </a>
+                    <button
+                        type="button"
+                        class="theme-toggle student-sidebar-theme-toggle"
+                        data-theme-toggle
+                        aria-label="Switch color theme"
+                        @if ($currentUser)
+                            data-theme-endpoint="{{ route('settings.theme') }}"
+                            data-theme-token="{{ csrf_token() }}"
+                        @endif
+                    >
+                        <span class="theme-toggle-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" data-theme-icon="sun">
+                                <path d="M12 4.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V5.5a.75.75 0 0 1 .75-.75Zm0 12.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 17Zm7.25-5.75a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.016-4.766a.75.75 0 0 1 1.06 0l1.061 1.061a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.062Zm-7.603 7.603a.75.75 0 0 1 1.06 0l1.062 1.061a.75.75 0 1 1-1.06 1.06l-1.062-1.06a.75.75 0 0 1 0-1.061Zm8.663 1.061a.75.75 0 0 1 1.06-1.06l1.061 1.06a.75.75 0 1 1-1.06 1.061l-1.061-1.061ZM8.724 7.545a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 0 1-1.062-1.06l1.061-1.061a.75.75 0 0 1 1.061 0ZM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Z"/>
+                            </svg>
+                            <svg viewBox="0 0 24 24" data-theme-icon="moon" hidden>
+                                <path d="M14.5 3.32a.75.75 0 0 1 .83.98 7.75 7.75 0 1 0 9.37 9.37.75.75 0 0 1 .98.83A9.25 9.25 0 1 1 14.5 3.32Z"/>
+                            </svg>
+                        </span>
+                        <span class="sr-only" data-theme-label>Dark mode</span>
+                    </button>
+                </div>
+                <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand">
+                    <span class="student-sidebar-copy">
+                        <strong>Planner</strong>
+                        <span>{{ $isAdmin ? 'Admin workspace' : 'Student workspace' }}</span>
+                    </span>
+                </a>
+            </div>
 
             <nav class="student-sidebar-nav" aria-label="{{ $isAdmin ? 'Admin navigation' : 'Student navigation' }}">
                 <div class="student-sidebar-section-label">Workspace</div>
@@ -1217,7 +1269,16 @@
                     @endauth
                 </div>
                 <div class="actions">
-                    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch color theme">
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        data-theme-toggle
+                        aria-label="Switch color theme"
+                        @if ($currentUser)
+                            data-theme-endpoint="{{ route('settings.theme') }}"
+                            data-theme-token="{{ csrf_token() }}"
+                        @endif
+                    >
                         <span class="theme-toggle-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" data-theme-icon="sun">
                                 <path d="M12 4.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V5.5a.75.75 0 0 1 .75-.75Zm0 12.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 17Zm7.25-5.75a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.016-4.766a.75.75 0 0 1 1.06 0l1.061 1.061a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.062Zm-7.603 7.603a.75.75 0 0 1 1.06 0l1.062 1.061a.75.75 0 1 1-1.06 1.06l-1.062-1.06a.75.75 0 0 1 0-1.061Zm8.663 1.061a.75.75 0 0 1 1.06-1.06l1.061 1.06a.75.75 0 1 1-1.06 1.061l-1.061-1.061ZM8.724 7.545a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 0 1-1.062-1.06l1.061-1.061a.75.75 0 0 1 1.061 0ZM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Z"/>
@@ -1332,9 +1393,36 @@
         const moonIcon = document.querySelector('[data-theme-icon="moon"]');
         const label = document.querySelector('[data-theme-label]');
         const storageKey = 'etuaide-theme';
+        const themeEndpoint = toggle?.dataset.themeEndpoint || '';
+        const themeToken = toggle?.dataset.themeToken || '';
 
         if (!toggle || !sunIcon || !moonIcon) {
             return;
+        }
+
+        async function persistTheme(theme) {
+            if (!themeEndpoint || !themeToken) {
+                return;
+            }
+
+            try {
+                const response = await fetch(themeEndpoint, {
+                    method: 'PATCH',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': themeToken,
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: JSON.stringify({ theme }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Unable to save theme preference.');
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         function syncThemeToggle() {
@@ -1351,9 +1439,11 @@
 
         toggle.addEventListener('click', function () {
             const willBeDark = !document.body.classList.contains('theme-dark');
+            const nextTheme = willBeDark ? 'dark' : 'light';
             document.body.classList.toggle('theme-dark', willBeDark);
-            window.localStorage.setItem(storageKey, willBeDark ? 'dark' : 'light');
+            window.localStorage.setItem(storageKey, nextTheme);
             syncThemeToggle();
+            void persistTheme(nextTheme);
         });
 
         syncThemeToggle();

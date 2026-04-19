@@ -95,7 +95,8 @@
         }
 
         .dashboard-action-tile {
-            display: grid;
+            display: flex;
+            align-items: center;
             gap: 12px;
             padding: 18px;
             border-radius: 22px;
@@ -111,14 +112,10 @@
             box-shadow: 0 16px 26px rgba(33, 86, 245, 0.12);
         }
 
-        .dashboard-action-tile strong,
-        .dashboard-action-tile span {
+        .dashboard-action-label {
             display: block;
-        }
-
-        .dashboard-action-tile span:last-child {
-            color: rgba(5, 8, 22, 0.66);
-            font-size: 0.94rem;
+            font-weight: 800;
+            color: var(--ink);
         }
 
         .dashboard-action-icon-shell {
@@ -130,6 +127,7 @@
             border-radius: 16px;
             background: rgba(33, 86, 245, 0.1);
             color: var(--violet-500);
+            flex-shrink: 0;
         }
 
         .dashboard-stack {
@@ -175,8 +173,8 @@
             box-shadow: 0 18px 30px rgba(0, 0, 0, 0.22);
         }
 
-        body.theme-dark .dashboard-action-tile span:last-child {
-            color: rgba(238, 242, 255, 0.7);
+        body.theme-dark .dashboard-action-label {
+            color: #eef2ff;
         }
 
         body.theme-dark .dashboard-action-icon-shell {
@@ -282,8 +280,7 @@
                             <path fill="currentColor" d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1Z"/>
                         </svg>
                     </span>
-                    <strong>Create Task</strong>
-                    <span>Add a new assignment, deadline, or study item.</span>
+                    <span class="dashboard-action-label">Create Task</span>
                 </a>
 
                 <a class="dashboard-action-tile" href="{{ route('tasks.index') }}">
@@ -292,8 +289,7 @@
                             <path fill="currentColor" d="M6.75 5.5A1.75 1.75 0 0 1 8.5 3.75h9A1.75 1.75 0 0 1 19.25 5.5v13A1.75 1.75 0 0 1 17.5 20.25h-9A1.75 1.75 0 0 1 6.75 18.5v-13Zm1.5 0v13a.25.25 0 0 0 .25.25h9a.25.25 0 0 0 .25-.25v-13a.25.25 0 0 0-.25-.25h-9a.25.25 0 0 0-.25.25Zm2 2.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5H11a.75.75 0 0 1-.75-.75Zm0 4a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5H11a.75.75 0 0 1-.75-.75Zm0 4a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1-.75-.75Z"/>
                         </svg>
                     </span>
-                    <strong>View Tasks</strong>
-                    <span>Open the full task list and manage progress.</span>
+                    <span class="dashboard-action-label">View Tasks</span>
                 </a>
 
                 <a class="dashboard-action-tile" href="{{ route('calendar.index') }}">
@@ -302,8 +298,7 @@
                             <path fill="currentColor" d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1Zm12 8H5v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8ZM6 6a1 1 0 0 0-1 1v1h14V7a1 1 0 0 0-1-1H6Z"/>
                         </svg>
                     </span>
-                    <strong>Open Calendar</strong>
-                    <span>See deadlines and plan the week visually.</span>
+                    <span class="dashboard-action-label">Open Calendar</span>
                 </a>
 
                 <a class="dashboard-action-tile" href="{{ route('categories.index') }}">
@@ -312,8 +307,7 @@
                             <path fill="currentColor" d="M4.75 7.5A2.75 2.75 0 0 1 7.5 4.75h3.06c.73 0 1.43.29 1.94.8l.7.7c.23.24.54.37.87.37h2.43a2.75 2.75 0 0 1 2.75 2.75v7.18a2.75 2.75 0 0 1-2.75 2.75h-9A2.75 2.75 0 0 1 4.75 17.5v-10Zm2.75-1.25c-.69 0-1.25.56-1.25 1.25v10c0 .69.56 1.25 1.25 1.25h9c.69 0 1.25-.56 1.25-1.25V9.32c0-.69-.56-1.25-1.25-1.25h-2.43a3.92 3.92 0 0 1-2.12-.62l-.7-.7a1.24 1.24 0 0 0-.88-.37H7.5Z"/>
                         </svg>
                     </span>
-                    <strong>Create Category</strong>
-                    <span>Add or organize categories for your tasks.</span>
+                    <span class="dashboard-action-label">Create Category</span>
                 </a>
 
                 <a class="dashboard-action-tile" href="{{ route('notifications.index') }}">
@@ -322,8 +316,7 @@
                             <path fill="currentColor" d="M12 3.75a4.25 4.25 0 0 0-4.25 4.25v1.07c0 .67-.22 1.33-.62 1.88L5.98 12.5a1.75 1.75 0 0 0 1.42 2.75h9.2a1.75 1.75 0 0 0 1.42-2.75l-1.15-1.55a3.24 3.24 0 0 1-.62-1.88V8A4.25 4.25 0 0 0 12 3.75Zm0 17.5a2.74 2.74 0 0 1-2.58-1.84.75.75 0 1 1 1.41-.5 1.25 1.25 0 0 0 2.34 0 .75.75 0 1 1 1.41.5A2.74 2.74 0 0 1 12 21.25Z"/>
                         </svg>
                     </span>
-                    <strong>View Notifications</strong>
-                    <span>Check alerts, reminders, and recent updates.</span>
+                    <span class="dashboard-action-label">View Notifications</span>
                 </a>
 
                 <a class="dashboard-action-tile" href="{{ route('settings.edit') }}">
@@ -332,8 +325,7 @@
                             <path fill="currentColor" d="M10.17 4.14a1.75 1.75 0 0 1 3.66 0l.2 1.22c.1.57.48 1.04 1.01 1.24l1.14.43a1.8 1.8 0 0 0 1.56-.14l1.04-.61a1.75 1.75 0 0 1 2.59 2.59l-.61 1.04c-.3.5-.35 1.13-.14 1.66l.43 1.04c.2.53.67.92 1.24 1.01l1.22.2a1.75 1.75 0 0 1 0 3.66l-1.22.2a1.75 1.75 0 0 0-1.24 1.01l-.43 1.04c-.2.53-.15 1.16.14 1.66l.61 1.04a1.75 1.75 0 1 1-2.59 2.59l-1.04-.61a1.8 1.8 0 0 0-1.56-.14l-1.14.43a1.75 1.75 0 0 0-1.01 1.24l-.2 1.22a1.75 1.75 0 0 1-3.66 0l-.2-1.22a1.75 1.75 0 0 0-1.01-1.24l-1.14-.43a1.8 1.8 0 0 0-1.56.14l-1.04.61a1.75 1.75 0 1 1-2.59-2.59l.61-1.04c.3-.5.35-1.13.14-1.66l-.43-1.04a1.75 1.75 0 0 0-1.24-1.01l-1.22-.2a1.75 1.75 0 0 1 0-3.66l1.22-.2c.57-.1 1.04-.48 1.24-1.01l.43-1.04c.2-.53.15-1.16-.14-1.66l-.61-1.04a1.75 1.75 0 1 1 2.59-2.59l1.04.61c.5.29 1.12.35 1.66.14l1.04-.43c.53-.2.92-.67 1.01-1.24l.2-1.22ZM12 9.25A2.75 2.75 0 1 0 12 14.75 2.75 2.75 0 0 0 12 9.25Z"/>
                         </svg>
                     </span>
-                    <strong>Open Settings</strong>
-                    <span>Update your profile, timezone, and preferences.</span>
+                    <span class="dashboard-action-label">Open Settings</span>
                 </a>
             </div>
         </div>

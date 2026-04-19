@@ -134,19 +134,44 @@
         }
 
         .notification-modal-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
+            display: grid;
             gap: 16px;
             margin-bottom: 20px;
         }
 
-        .notification-modal-header h3 {
+        .notification-modal-header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .notification-modal-header .status {
+            margin-bottom: 0;
+        }
+
+        .notification-modal-title {
+            margin: 0;
+            font-size: 1.6rem;
+        }
+
+        .notification-modal-sender {
             margin: 8px 0 0;
-            font-size: 1.5rem;
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: rgba(5, 8, 22, 0.62);
+        }
+
+        .notification-modal-close-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .notification-modal-close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 42px;
             height: 42px;
             border-radius: 50%;
@@ -156,38 +181,33 @@
             box-shadow: none;
         }
 
-        .notification-modal-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin-bottom: 18px;
+        .notification-modal-close svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
-        .notification-modal-card {
-            padding: 16px;
-            border-radius: 18px;
+        .notification-modal-body {
+            display: grid;
+            gap: 20px;
+        }
+
+        .notification-modal-description-block {
+            padding: 18px 20px;
+            border-radius: 20px;
             border: 1px solid var(--line);
             background: rgba(255, 255, 255, 0.8);
         }
 
-        .notification-modal-card span {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(5, 8, 22, 0.48);
-        }
-
-        .notification-modal-card strong,
-        .notification-modal-card p {
+        .notification-modal-description-block p {
             margin: 0;
+            line-height: 1.7;
             color: var(--ink);
         }
 
-        .notification-modal-card p {
-            line-height: 1.6;
+        .notification-modal-section-title {
+            margin: 0;
+            font-size: 1rem;
         }
 
         .notification-details-list {
@@ -223,6 +243,21 @@
             background: rgba(255, 255, 255, 0.48);
         }
 
+        .notification-modal-footer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+            color: rgba(5, 8, 22, 0.64);
+            font-size: 0.9rem;
+        }
+
+        .notification-modal-footer strong {
+            color: var(--ink);
+        }
+
         body.theme-dark .notification-trigger {
             background: rgba(9, 18, 42, 0.84);
             border-color: rgba(139, 119, 255, 0.14);
@@ -244,15 +279,16 @@
         }
 
         body.theme-dark .notification-description,
-        body.theme-dark .notification-modal-card strong,
-        body.theme-dark .notification-modal-card p,
+        body.theme-dark .notification-modal-description-block p,
+        body.theme-dark .notification-modal-footer strong,
         body.theme-dark .notification-detail-row span {
             color: #eef2ff;
         }
 
         body.theme-dark .notification-description-label,
         body.theme-dark .notification-time,
-        body.theme-dark .notification-modal-card span,
+        body.theme-dark .notification-modal-sender,
+        body.theme-dark .notification-modal-footer,
         body.theme-dark .notification-detail-row strong,
         body.theme-dark .notification-modal-empty {
             color: rgba(238, 242, 255, 0.7);
@@ -266,7 +302,7 @@
         }
 
         body.theme-dark .notification-modal-close,
-        body.theme-dark .notification-modal-card,
+        body.theme-dark .notification-modal-description-block,
         body.theme-dark .notification-detail-row,
         body.theme-dark .notification-modal-empty {
             background: rgba(255, 255, 255, 0.05);
@@ -275,12 +311,13 @@
         }
 
         @media (max-width: 720px) {
-            .notification-modal-grid,
+            .notification-modal-header-top,
             .notification-detail-row,
             .notification-trigger-head {
                 grid-template-columns: 1fr;
             }
 
+            .notification-modal-header-top,
             .notification-trigger-head {
                 display: grid;
             }
@@ -293,6 +330,9 @@
         $unreadCount = $notifications->whereNull('read_at')->count();
         $notificationPayload = $notifications->map(function ($notification) {
             $details = collect($notification->data ?? [])
+                ->reject(function ($value, $key) {
+                    return in_array(strtolower((string) $key), ['admin_id', 'recipient_email'], true);
+                })
                 ->mapWithKeys(function ($value, $key) {
                     if (is_bool($value)) {
                         $formattedValue = $value ? 'Yes' : 'No';
@@ -311,10 +351,10 @@
             return [
                 'id' => $notification->id,
                 'title' => $notification->title,
+                'sender' => 'EtuAide team',
                 'description' => $notification->body,
-                'type' => \Illuminate\Support\Str::headline(str_replace('_', ' ', $notification->type)),
                 'status' => $notification->read_at ? 'Read' : 'Unread',
-                'created_at' => optional($notification->created_at)->format('M d, Y g:i A'),
+                'sent_at' => optional($notification->created_at)->format('M d, Y g:i A'),
                 'read_at' => optional($notification->read_at)->format('M d, Y g:i A'),
                 'is_unread' => $notification->read_at === null,
                 'details' => $details,
@@ -369,39 +409,36 @@
         <div class="notification-modal-backdrop" data-notification-close></div>
         <div class="notification-modal" role="dialog" aria-modal="true" aria-labelledby="notification-modal-title">
             <div class="notification-modal-header">
-                <div>
+                <div class="notification-modal-header-top">
                     <span class="status" id="notification-modal-status">Unread</span>
-                    <h3 id="notification-modal-title">Notification details</h3>
+                    <div class="notification-modal-close-wrap">
+                        <button type="button" class="notification-modal-close secondary" data-notification-close aria-label="Close notification details">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M6.53 5.47a.75.75 0 0 1 1.06 0L12 9.88l4.41-4.4a.75.75 0 1 1 1.06 1.06L13.06 10.94l4.41 4.41a.75.75 0 0 1-1.06 1.06L12 12l-4.41 4.41a.75.75 0 0 1-1.06-1.06l4.4-4.41-4.4-4.4a.75.75 0 0 1 0-1.07Z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <button type="button" class="notification-modal-close secondary" data-notification-close aria-label="Close notification details">x</button>
+                <div>
+                    <h3 id="notification-modal-title" class="notification-modal-title">Notification details</h3>
+                    <p class="notification-modal-sender" id="notification-modal-sender">EtuAide team</p>
+                </div>
             </div>
 
-            <div class="notification-modal-grid">
-                <div class="notification-modal-card">
-                    <span>Description</span>
+            <div class="notification-modal-body">
+                <div class="notification-modal-description-block">
                     <p id="notification-modal-description">-</p>
                 </div>
-                <div class="notification-modal-card">
-                    <span>Title</span>
-                    <strong id="notification-modal-title-text">-</strong>
-                </div>
-                <div class="notification-modal-card">
-                    <span>Type</span>
-                    <strong id="notification-modal-type">-</strong>
-                </div>
-                <div class="notification-modal-card">
-                    <span>Created At</span>
-                    <strong id="notification-modal-created-at">-</strong>
-                </div>
-                <div class="notification-modal-card">
-                    <span>Read At</span>
-                    <strong id="notification-modal-read-at">Not read yet</strong>
+
+                <div>
+                    <h3 class="notification-modal-section-title">Extra Details</h3>
+                    <div id="notification-modal-details"></div>
                 </div>
             </div>
 
-            <div>
-                <h3>Extra Details</h3>
-                <div id="notification-modal-details"></div>
+            <div class="notification-modal-footer">
+                <span>Sent at</span>
+                <strong id="notification-modal-sent-at">-</strong>
             </div>
         </div>
     </div>
@@ -412,11 +449,9 @@
         const notificationModalShell = document.getElementById('notification-modal-shell');
         const notificationModalStatus = document.getElementById('notification-modal-status');
         const notificationModalTitle = document.getElementById('notification-modal-title');
-        const notificationModalTitleText = document.getElementById('notification-modal-title-text');
+        const notificationModalSender = document.getElementById('notification-modal-sender');
         const notificationModalDescription = document.getElementById('notification-modal-description');
-        const notificationModalType = document.getElementById('notification-modal-type');
-        const notificationModalCreatedAt = document.getElementById('notification-modal-created-at');
-        const notificationModalReadAt = document.getElementById('notification-modal-read-at');
+        const notificationModalSentAt = document.getElementById('notification-modal-sent-at');
         const notificationModalDetails = document.getElementById('notification-modal-details');
         const unreadCountLabel = document.querySelector('[data-notification-unread-count]');
         const markAllReadButton = document.querySelector('[data-mark-all-read-button]');
@@ -541,10 +576,6 @@
                     notificationModalStatus.textContent = 'Read';
                 }
 
-                if (notificationModalReadAt) {
-                    notificationModalReadAt.textContent = item.read_at;
-                }
-
                 updateUnreadCount();
             } catch (error) {
                 console.error(error);
@@ -560,11 +591,9 @@
 
             notificationModalStatus.textContent = item.status;
             notificationModalTitle.textContent = item.title;
-            notificationModalTitleText.textContent = item.title;
+            notificationModalSender.textContent = item.sender || 'EtuAide team';
             notificationModalDescription.textContent = item.description;
-            notificationModalType.textContent = item.type;
-            notificationModalCreatedAt.textContent = item.created_at || '-';
-            notificationModalReadAt.textContent = item.read_at || 'Not read yet';
+            notificationModalSentAt.textContent = item.sent_at || '-';
             renderNotificationDetails(item.details);
             notificationModalShell.hidden = false;
             document.body.style.overflow = 'hidden';

@@ -790,8 +790,24 @@
         }
 
         body.theme-dark .calendar-view-switch .is-active {
-            background: var(--violet-500);
+            background: rgba(17, 28, 56, 0.96);
             color: #ffffff;
+            border-color: rgba(139, 119, 255, 0.34);
+            box-shadow: none;
+        }
+
+        body.theme-dark .calendar-shell .btn.secondary,
+        body.theme-dark .calendar-shell button.secondary {
+            background: rgba(7, 14, 31, 0.94);
+            color: #eef2ff;
+            border: 1px solid rgba(139, 119, 255, 0.2);
+            box-shadow: none;
+        }
+
+        body.theme-dark .calendar-shell .btn.secondary:hover,
+        body.theme-dark .calendar-shell button.secondary:hover {
+            background: rgba(11, 20, 42, 0.98);
+            border-color: rgba(139, 119, 255, 0.32);
         }
 
         body.theme-dark .calendar-canvas .btn:not(.secondary),

@@ -34,6 +34,7 @@ Route::middleware(['auth', 'activity'])->group(function () {
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::patch('/settings/theme', [SettingsController::class, 'updateTheme'])->name('settings.theme');
 
     Route::resource('tasks', TaskController::class);
     Route::patch('tasks/{task}/move', [TaskController::class, 'move'])->name('tasks.move');
