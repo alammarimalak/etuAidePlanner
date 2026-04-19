@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class AdminStudentController extends Controller
@@ -48,47 +49,70 @@ class AdminStudentController extends Controller
     {
         $admin = $this->currentUser();
 
-        return view('admin.students.create-email', [
-            'currentUser' => $admin,
-            'students' => $this->studentsForEmailForm(),
-            'senderEmail' => self::ADMIN_SENDER_EMAIL,
-        ]);
+        try {
+            return view('admin.students.create-email', [
+                'currentUser' => $admin,
+                'students' => $this->studentsForEmailForm(),
+                'latestRecipients' => $this->latestRecipientsForEmailForm($admin),
+                'senderEmail' => self::ADMIN_SENDER_EMAIL,
+            ]);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            abort(500);
+        }
     }
 
     public function sendEmail(Request $request)
     {
         $admin = $this->currentUser();
 
-        $data = $request->validate([
-            'student_ids' => ['required', 'array', 'min:1'],
-            'student_ids.*' => ['integer', 'exists:users,id'],
-            'subject' => ['required', 'string', 'max:255'],
-            'message' => ['required', 'string'],
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'student_search' => ['nullable', 'string', 'max:255'],
+                'student_ids' => ['required', 'array', 'min:1'],
+                'student_ids.*' => ['integer', 'exists:users,id'],
+                'subject' => ['required', 'string', 'max:255'],
+                'message' => ['required', 'string'],
+            ],
+            [
+                'student_ids.required' => 'The student field is required.',
+                'student_ids.min' => 'The student field is required.',
+            ]
+        );
 
-        $studentIds = collect($data['student_ids'])
-            ->map(fn ($id) => (int) $id)
-            ->unique()
-            ->values();
-
-        $students = User::query()
-            ->where('role', User::ROLE_STUDENT)
-            ->whereIn('id', $studentIds)
-            ->orderBy('name')
-            ->get();
-
-        if ($students->count() !== $studentIds->count()) {
+        if ($validator->fails()) {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors(['student_ids' => 'Select valid student recipients only.']);
+                ->withErrors($validator);
         }
 
-        $sentCount = 0;
-        $failedRecipients = [];
+        $data = $validator->validated();
 
-        foreach ($students as $student) {
-            try {
+        try {
+            $studentIds = collect($data['student_ids'])
+                ->map(fn ($id) => (int) $id)
+                ->unique()
+                ->values();
+
+            $students = User::query()
+                ->where('role', User::ROLE_STUDENT)
+                ->whereIn('id', $studentIds)
+                ->orderBy('name')
+                ->get();
+
+            if ($students->count() !== $studentIds->count()) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['student_ids' => 'Select valid student recipients only.']);
+            }
+
+            $sentCount = 0;
+
+            foreach ($students as $student) {
                 Mail::to($student->email)->send(new AdminStudentEmail(
                     senderEmail: self::ADMIN_SENDER_EMAIL,
                     recipientName: $student->name,
@@ -109,29 +133,27 @@ class AdminStudentController extends Controller
                 ]);
 
                 $sentCount++;
-            } catch (Throwable $exception) {
-                $failedRecipients[] = $student->email;
             }
-        }
 
-        if ($sentCount === 0) {
+            if ($sentCount === 0) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors([
+                        'message' => 'The email could not be sent to the selected students.',
+                    ]);
+            }
+
+            $status = "Email sent to {$sentCount} student" . ($sentCount === 1 ? '' : 's') . '.';
+
             return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors([
-                    'message' => 'The email could not be sent to the selected students.',
-                ]);
+                ->route('admin.students.index')
+                ->with('status', $status);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            abort(500);
         }
-
-        $status = "Email sent to {$sentCount} student" . ($sentCount === 1 ? '' : 's') . '.';
-
-        if ($failedRecipients !== []) {
-            $status .= ' Failed recipients: ' . implode(', ', $failedRecipients) . '.';
-        }
-
-        return redirect()
-            ->route('admin.students.index')
-            ->with('status', $status);
     }
 
     public function sendReminder(Request $request, User $student)
@@ -166,5 +188,20 @@ class AdminStudentController extends Controller
             ->where('role', User::ROLE_STUDENT)
             ->orderBy('name')
             ->get(['id', 'name', 'email']);
+    }
+
+    protected function latestRecipientsForEmailForm(User $admin)
+    {
+        return Notification::query()
+            ->where('type', 'admin_email')
+            ->where('data->admin_id', $admin->id)
+            ->with('user:id,name,email,role')
+            ->latest()
+            ->get()
+            ->unique('user_id')
+            ->map(fn (Notification $notification) => $notification->user)
+            ->filter(fn ($user) => $user instanceof User && $user->role === User::ROLE_STUDENT)
+            ->take(3)
+            ->values();
     }
 }
