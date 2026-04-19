@@ -2,3 +2,6 @@
 !private/
 !public/
 !.gitignore
+!app/
+!EtuAide_darkmode.png
+!EtuAide_lightmode.png
