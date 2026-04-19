@@ -20,7 +20,7 @@
                 EtuAide Contact Form
             </div>
             <h1 style="margin:0; font-size:22px; font-weight:700; color:#111827; line-height:1.35;">
-                Message received from {{ $senderName }}
+                Message received from EtuAide team
             </h1>
         </div>
 
