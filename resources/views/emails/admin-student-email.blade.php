@@ -4,29 +4,65 @@
     <meta charset="utf-8">
     <title>{{ $subjectLine }}</title>
 </head>
-@php($logoSrc = $message->embed(storage_path('app/public/EtuAide_darkmode.png')))
-<body style="margin:0; padding:24px; background:#f5f7ff; font-family:Segoe UI, Arial, sans-serif; color:#111827;">
-    <div style="max-width:680px; margin:0 auto; background:#ffffff; border:1px solid #dbe3ff; border-radius:20px; overflow:hidden;">
-        <div style="padding:24px 28px; background:linear-gradient(135deg, #0b132d 0%, #2156f5 60%, #5d3ef0 100%); color:#ffffff;">
-            <div style="margin-bottom:16px;">
-                <img src="{{ $logoSrc }}" alt="EtuAide" height="32" style="display:block;">
-            </div>
-            <div style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; opacity:.82;">EtuAide Admin Email</div>
-            <h1 style="margin:12px 0 8px; font-size:28px; line-height:1.2;">{{ $subjectLine }}</h1>
-            <div style="font-size:14px; opacity:.86;">From {{ $senderEmail }}</div>
-        </div>
+@php($logoSrc = $message->embed(storage_path('app/public/EtuAide_lightmode.png')))
+<body style="margin:0; padding:32px 16px; background-color:#EEF3FF; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827; line-height:1.6;">
 
-        <div style="padding:28px;">
-            <p style="margin-top:0;">Hello {{ $recipientName }},</p>
-
-            @foreach (preg_split("/(\r\n|\n|\r)/", $messageBody) as $paragraph)
-                @if (trim($paragraph) !== '')
-                    <p style="margin:0 0 16px; line-height:1.7;">{{ $paragraph }}</p>
-                @endif
-            @endforeach
-
-            <p style="margin:24px 0 0; line-height:1.7;">Best regards,<br>{{ $senderEmail }}</p>
+    <div style="text-align:center; margin-bottom:24px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; font-size:18px; font-weight:600; color:#1a1a2e;">
+            <img src="{{ $logoSrc }}" alt="EtuAide" height="32" style="vertical-align:middle;">
         </div>
     </div>
+
+    <div style="max-width:580px; margin:0 auto; background:#ffffff; border:1px solid #d4deff; border-radius:10px; overflow:hidden;">
+
+        <div style="padding:32px 32px 28px; border-bottom:1px solid #e8edff;">
+            <div style="font-size:13px; font-weight:600; color:#8a9cc4; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">
+                EtuAide Admin Email
+            </div>
+            <h1 style="margin:0; font-size:22px; font-weight:700; color:#111827; line-height:1.35;">
+                {{ $subjectLine }}
+            </h1>
+        </div>
+
+        <div style="padding:28px 32px;">
+
+            <table width="100%" cellpadding="0" cellspacing="0" style="font-size:15px; margin-bottom:24px;">
+                <tr>
+                    <td style="padding-bottom:10px; width:60px; color:#6b7280; font-weight:500;">To:</td>
+                    <td style="padding-bottom:10px; font-weight:600; color:#111827;">{{ $recipientName }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom:4px; color:#6b7280; font-weight:500;">From:</td>
+                    <td style="padding-bottom:4px; font-weight:600; color:#2156f5;">EtuAide Team</td>
+                </tr>
+            </table>
+
+            <hr style="border:none; border-top:1px solid #e8edff; margin:0 0 24px;">
+
+            <div style="font-size:12px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">
+                Message
+            </div>
+            <div style="background:#f5f7ff; border:1px solid #d4deff; border-radius:6px; padding:20px; font-size:15px; color:#374151; line-height:1.7;">
+                @foreach (preg_split("/(\r\n|\n|\r)/", $messageBody) as $paragraph)
+                    @if (trim($paragraph) !== '')
+                        <p style="margin:0 0 16px;">{{ $paragraph }}</p>
+                    @endif
+                @endforeach
+            </div>
+
+        </div>
+
+        <div style="padding:20px 32px; background:#fafbff; border-top:1px solid #e8edff; text-align:center;">
+            <p style="margin:0; font-size:13px; color:#9ca3af;">
+                This is an automated message sent from the EtuAide platform.
+            </p>
+        </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:20px;">
+        <p style="font-size:12px; color:#9ca3af; margin:0;">&copy; 2026 EtuAide &middot; All rights reserved</p>
+    </div>
+
 </body>
 </html>
