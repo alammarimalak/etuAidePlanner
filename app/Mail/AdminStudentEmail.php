@@ -21,8 +21,8 @@ class AdminStudentEmail extends Mailable
     public function build(): static
     {
         return $this
-            ->from($this->senderEmail, $this->senderEmail)
-            ->replyTo($this->senderEmail, $this->senderEmail)
+            ->from($this->senderEmail)
+            ->replyTo($this->senderEmail)
             ->subject($this->subjectLine)
             ->view('emails.admin-student-email');
     }

@@ -18,6 +18,7 @@ class AdminStudentEmailTest extends TestCase
     {
         $admin = User::factory()->create([
             'role' => User::ROLE_ADMIN,
+            'email' => 'admin.one@example.com',
         ]);
 
         $response = $this
@@ -27,7 +28,7 @@ class AdminStudentEmailTest extends TestCase
         $response
             ->assertOk()
             ->assertSee('Create an email')
-            ->assertSee('alammarimalak17@gmail.com')
+            ->assertSee('admin.one@example.com')
             ->assertSee('Search by student name or email');
     }
 
@@ -35,6 +36,7 @@ class AdminStudentEmailTest extends TestCase
     {
         $admin = User::factory()->create([
             'role' => User::ROLE_ADMIN,
+            'email' => 'sender.admin@example.com',
         ]);
 
         $students = User::factory()->count(4)->create([
@@ -96,8 +98,8 @@ class AdminStudentEmailTest extends TestCase
         $response->assertRedirect(route('admin.students.index'));
 
         Mail::assertSent(AdminStudentEmail::class, 2);
-        Mail::assertSent(AdminStudentEmail::class, function (AdminStudentEmail $mail) use ($students) {
-            return $mail->senderEmail === 'alammarimalak17@gmail.com'
+        Mail::assertSent(AdminStudentEmail::class, function (AdminStudentEmail $mail) use ($students, $admin) {
+            return $mail->senderEmail === $admin->email
                 && $students->contains(fn (User $student) => $mail->hasTo($student->email));
         });
 
@@ -109,6 +111,12 @@ class AdminStudentEmailTest extends TestCase
                 'type' => 'admin_email',
                 'title' => 'Weekly coaching update',
                 'body' => 'Please review your open tasks before Friday.',
+            ]);
+
+            $this->assertDatabaseHas('notifications', [
+                'user_id' => $student->id,
+                'type' => 'admin_email',
+                'data->sender_email' => $admin->email,
             ]);
         }
     }

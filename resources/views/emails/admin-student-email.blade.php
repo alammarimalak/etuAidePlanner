@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td style="padding-bottom:4px; color:#6b7280; font-weight:500;">From:</td>
-                    <td style="padding-bottom:4px; font-weight:600; color:#2156f5;">EtuAide Team</td>
+                    <td style="padding-bottom:4px; font-weight:600; color:#2156f5;">{{ $senderEmail }}</td>
                 </tr>
             </table>
 

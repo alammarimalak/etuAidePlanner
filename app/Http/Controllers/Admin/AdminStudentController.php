@@ -15,8 +15,6 @@ use Throwable;
 
 class AdminStudentController extends Controller
 {
-    private const ADMIN_SENDER_EMAIL = 'alammarimalak17@gmail.com';
-
     public function index()
     {
         $admin = $this->currentUser();
@@ -54,7 +52,7 @@ class AdminStudentController extends Controller
                 'currentUser' => $admin,
                 'students' => $this->studentsForEmailForm(),
                 'latestRecipients' => $this->latestRecipientsForEmailForm($admin),
-                'senderEmail' => self::ADMIN_SENDER_EMAIL,
+                'senderEmail' => $this->adminSenderEmail($admin),
             ]);
         } catch (Throwable $exception) {
             report($exception);
@@ -66,6 +64,7 @@ class AdminStudentController extends Controller
     public function sendEmail(Request $request)
     {
         $admin = $this->currentUser();
+        $senderEmail = $this->adminSenderEmail($admin);
 
         $validator = Validator::make(
             $request->all(),
@@ -114,7 +113,7 @@ class AdminStudentController extends Controller
 
             foreach ($students as $student) {
                 Mail::to($student->email)->send(new AdminStudentEmail(
-                    senderEmail: self::ADMIN_SENDER_EMAIL,
+                    senderEmail: $senderEmail,
                     recipientName: $student->name,
                     subjectLine: $data['subject'],
                     messageBody: $data['message'],
@@ -126,7 +125,7 @@ class AdminStudentController extends Controller
                     'title' => $data['subject'],
                     'body' => $data['message'],
                     'data' => [
-                        'sender_email' => self::ADMIN_SENDER_EMAIL,
+                        'sender_email' => $senderEmail,
                         'admin_id' => $admin->id,
                         'recipient_email' => $student->email,
                     ],
@@ -154,6 +153,11 @@ class AdminStudentController extends Controller
 
             abort(500);
         }
+    }
+
+    protected function adminSenderEmail(User $admin): string
+    {
+        return $admin->email;
     }
 
     public function sendReminder(Request $request, User $student)
