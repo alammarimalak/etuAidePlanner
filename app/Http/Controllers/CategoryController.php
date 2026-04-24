@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $categories = Category::query()
             ->where('user_id', $user->id)
             ->orderBy('name')
-            ->get();
+            ->paginate(10);
 
         return view('categories.index', [
             'currentUser' => $user,
@@ -50,15 +50,19 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('categories.index')->with('status', 'Category updated.');
+        return redirect()
+            ->route('categories.index', $request->only('page'))
+            ->with('status', 'Category updated.');
     }
 
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
         $this->authorize('delete', $category);
 
         $category->delete();
 
-        return redirect()->route('categories.index')->with('status', 'Category deleted.');
+        return redirect()
+            ->route('categories.index', $request->only('page'))
+            ->with('status', 'Category deleted.');
     }
 }

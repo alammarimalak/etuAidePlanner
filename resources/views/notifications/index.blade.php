@@ -172,19 +172,30 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 42px;
-            height: 42px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.86);
-            color: var(--ink);
-            box-shadow: none;
+            border: 1px solid rgba(16, 25, 53, 0.18);
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--violet-900);
+            box-shadow: 0 10px 20px rgba(16, 25, 53, 0.12);
+            font-size: 1.7rem;
+            font-weight: 700;
+            line-height: 1;
+            padding: 0;
+            flex-shrink: 0;
         }
 
-        .notification-modal-close svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
+        .notification-modal-close:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 24px rgba(16, 25, 53, 0.16);
+        }
+
+        .notification-modal-close-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-1px);
         }
 
         .notification-modal-body {
@@ -310,6 +321,13 @@
             color: #eef2ff;
         }
 
+        body.theme-dark .notification-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(139, 119, 255, 0.24);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+            color: #ffffff;
+        }
+
         @media (max-width: 720px) {
             .notification-modal-header-top,
             .notification-detail-row,
@@ -413,9 +431,7 @@
                     <span class="status" id="notification-modal-status">Unread</span>
                     <div class="notification-modal-close-wrap">
                         <button type="button" class="notification-modal-close secondary" data-notification-close aria-label="Close notification details">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M6.53 5.47a.75.75 0 0 1 1.06 0L12 9.88l4.41-4.4a.75.75 0 1 1 1.06 1.06L13.06 10.94l4.41 4.41a.75.75 0 0 1-1.06 1.06L12 12l-4.41 4.41a.75.75 0 0 1-1.06-1.06l4.4-4.41-4.4-4.4a.75.75 0 0 1 0-1.07Z"/>
-                            </svg>
+                            <span class="notification-modal-close-icon" aria-hidden="true">&times;</span>
                         </button>
                     </div>
                 </div>

@@ -677,6 +677,77 @@
             gap: 12px;
         }
 
+        .pagination-shell {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .pagination-summary {
+            margin: 0;
+            color: rgba(5, 8, 22, 0.62);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .pagination-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pagination-link,
+        .pagination-separator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            min-height: 42px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.84);
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .pagination-link.is-active {
+            background: var(--violet-500);
+            border-color: transparent;
+            color: #ffffff;
+            box-shadow: 0 16px 28px rgba(33, 86, 245, 0.22);
+        }
+
+        .pagination-link.is-disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .pagination-separator {
+            min-width: 0;
+            padding-inline: 10px;
+        }
+
+        body.theme-dark .pagination-summary {
+            color: rgba(238, 242, 255, 0.68);
+        }
+
+        body.theme-dark .pagination-link,
+        body.theme-dark .pagination-separator {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(139, 119, 255, 0.18);
+            color: #eef2ff;
+        }
+
+        body.theme-dark .pagination-link.is-active {
+            background: var(--violet-500);
+            color: #ffffff;
+        }
+
         .required-marker {
             color: #ef4444;
             margin-left: 0.2rem;

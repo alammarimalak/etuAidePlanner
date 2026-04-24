@@ -175,6 +175,10 @@
                                 <form method="POST" action="{{ route('tasks.destroy', $task) }}" onsubmit="return confirm('Delete this task?')">
                                     @csrf
                                     @method('DELETE')
+                                    <input type="hidden" name="status" value="{{ request('status') }}">
+                                    <input type="hidden" name="priority" value="{{ request('priority') }}">
+                                    <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                                    <input type="hidden" name="page" value="{{ $tasks->currentPage() }}">
                                     <button type="submit" class="task-icon-action delete" aria-label="Delete {{ $task->title }}" title="Delete">
                                         <svg viewBox="0 0 24 24" aria-hidden="true">
                                             <path d="M9 3a1 1 0 0 0-1 1v1H5a1 1 0 1 0 0 2h1l.8 11.14A3 3 0 0 0 9.79 21h4.42a3 3 0 0 0 2.99-2.86L18 7h1a1 1 0 1 0 0-2h-3V4a1 1 0 0 0-1-1H9Zm5 2h-4v0h4v0Zm-5.2 2h6.4l-.78 10.99a1 1 0 0 1-1 .95H9.58a1 1 0 0 1-1-.95L7.8 7Zm1.95 2.25a1 1 0 0 1 1 1v5.5a1 1 0 1 1-2 0v-5.5a1 1 0 0 1 1-1Zm4.5 0a1 1 0 0 1 1 1v5.5a1 1 0 1 1-2 0v-5.5a1 1 0 0 1 1-1Z"/>
@@ -191,6 +195,8 @@
                 @endforelse
             </tbody>
         </table>
+
+        {{ $tasks->onEachSide(1)->links('partials.pagination') }}
     </div>
 
     <script>

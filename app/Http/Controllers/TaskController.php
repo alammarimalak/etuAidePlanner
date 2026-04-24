@@ -28,7 +28,10 @@ class TaskController extends Controller
             $query->where('category_id', $request->integer('category_id'));
         }
 
-        $tasks = $query->orderByDesc('created_at')->get();
+        $tasks = $query
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
         $categories = Category::query()
             ->where(function ($query) use ($user) {
@@ -116,11 +119,17 @@ class TaskController extends Controller
         $this->authorize('view', $task);
         $user = $this->currentUser();
 
-        $task->load(['category', 'subtasks', 'reminders', 'occurrences']);
+        $task->load(['category', 'reminders', 'occurrences']);
+
+        $subtasks = $task->subtasks()
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->paginate(10);
 
         return view('tasks.show', [
             'currentUser' => $user,
             'task' => $task,
+            'subtasks' => $subtasks,
         ]);
     }
 
@@ -207,13 +216,15 @@ class TaskController extends Controller
         return response()->json(['status' => 'ok']);
     }
 
-    public function destroy(Task $task)
+    public function destroy(Request $request, Task $task)
     {
         $this->authorize('delete', $task);
 
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('status', 'Task deleted.');
+        return redirect()
+            ->route('tasks.index', $request->only(['status', 'priority', 'category_id', 'page']))
+            ->with('status', 'Task deleted.');
     }
 
     private function syncSubtasks(Task $task, array $subtasks): void

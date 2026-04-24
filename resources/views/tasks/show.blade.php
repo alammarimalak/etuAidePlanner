@@ -34,6 +34,7 @@
         <h3>Subtasks</h3>
         <form method="POST" action="{{ route('tasks.subtasks.store', $task) }}" class="form-grid">
             @csrf
+            <input type="hidden" name="page" value="{{ $subtasks->currentPage() }}">
             <div>
                 <label for="subtask-title">Subtask title <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
                 <input id="subtask-title" type="text" name="title" placeholder="Subtask title" required aria-required="true">
@@ -50,11 +51,12 @@
         </form>
 
         <ul>
-            @forelse ($task->subtasks as $subtask)
+            @forelse ($subtasks as $subtask)
                 <li>
                     <form method="POST" action="{{ route('tasks.subtasks.update', [$task, $subtask]) }}" class="actions">
                         @csrf
                         @method('PATCH')
+                        <input type="hidden" name="page" value="{{ $subtasks->currentPage() }}">
                         <input type="text" name="title" value="{{ $subtask->title }}">
                         <select name="status">
                             @foreach (['pending', 'in_progress', 'review', 'done'] as $status)
@@ -66,6 +68,7 @@
                     <form method="POST" action="{{ route('tasks.subtasks.destroy', [$task, $subtask]) }}" onsubmit="return confirm('Delete this subtask?')">
                         @csrf
                         @method('DELETE')
+                        <input type="hidden" name="page" value="{{ $subtasks->currentPage() }}">
                         <button type="submit" class="secondary">Delete</button>
                     </form>
                 </li>
@@ -73,6 +76,8 @@
                 <li class="muted">No subtasks yet.</li>
             @endforelse
         </ul>
+
+        {{ $subtasks->onEachSide(1)->links('partials.pagination') }}
     </div>
 
     <div class="card">

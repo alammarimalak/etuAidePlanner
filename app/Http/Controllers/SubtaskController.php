@@ -22,7 +22,9 @@ class SubtaskController extends Controller
 
         Subtask::create($data);
 
-        return redirect()->route('tasks.show', $task)->with('status', 'Subtask added.');
+        return redirect()
+            ->route('tasks.show', $this->taskShowParameters($task, $request))
+            ->with('status', 'Subtask added.');
     }
 
     public function update(Request $request, Task $task, Subtask $subtask)
@@ -41,10 +43,12 @@ class SubtaskController extends Controller
 
         $subtask->update($data);
 
-        return redirect()->route('tasks.show', $task)->with('status', 'Subtask updated.');
+        return redirect()
+            ->route('tasks.show', $this->taskShowParameters($task, $request))
+            ->with('status', 'Subtask updated.');
     }
 
-    public function destroy(Task $task, Subtask $subtask)
+    public function destroy(Request $request, Task $task, Subtask $subtask)
     {
         if ($subtask->task_id !== $task->id) {
             abort(404);
@@ -54,6 +58,19 @@ class SubtaskController extends Controller
 
         $subtask->delete();
 
-        return redirect()->route('tasks.show', $task)->with('status', 'Subtask deleted.');
+        return redirect()
+            ->route('tasks.show', $this->taskShowParameters($task, $request))
+            ->with('status', 'Subtask deleted.');
+    }
+
+    private function taskShowParameters(Task $task, Request $request): array
+    {
+        $parameters = ['task' => $task];
+
+        if ($request->filled('page')) {
+            $parameters['page'] = $request->integer('page');
+        }
+
+        return $parameters;
     }
 }
