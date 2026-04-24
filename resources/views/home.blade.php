@@ -367,10 +367,34 @@
             }
         }
 
+        @media (max-width: 767.98px) {
+            .home-bootstrap.jira-inspired .public-main > .container {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .home-bootstrap.jira-inspired section[id] {
+                scroll-margin-top: 92px;
+            }
+
+            .home-bootstrap.jira-inspired .contact-submit-row {
+                align-items: stretch;
+            }
+
+            .home-bootstrap.jira-inspired .contact-submit-row > * {
+                width: 100%;
+            }
+        }
+
         @media (max-width: 575.98px) {
             .home-bootstrap.jira-inspired .event-kpi {
                 min-width: auto;
                 text-align: left;
+            }
+
+            .home-bootstrap.jira-inspired .public-main > .container {
+                padding-left: 12px;
+                padding-right: 12px;
             }
         }
     </style>

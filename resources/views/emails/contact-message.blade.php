@@ -13,7 +13,7 @@
             </div>
             <div style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; opacity:.82;">EtuAide Contact Form</div>
             <h1 style="margin:12px 0 8px; font-size:28px; line-height:1.2;">New website message</h1>
-            <div style="font-size:14px; opacity:.86;">From {{ $senderName }} ({{ $senderEmail }})</div>
+            <div style="font-size:14px; opacity:.86;">From EtuAide team</div>
         </div>
 
         <div style="padding:28px;">

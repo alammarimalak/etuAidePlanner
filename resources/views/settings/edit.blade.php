@@ -60,6 +60,16 @@
             min-width: 0;
         }
 
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-container {
+            justify-self: start;
+        }
+
         body.theme-dark .settings-panel {
             background: rgba(255, 255, 255, 0.03);
             border-color: rgba(139, 119, 255, 0.18);
@@ -117,10 +127,9 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label>
-                        <input type="checkbox" name="notifications_enabled" value="1" @checked(old('notifications_enabled', $currentUser->notifications_enabled))>
-                        Enable notifications
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="notifications_enabled" value="1" @checked(old('notifications_enabled', $currentUser->notifications_enabled))> Enable notifications
                     </label>
                 </div>
             </div>

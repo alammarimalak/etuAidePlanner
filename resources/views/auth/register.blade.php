@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('body_class', 'auth-page')
+
 @section('content')
     <style>
         :root {
@@ -22,11 +24,11 @@
         }
 
         .login-container {
-            min-height: 100vh;
+            min-height: calc(100vh - 24px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 32px 20px 48px;
             background: #eef4fb;
         }
 
@@ -265,6 +267,26 @@
 
         .signup-note a:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 575.98px) {
+            .login-container {
+                min-height: auto;
+                padding: 24px 0 32px;
+            }
+
+            .login-card {
+                padding: 24px 18px;
+                border-radius: 22px;
+            }
+
+            .page-heading {
+                font-size: 1.7rem;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
