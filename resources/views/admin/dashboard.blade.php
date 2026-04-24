@@ -41,6 +41,37 @@
             margin-top: 10px;
         }
 
+        .admin-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .admin-hero-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-table-shell {
+            width: 100%;
+        }
+
+        .admin-table {
+            width: 100%;
+        }
+
+        .admin-table-label {
+            display: none;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(5, 8, 22, 0.48);
+            margin-bottom: 6px;
+        }
+
         .admin-table-actions {
             display: flex;
             gap: 8px;
@@ -58,11 +89,104 @@
             box-shadow: none;
         }
 
+        body.theme-dark .admin-table-label {
+            color: rgba(238, 242, 255, 0.66);
+        }
+
+        @media (max-width: 1180px) {
+            .admin-summary,
+            .admin-panels {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .admin-summary > :last-child:nth-child(odd),
+            .admin-panels > :last-child:nth-child(odd) {
+                grid-column: 1 / -1;
+            }
+        }
+
         @media (max-width: 960px) {
             .admin-hero,
             .admin-summary,
             .admin-panels {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .admin-dashboard {
+                gap: 18px;
+            }
+
+            .admin-title {
+                font-size: clamp(1.8rem, 8vw, 2.45rem);
+            }
+
+            .admin-hero-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .admin-hero-actions .btn {
+                width: 100%;
+            }
+
+            .admin-table,
+            .admin-table tbody,
+            .admin-table tr,
+            .admin-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .admin-table thead {
+                display: none;
+            }
+
+            .admin-table tbody {
+                display: grid;
+                gap: 14px;
+            }
+
+            .admin-table tr {
+                padding: 16px;
+                border: 1px solid var(--line);
+                border-radius: 20px;
+                background: rgba(255, 255, 255, 0.62);
+            }
+
+            .admin-table td {
+                padding: 0;
+                border-bottom: none;
+            }
+
+            .admin-table td + td {
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid var(--line);
+            }
+
+            .admin-table-label {
+                display: block;
+            }
+
+            .admin-table-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .admin-table-actions form,
+            .admin-table-actions button {
+                width: 100%;
+            }
+
+            body.theme-dark .admin-table tr {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(139, 119, 255, 0.16);
+            }
+
+            body.theme-dark .admin-table td + td {
+                border-top-color: rgba(139, 119, 255, 0.14);
             }
         }
     </style>
@@ -77,7 +201,7 @@
                 <p class="muted">
                     Use this workspace to review student engagement, follow up on inactive learners, and keep your own planning tools within reach.
                 </p>
-                <div class="actions">
+                <div class="actions admin-hero-actions">
                     <a class="btn" href="{{ route('admin.students.index') }}">Manage students</a>
                     <a class="btn secondary" href="{{ route('notifications.index') }}">Open notifications</a>
                     <a class="btn ghost" href="{{ route('dashboard') }}">My dashboard</a>
@@ -132,49 +256,61 @@
 
         <div class="card" id="alerts">
             <h3>Alerts to Review</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($openAlerts as $alert)
+            <div class="admin-table-shell">
+                <table class="admin-table">
+                    <thead>
                         <tr>
-                            <td>{{ $alert->subjectUser?->name ?? 'Student' }}</td>
-                            <td><span class="pill">{{ ucfirst($alert->status) }}</span></td>
-                            <td>{{ optional($alert->created_at)->format('M d, Y') ?? '-' }}</td>
-                            <td>
-                                <div class="admin-table-actions">
-                                    @if ($alert->subjectUser)
-                                        <form method="POST" action="{{ route('admin.students.remind', $alert->subjectUser) }}">
+                            <th>Student</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($openAlerts as $alert)
+                            <tr>
+                                <td>
+                                    <span class="admin-table-label">Student</span>
+                                    {{ $alert->subjectUser?->name ?? 'Student' }}
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Status</span>
+                                    <span class="pill">{{ ucfirst($alert->status) }}</span>
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Created</span>
+                                    {{ optional($alert->created_at)->format('M d, Y') ?? '-' }}
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Actions</span>
+                                    <div class="admin-table-actions">
+                                        @if ($alert->subjectUser)
+                                            <form method="POST" action="{{ route('admin.students.remind', $alert->subjectUser) }}">
+                                                @csrf
+                                                <button type="submit">Send Reminder</button>
+                                            </form>
+                                        @endif
+                                        <form method="POST" action="{{ route('admin.alerts.resolve', $alert) }}">
                                             @csrf
-                                            <button type="submit">Send Reminder</button>
+                                            @method('PATCH')
+                                            <button type="submit" class="secondary">Resolve</button>
                                         </form>
-                                    @endif
-                                    <form method="POST" action="{{ route('admin.alerts.resolve', $alert) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="secondary">Resolve</button>
-                                    </form>
-                                    <form method="POST" action="{{ route('admin.alerts.dismiss', $alert) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="secondary">Dismiss</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="muted">No open alerts.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                        <form method="POST" action="{{ route('admin.alerts.dismiss', $alert) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="secondary">Dismiss</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="muted">No open alerts.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="card" id="inactive-students">
@@ -182,39 +318,54 @@
                 <h3 style="margin-bottom: 0;">Inactive Students (14+ days)</h3>
                 <a class="btn secondary" href="{{ route('admin.students.index') }}">Open full directory</a>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Last Login</th>
-                        <th>Last Activity</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($inactiveStudents as $student)
+            <div class="admin-table-shell">
+                <table class="admin-table">
+                    <thead>
                         <tr>
-                            <td>{{ $student->name }}</td>
-                            <td>{{ $student->email }}</td>
-                            <td>{{ optional($student->last_login_at)->format('M d, Y') ?? '-' }}</td>
-                            <td>{{ optional($student->last_activity_at)->format('M d, Y') ?? '-' }}</td>
-                            <td>
-                                <div class="admin-table-actions">
-                                    <form method="POST" action="{{ route('admin.students.remind', $student) }}">
-                                        @csrf
-                                        <button type="submit">Send Reminder</button>
-                                    </form>
-                                </div>
-                            </td>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Last Login</th>
+                            <th>Last Activity</th>
+                            <th>Actions</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="muted">No inactive students.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($inactiveStudents as $student)
+                            <tr>
+                                <td>
+                                    <span class="admin-table-label">Name</span>
+                                    {{ $student->name }}
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Email</span>
+                                    {{ $student->email }}
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Last Login</span>
+                                    {{ optional($student->last_login_at)->format('M d, Y') ?? '-' }}
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Last Activity</span>
+                                    {{ optional($student->last_activity_at)->format('M d, Y') ?? '-' }}
+                                </td>
+                                <td>
+                                    <span class="admin-table-label">Actions</span>
+                                    <div class="admin-table-actions">
+                                        <form method="POST" action="{{ route('admin.students.remind', $student) }}">
+                                            @csrf
+                                            <button type="submit">Send Reminder</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="muted">No inactive students.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 @endsection

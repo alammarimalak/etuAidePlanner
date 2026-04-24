@@ -29,12 +29,24 @@ class CategorySeeder extends Seeder
         }
 
         $student = User::where('email', 'alammarimalak17@gmail.com')->first();
+        $admin = User::where('email', 'malakammarie369@gmail.com')->first();
         $amal = User::where('email', 'amal@etuaide.test')->first();
         $inactive = User::where('email', 'inactive@etuaide.test')->first();
 
         if ($student) {
             $this->seedUserCategory($student, 'Internship', '#F97316');
             $this->seedUserCategory($student, 'Campus Club', '#14B8A6');
+            $this->seedUserCategory($student, 'Deep Work', '#0F766E');
+            $this->seedUserCategory($student, 'Exam Prep', '#E11D48');
+            $this->seedUserCategory($student, 'Freelance', '#9333EA');
+            $this->seedUserCategory($student, 'Wellness', '#F59E0B');
+        }
+
+        if ($admin) {
+            $this->seedUserCategory($admin, 'Student Follow-up', '#2563EB');
+            $this->seedUserCategory($admin, 'Email Campaigns', '#EC4899');
+            $this->seedUserCategory($admin, 'Operations', '#0891B2');
+            $this->seedUserCategory($admin, 'Reports', '#16A34A');
         }
 
         if ($amal) {

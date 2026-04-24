@@ -18,7 +18,8 @@ class DemoTaskSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::where('email', 'admin@etuaide.test')->first();
+        $admin = User::where('email', 'malakammarie369@gmail.com')->first()
+            ?? User::where('email', 'admin@etuaide.test')->first();
         $student = User::where('email', 'alammarimalak17@gmail.com')->first();
         $amal = User::where('email', 'amal@etuaide.test')->first();
         $inactive = User::where('email', 'inactive@etuaide.test')->first();

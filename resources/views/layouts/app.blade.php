@@ -346,6 +346,10 @@
             z-index: 1;
         }
 
+        .student-sidebar-backdrop {
+            display: none;
+        }
+
         .student-sidebar {
             position: sticky;
             top: 0;
@@ -386,6 +390,13 @@
             gap: 12px;
         }
 
+        .student-sidebar-brand-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
         .student-sidebar-brand-mark {
             display: inline-flex;
             align-items: center;
@@ -418,6 +429,10 @@
             flex-shrink: 0;
             margin-top: 4px;
             box-shadow: none;
+        }
+
+        .student-sidebar-close {
+            display: none;
         }
 
         .student-sidebar-nav {
@@ -519,6 +534,36 @@
         .student-main {
             min-width: 0;
             padding: 34px 32px 60px;
+        }
+
+        .student-mobile-bar {
+            display: none;
+        }
+
+        .student-mobile-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: inherit;
+        }
+
+        .student-mobile-brand-copy {
+            display: grid;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .student-mobile-brand-copy span:last-child {
+            color: rgba(5, 8, 22, 0.6);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .student-mobile-brand .brand-bubble {
+            width: 54px;
         }
 
         .student-main .container {
@@ -980,6 +1025,10 @@
             border-color: rgba(139, 119, 255, 0.14);
         }
 
+        body.theme-dark .student-mobile-brand-copy span:last-child {
+            color: rgba(238, 242, 255, 0.68);
+        }
+
         body.theme-dark .theme-toggle {
             background: rgba(255, 255, 255, 0.06);
             border-color: rgba(139, 119, 255, 0.2);
@@ -1286,15 +1335,75 @@
                 grid-template-columns: 1fr;
             }
 
+            .student-sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                z-index: 39;
+                background: rgba(5, 8, 22, 0.52);
+                backdrop-filter: blur(6px);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s ease;
+            }
+
             .student-sidebar {
-                position: static;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid var(--line);
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 40;
+                width: min(320px, calc(100vw - 36px));
+                height: 100vh;
+                border-right: 1px solid var(--line);
+                border-bottom: none;
+                box-shadow: 0 28px 54px rgba(5, 8, 22, 0.22);
+                transform: translateX(-104%);
+                transition: transform 0.22s ease;
+            }
+
+            .student-shell.is-nav-open .student-sidebar {
+                transform: translateX(0);
+            }
+
+            .student-shell.is-nav-open .student-sidebar-backdrop {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .student-sidebar-brand-actions {
+                gap: 8px;
+            }
+
+            .student-sidebar-close {
+                display: inline-flex;
+                margin-top: 4px;
             }
 
             .student-main {
-                padding: 24px 20px 48px;
+                padding: 18px 16px 40px;
+            }
+
+            .student-mobile-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 18px;
+            }
+
+            .student-mobile-brand {
+                min-width: 0;
+                flex: 1 1 auto;
+            }
+
+            .student-mobile-brand-copy strong,
+            .student-mobile-brand-copy span {
+                display: block;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
     </style>
@@ -1324,8 +1433,10 @@
 @endphp
 
 @if ($isAppShell)
-    <div class="student-shell">
-        <aside class="student-sidebar">
+    <div class="student-shell" data-student-shell>
+        <div class="student-sidebar-backdrop" data-student-nav-close></div>
+
+        <aside class="student-sidebar" id="student-sidebar-panel">
             <div class="student-sidebar-brand-shell">
                 <div class="student-sidebar-brand-top">
                     <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand-mark" aria-label="Go to workspace home">
@@ -1334,26 +1445,42 @@
                             <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
                         </span>
                     </a>
-                    <button
-                        type="button"
-                        class="theme-toggle student-sidebar-theme-toggle"
-                        data-theme-toggle
-                        aria-label="Switch color theme"
-                        @if ($currentUser)
-                            data-theme-endpoint="{{ route('settings.theme') }}"
-                            data-theme-token="{{ csrf_token() }}"
-                        @endif
-                    >
-                        <span class="theme-toggle-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" data-theme-icon="sun">
-                                <path d="M12 4.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V5.5a.75.75 0 0 1 .75-.75Zm0 12.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 17Zm7.25-5.75a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.016-4.766a.75.75 0 0 1 1.06 0l1.061 1.061a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.062Zm-7.603 7.603a.75.75 0 0 1 1.06 0l1.062 1.061a.75.75 0 1 1-1.06 1.06l-1.062-1.06a.75.75 0 0 1 0-1.061Zm8.663 1.061a.75.75 0 0 1 1.06-1.06l1.061 1.06a.75.75 0 1 1-1.06 1.061l-1.061-1.061ZM8.724 7.545a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 0 1-1.062-1.06l1.061-1.061a.75.75 0 0 1 1.061 0ZM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Z"/>
-                            </svg>
-                            <svg viewBox="0 0 24 24" data-theme-icon="moon" hidden>
-                                <path d="M14.5 3.32a.75.75 0 0 1 .83.98 7.75 7.75 0 1 0 9.37 9.37.75.75 0 0 1 .98.83A9.25 9.25 0 1 1 14.5 3.32Z"/>
-                            </svg>
-                        </span>
-                        <span class="sr-only" data-theme-label>Dark mode</span>
-                    </button>
+                    <div class="student-sidebar-brand-actions">
+                        <button
+                            type="button"
+                            class="theme-toggle student-sidebar-theme-toggle"
+                            data-theme-toggle
+                            aria-label="Switch color theme"
+                            @if ($currentUser)
+                                data-theme-endpoint="{{ route('settings.theme') }}"
+                                data-theme-token="{{ csrf_token() }}"
+                            @endif
+                        >
+                            <span class="theme-toggle-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" data-theme-icon="sun">
+                                    <path d="M12 4.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V5.5a.75.75 0 0 1 .75-.75Zm0 12.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 17Zm7.25-5.75a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.016-4.766a.75.75 0 0 1 1.06 0l1.061 1.061a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.062Zm-7.603 7.603a.75.75 0 0 1 1.06 0l1.062 1.061a.75.75 0 1 1-1.06 1.06l-1.062-1.06a.75.75 0 0 1 0-1.061Zm8.663 1.061a.75.75 0 0 1 1.06-1.06l1.061 1.06a.75.75 0 1 1-1.06 1.061l-1.061-1.061ZM8.724 7.545a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 0 1-1.062-1.06l1.061-1.061a.75.75 0 0 1 1.061 0ZM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Z"/>
+                                </svg>
+                                <svg viewBox="0 0 24 24" data-theme-icon="moon" hidden>
+                                    <path d="M14.5 3.32a.75.75 0 0 1 .83.98 7.75 7.75 0 1 0 9.37 9.37.75.75 0 0 1 .98.83A9.25 9.25 0 1 1 14.5 3.32Z"/>
+                                </svg>
+                            </span>
+                            <span class="sr-only" data-theme-label>Dark mode</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="nav-menu-toggle student-sidebar-close"
+                            data-student-nav-close
+                            aria-label="Close workspace navigation"
+                        >
+                            <span class="nav-menu-toggle-box" aria-hidden="true">
+                                <span class="nav-menu-toggle-line" style="transform: translateY(6px) rotate(45deg);"></span>
+                                <span class="nav-menu-toggle-line" style="opacity: 0;"></span>
+                                <span class="nav-menu-toggle-line" style="transform: translateY(-6px) rotate(-45deg);"></span>
+                            </span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
                 </div>
                 <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-sidebar-brand">
                     <span class="student-sidebar-copy">
@@ -1409,6 +1536,35 @@
         </aside>
 
         <main class="student-main">
+            <div class="student-mobile-bar">
+                <button
+                    type="button"
+                    class="nav-menu-toggle student-mobile-toggle"
+                    data-student-nav-toggle
+                    aria-expanded="false"
+                    aria-controls="student-sidebar-panel"
+                    aria-label="Toggle workspace navigation"
+                >
+                    <span class="nav-menu-toggle-box" aria-hidden="true">
+                        <span class="nav-menu-toggle-line"></span>
+                        <span class="nav-menu-toggle-line"></span>
+                        <span class="nav-menu-toggle-line"></span>
+                    </span>
+                    <span class="sr-only">Menu</span>
+                </button>
+
+                <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" class="student-mobile-brand">
+                    <span class="brand-bubble">
+                        <img class="brand-logo brand-logo--light" src="{{ $lightLogoUrl }}" alt="EtuAide logo">
+                        <img class="brand-logo brand-logo--dark" src="{{ $darkLogoUrl }}" alt="EtuAide logo">
+                    </span>
+                    <span class="student-mobile-brand-copy">
+                        <strong>Planner</strong>
+                        <span>{{ $isAdmin ? 'Admin workspace' : 'Student workspace' }}</span>
+                    </span>
+                </a>
+            </div>
+
             <div class="container">
                 @if (session('status'))
                     <div class="status">{{ session('status') }}</div>
@@ -1679,6 +1835,73 @@
         });
 
         syncThemeToggle();
+    })();
+</script>
+<script>
+    (function () {
+        const shell = document.querySelector('[data-student-shell]');
+        const toggle = document.querySelector('[data-student-nav-toggle]');
+        const sidebar = document.getElementById('student-sidebar-panel');
+        const closeTargets = shell ? Array.from(shell.querySelectorAll('[data-student-nav-close]')) : [];
+        const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+        if (!shell || !toggle || !sidebar) {
+            return;
+        }
+
+        function closeNav() {
+            shell.classList.remove('is-nav-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('student-nav-open');
+            document.body.style.overflow = '';
+        }
+
+        function openNav() {
+            shell.classList.add('is-nav-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('student-nav-open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        toggle.addEventListener('click', function () {
+            if (!mobileQuery.matches) {
+                return;
+            }
+
+            if (shell.classList.contains('is-nav-open')) {
+                closeNav();
+                return;
+            }
+
+            openNav();
+        });
+
+        closeTargets.forEach(function (target) {
+            target.addEventListener('click', function () {
+                closeNav();
+            });
+        });
+
+        shell.querySelectorAll('.student-sidebar-nav a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                if (mobileQuery.matches) {
+                    closeNav();
+                }
+            });
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && shell.classList.contains('is-nav-open')) {
+                closeNav();
+                toggle.focus();
+            }
+        });
+
+        mobileQuery.addEventListener('change', function (event) {
+            if (!event.matches) {
+                closeNav();
+            }
+        });
     })();
 </script>
 <script>

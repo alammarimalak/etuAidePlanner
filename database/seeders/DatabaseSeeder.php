@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             DemoUserSeeder::class,
             CategorySeeder::class,
             DemoTaskSeeder::class,
+            TestWorkspaceSeeder::class,
         ]);
     }
 }

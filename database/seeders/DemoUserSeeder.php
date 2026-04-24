@@ -28,17 +28,32 @@ class DemoUserSeeder extends Seeder
         );
 
         User::updateOrCreate(
+            ['email' => 'malakammarie369@gmail.com'],
+            [
+                'name' => 'Malak Ammarie',
+                'password' => $password,
+                'role' => User::ROLE_ADMIN,
+                'timezone' => 'Africa/Casablanca',
+                'theme' => User::THEME_DARK,
+                'notifications_enabled' => true,
+                'email_verified_at' => now(),
+                'last_login_at' => now()->subMinutes(45),
+                'last_activity_at' => now()->subMinutes(5),
+            ],
+        );
+
+        User::updateOrCreate(
             ['email' => 'alammarimalak17@gmail.com'],
             [
-                'name' => 'Sara Student',
+                'name' => 'Al Ammari Malak',
                 'password' => $password,
                 'role' => User::ROLE_STUDENT,
                 'timezone' => 'Africa/Casablanca',
                 'theme' => User::THEME_LIGHT,
                 'notifications_enabled' => true,
                 'email_verified_at' => now(),
-                'last_login_at' => now()->subHours(4),
-                'last_activity_at' => now()->subMinutes(20),
+                'last_login_at' => now()->subHours(1),
+                'last_activity_at' => now()->subMinutes(12),
             ],
         );
 
