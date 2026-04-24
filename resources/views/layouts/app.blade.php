@@ -677,6 +677,11 @@
             gap: 12px;
         }
 
+        .required-marker {
+            color: #ef4444;
+            margin-left: 0.2rem;
+        }
+
         input, select, textarea, button {
             font: inherit;
             padding: 12px 14px;

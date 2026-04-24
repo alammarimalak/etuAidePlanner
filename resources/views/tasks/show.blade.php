@@ -34,12 +34,18 @@
         <h3>Subtasks</h3>
         <form method="POST" action="{{ route('tasks.subtasks.store', $task) }}" class="form-grid">
             @csrf
-            <input type="text" name="title" placeholder="Subtask title" required>
-            <select name="status">
+            <div>
+                <label for="subtask-title">Subtask title <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                <input id="subtask-title" type="text" name="title" placeholder="Subtask title" required aria-required="true">
+            </div>
+            <div>
+                <label for="subtask-status">Status</label>
+                <select id="subtask-status" name="status">
                 @foreach (['pending', 'in_progress', 'review', 'done'] as $status)
                     <option value="{{ $status }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
                 @endforeach
-            </select>
+                </select>
+            </div>
             <button type="submit">Add Subtask</button>
         </form>
 
@@ -73,10 +79,10 @@
         <h3>Reminders</h3>
         <form method="POST" action="{{ route('tasks.reminders.store', $task) }}" class="form-grid">
             @csrf
-            <label>Remind At</label>
-            <input type="datetime-local" name="remind_at" required>
-            <label>Channel</label>
-            <select name="channel">
+            <label for="task-remind-at">Remind At <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+            <input id="task-remind-at" type="datetime-local" name="remind_at" required aria-required="true">
+            <label for="task-reminder-channel">Channel</label>
+            <select id="task-reminder-channel" name="channel">
                 <option value="email">Email</option>
                 <option value="in_app">In App</option>
             </select>
@@ -116,4 +122,3 @@
         </ul>
     </div>
 @endsection
-

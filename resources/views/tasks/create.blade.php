@@ -82,12 +82,12 @@
             @csrf
             <div class="task-form-row title-row">
                 <div>
-                    <label>Title</label>
-                    <input type="text" name="title" value="{{ old('title') }}" required>
+                    <label for="task-title">Title <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="task-title" type="text" name="title" value="{{ old('title') }}" required aria-required="true">
                 </div>
                 <div>
-                    <label>Priority</label>
-                    <select name="priority">
+                    <label for="task-priority">Priority</label>
+                    <select id="task-priority" name="priority">
                         @foreach (['high', 'medium', 'low'] as $priority)
                             <option value="{{ $priority }}" @selected(old('priority', 'medium') === $priority)>{{ ucfirst($priority) }}</option>
                         @endforeach
@@ -96,16 +96,16 @@
             </div>
             <div class="task-form-row">
                 <div>
-                    <label>Status</label>
-                    <select name="status">
+                    <label for="task-status">Status</label>
+                    <select id="task-status" name="status">
                         @foreach (['pending', 'in_progress', 'review', 'done'] as $status)
                             <option value="{{ $status }}" @selected(old('status', 'pending') === $status)>{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label>Category</label>
-                    <select name="category_id">
+                    <label for="task-category">Category</label>
+                    <select id="task-category" name="category_id">
                         <option value="">None</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" @selected((int) old('category_id') === $category->id)>{{ $category->name }}</option>
@@ -115,12 +115,12 @@
             </div>
             <div class="task-form-row">
                 <div>
-                    <label>Start At</label>
-                    <input type="datetime-local" name="start_at" value="{{ old('start_at') }}">
+                    <label for="task-start-at">Start At</label>
+                    <input id="task-start-at" type="datetime-local" name="start_at" value="{{ old('start_at') }}">
                 </div>
                 <div>
-                    <label>Due At</label>
-                    <input type="datetime-local" name="due_at" value="{{ old('due_at') }}">
+                    <label for="task-due-at">Due At</label>
+                    <input id="task-due-at" type="datetime-local" name="due_at" value="{{ old('due_at') }}">
                 </div>
             </div>
             <div>
@@ -159,8 +159,8 @@
                 </div>
             </div>
             <div class="task-description">
-                <label>Description</label>
-                <textarea name="description" rows="4">{{ old('description') }}</textarea>
+                <label for="task-description">Description</label>
+                <textarea id="task-description" name="description" rows="4">{{ old('description') }}</textarea>
             </div>
 
             <div class="actions">

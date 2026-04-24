@@ -208,16 +208,16 @@
                 </div>
 
                 <div class="compose-field">
-                    <label for="compose-subject">Subject</label>
-                    <input id="compose-subject" type="text" name="subject" value="{{ old('subject') }}" required>
+                    <label for="compose-subject">Subject <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="compose-subject" type="text" name="subject" value="{{ old('subject') }}" required aria-required="true">
                     @error('subject')
                         <p class="compose-error">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="compose-field">
-                    <label for="compose-message">Message</label>
-                    <textarea id="compose-message" name="message" class="compose-textarea" required>{{ old('message') }}</textarea>
+                    <label for="compose-message">Message <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <textarea id="compose-message" name="message" class="compose-textarea" required aria-required="true">{{ old('message') }}</textarea>
                     @error('message')
                         <p class="compose-error">{{ $message }}</p>
                     @enderror

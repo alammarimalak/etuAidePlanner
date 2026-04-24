@@ -1071,8 +1071,8 @@
 
                 <div class="calendar-modal-row title-row">
                     <div>
-                        <label for="calendar-modal-title-input">Title</label>
-                        <input id="calendar-modal-title-input" type="text" name="title" placeholder="Example: Review chapter notes" required>
+                        <label for="calendar-modal-title-input">Title <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                        <input id="calendar-modal-title-input" type="text" name="title" placeholder="Example: Review chapter notes" required aria-required="true">
                     </div>
                     <div>
                         <label for="calendar-modal-priority">Priority</label>

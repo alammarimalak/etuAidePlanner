@@ -303,32 +303,32 @@
             <form method="POST" action="{{ route('register') }}" class="form-grid">
                 @csrf
                 <div class="form-group">
-                    <label for="name">Full name</label>
-                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    <label for="name">Full name <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="name" type="text" name="name" value="{{ old('name') }}" required aria-required="true" autocomplete="name" autofocus>
                     @error('name')
                         <div class="muted">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email">
+                    <label for="email">Email address <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required aria-required="true" autocomplete="email">
                     @error('email')
                         <div class="muted">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" name="password" required autocomplete="new-password">
+                    <label for="password">Password <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="password" type="password" name="password" required aria-required="true" autocomplete="new-password">
                     @error('password')
                         <div class="muted">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="password_confirmation">Confirm password</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
+                    <label for="password_confirmation">Confirm password <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" required aria-required="true" autocomplete="new-password">
                 </div>
 
                 <button type="submit" class="submit-btn">Create account</button>

@@ -308,16 +308,16 @@
             <form method="POST" action="{{ route('login') }}" class="form-grid">
                 @csrf
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <label for="email">Email address <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required aria-required="true" autocomplete="email" autofocus>
                     @error('email')
                         <div class="muted">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" name="password" required autocomplete="current-password">
+                    <label for="password">Password <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="password" type="password" name="password" required aria-required="true" autocomplete="current-password">
                     @error('password')
                         <div class="muted">{{ $message }}</div>
                     @enderror

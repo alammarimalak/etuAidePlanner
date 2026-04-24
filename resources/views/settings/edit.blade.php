@@ -107,8 +107,8 @@
                 </div>
 
                 <div>
-                    <label>Name</label>
-                    <input type="text" name="name" value="{{ old('name', $currentUser->name) }}" required>
+                    <label for="settings-name">Name <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                    <input id="settings-name" type="text" name="name" value="{{ old('name', $currentUser->name) }}" required aria-required="true">
                     @error('name')
                         <div class="muted">{{ $message }}</div>
                     @enderror

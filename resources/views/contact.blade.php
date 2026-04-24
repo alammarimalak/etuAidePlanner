@@ -26,22 +26,22 @@
         <form method="POST" action="{{ route('contact.submit') }}" class="form-grid">
             @csrf
             <div>
-                <label>Name</label>
-                <input type="text" name="name" value="{{ old('name') }}" required>
+                <label for="contact-name">Name <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                <input id="contact-name" type="text" name="name" value="{{ old('name') }}" required aria-required="true">
                 @error('name')
                     <div class="muted">{{ $message }}</div>
                 @enderror
             </div>
             <div>
-                <label>Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" required>
+                <label for="contact-email">Email <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                <input id="contact-email" type="email" name="email" value="{{ old('email') }}" required aria-required="true">
                 @error('email')
                     <div class="muted">{{ $message }}</div>
                 @enderror
             </div>
             <div>
-                <label>Message</label>
-                <textarea name="message" rows="4" required>{{ old('message') }}</textarea>
+                <label for="contact-message">Message <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                <textarea id="contact-message" name="message" rows="4" required aria-required="true">{{ old('message') }}</textarea>
                 @error('message')
                     <div class="muted">{{ $message }}</div>
                 @enderror

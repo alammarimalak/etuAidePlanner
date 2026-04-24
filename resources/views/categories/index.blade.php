@@ -127,12 +127,12 @@
         <form method="POST" action="{{ route('categories.store') }}" class="category-create-form">
             @csrf
             <div class="category-create-field">
-                <label>Name</label>
-                <input type="text" name="name" required>
+                <label for="category-name">Name <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
+                <input id="category-name" type="text" name="name" required aria-required="true">
             </div>
             <div class="category-create-field" style="flex: 0 0 auto;">
-                <label>Color</label>
-                <input type="color" name="color" class="category-color-input" value="{{ old('color', '#3B82F6') }}">
+                <label for="category-color">Color</label>
+                <input id="category-color" type="color" name="color" class="category-color-input" value="{{ old('color', '#3B82F6') }}">
             </div>
             <button type="submit">Add Category</button>
         </form>
@@ -200,4 +200,3 @@
         </table>
     </div>
 @endsection
-
