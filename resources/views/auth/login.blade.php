@@ -134,6 +134,16 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
+        .password-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .password-field input {
+            flex: 1;
+        }
+
         .muted {
             color: #d14343;
             font-size: 0.85rem;
@@ -317,7 +327,12 @@
 
                 <div class="form-group">
                     <label for="password">Password <span class="required-marker" aria-hidden="true">*</span><span class="sr-only"> required</span></label>
-                    <input id="password" type="password" name="password" required aria-required="true" autocomplete="current-password">
+                    <div class="password-field">
+                        <input id="password" type="password" name="password" required aria-required="true" autocomplete="current-password">
+                        <button type="button" class="password-toggle" data-password-toggle data-target="password" data-show-label="Show password" data-hide-label="Hide password" aria-controls="password" aria-label="Show password" aria-pressed="false">
+                            <img src="{{ asset('icons/eye.svg') }}" alt="" width="20" height="20" data-password-icon data-icon-show="{{ asset('icons/eye.svg') }}" data-icon-hide="{{ asset('icons/eye-off.svg') }}">
+                        </button>
+                    </div>
                     @error('password')
                         <div class="muted">{{ $message }}</div>
                     @enderror
@@ -337,4 +352,25 @@
             <p class="signup-note">Don’t have an EtuAide account? <a href="{{ route('register') }}">Create one</a></p>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('[data-password-toggle]').forEach((toggle) => {
+            toggle.addEventListener('click', () => {
+                const input = document.getElementById(toggle.dataset.target);
+
+                if (!input) {
+                    return;
+                }
+
+                const isVisible = input.type === 'text';
+                const icon = toggle.querySelector('[data-password-icon]');
+                input.type = isVisible ? 'password' : 'text';
+                toggle.setAttribute('aria-pressed', String(!isVisible));
+                toggle.setAttribute('aria-label', isVisible ? toggle.dataset.showLabel : toggle.dataset.hideLabel);
+
+                if (icon) {
+                    icon.src = isVisible ? icon.dataset.iconShow : icon.dataset.iconHide;
+                }
+            });
+        });
+    </script>
 @endsection
